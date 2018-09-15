@@ -6746,6 +6746,12 @@ url-join@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/url-join/-/url-join-1.1.0.tgz#741c6c2f4596c4830d6718460920d0c92202dc78"
 
+url-otpauth@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/url-otpauth/-/url-otpauth-2.0.0.tgz#f145f1a18117fdf990efcfbabc7833bbb6140a48"
+  dependencies:
+    url "^0.11.0"
+
 url-parse-lax@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/url-parse-lax/-/url-parse-lax-1.0.0.tgz#7af8f303645e9bd79a272e7a14ac68bc0609da73"

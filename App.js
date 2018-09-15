@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
+import { parse } from 'url-otpauth';
 
 export default class App extends Component {
   state = {
@@ -38,21 +39,8 @@ export default class App extends Component {
 
   _handlePressUrl = () => {
     Alert.alert(
-      'Open this URL?',
-      this.state.lastScannedUrl,
-      [
-        {
-          text: 'Yes',
-          onPress: () => Linking.openURL(this.state.lastScannedUrl),
-        },
-        {
-          text: 'No',
-          onPress: () => {},
-        },
-      ],
-      {
-        cancellable: false,
-      },
+      'URL Parsed!',
+      JSON.stringify(parse(this.state.lastScannedUrl)),
     );
   };
 

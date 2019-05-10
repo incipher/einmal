@@ -47,7 +47,7 @@ export default class App extends React.Component<Props, State> {
     if (hasCameraPermission === null) {
       return (
         <View style={styles.container}>
-          <Text>Requesting for camera permission</Text>
+          <Text>Requesting camera permission</Text>
         </View>
       );
     }
@@ -55,7 +55,7 @@ export default class App extends React.Component<Props, State> {
     if (hasCameraPermission === false) {
       return (
         <View style={styles.container}>
-          <Text>Camera permission is not granted</Text>
+          <Text>Camera permission not granted</Text>
         </View>
       );
     }

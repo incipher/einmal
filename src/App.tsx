@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { parse } from 'url-otpauth';
 import { BarcodeScanner } from './components';
+import { parseOtpAuthUri } from './utilities';
 
 type Props = {};
 
@@ -9,9 +9,9 @@ type State = {};
 export default class App extends React.Component<Props, State> {
   state: State = {};
 
-  _handleCodeScan = (url: string) => {
-    console.log('URL >', url);
-    console.log('PARSED URL >', parse(url));
+  _handleCodeScan = (uri: string) => {
+    console.log('URI >', uri);
+    console.log('PARSED URI >', parseOtpAuthUri(uri));
   };
 
   render() {

@@ -4,7 +4,7 @@ import { BarCodeScanner, BarCodeScannedCallback } from 'expo';
 import { acquireCameraPermission } from '../utilities';
 
 type Props = {
-  onCodeScan: (url: string) => any;
+  onCodeScan: (uri: string) => any;
 };
 
 type State = {

@@ -1,5 +1,22 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "name": "Secure Authenticator",
+    "slug": "secure-authenticator",
+    "description": "",
+    "version": "0.1.0",
+    "sdkVersion": "32.0.0",
+    "privacy": "unlisted",
+    "platforms": ["ios", "android"],
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"]
   }
 }

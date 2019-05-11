@@ -7,19 +7,25 @@ import {
   Clipboard,
 } from 'react-native';
 import { Text, TouchableRipple, Snackbar } from 'react-native-paper';
+import ProgressCircle from 'react-native-progress-circle';
+import { compose, withClock, ClockData } from '../hocs';
 
-type Props = {};
+type Props = {} & ClockData;
 
 type State = {
   snackbarText: string;
 };
 
-export default class Home extends React.Component<Props, State> {
+/* TODO: Facilitate manual token creation */
+/* TODO: Facilitate token deletion */
+
+class Home extends React.Component<Props, State> {
   state: State = {
     snackbarText: '',
   };
 
   render() {
+    const { seconds } = this.props;
     const { snackbarText } = this.state;
 
     return (
@@ -51,6 +57,15 @@ export default class Home extends React.Component<Props, State> {
                   <Text style={styles.tokenText}>
                     {`${tokenFirstHalf} ${tokenSecondHalf}`}
                   </Text>
+
+                  <ProgressCircle
+                    color="#3399ff"
+                    shadowColor="#bcbcbc"
+                    bgColor="white"
+                    radius={12}
+                    borderWidth={2}
+                    percent={((seconds % 30) * 100) / 30}
+                  />
                 </>
               </TouchableRipple>
             );
@@ -109,3 +124,5 @@ const styles = StyleSheet.create({
     color: '#0f7ebf',
   },
 });
+
+export default compose<Props, {}>(withClock)(Home);

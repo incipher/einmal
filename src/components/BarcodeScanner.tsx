@@ -12,7 +12,7 @@ type State = {
   isCodeScanned: boolean;
 };
 
-export default class BarcodeScanner extends React.Component<Props, State> {
+class BarcodeScanner extends React.Component<Props, State> {
   state: State = {
     hasCameraPermission: null,
     isCodeScanned: false,
@@ -25,6 +25,9 @@ export default class BarcodeScanner extends React.Component<Props, State> {
 
   _handleCodeScan: BarCodeScannedCallback = result => {
     this.setState({ isCodeScanned: true });
+
+    /* TODO: Generate haptic feedback */
+
     this.props.onCodeScan(result.data);
   };
 
@@ -55,3 +58,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default BarcodeScanner;

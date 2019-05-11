@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { ThemeProvider, DefaultTheme, Theme } from 'react-native-paper';
+import { Home } from './screens';
 import { BarcodeScanner } from './components';
 import { parseOtpAuthUri } from './utilities';
+import { colors } from './constants';
 
 type Props = {};
 
@@ -15,6 +18,22 @@ export default class App extends React.Component<Props, State> {
   };
 
   render() {
-    return <BarcodeScanner onCodeScan={this._handleCodeScan} />;
+    const theme: Theme = {
+      ...DefaultTheme,
+      colors: {
+        ...DefaultTheme.colors,
+        primary: colors.PRIMARY,
+        accent: colors.PRIMARY,
+      },
+      fonts: {
+        ...DefaultTheme.fonts,
+      },
+    };
+
+    return (
+      <ThemeProvider theme={theme}>
+        <Home />
+      </ThemeProvider>
+    );
   }
 }

@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "es2015",
-    "outDir": "build/dist",
-    "sourceMap": true,
-    "jsx": "react",
-    "lib": ["dom", "es2017"],
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "react-native",
+    "lib": ["es6"],
     "moduleResolution": "node",
-    "strict": true
-  }
+    "noEmit": true,
+    "strict": true,
+    "target": "esnext"
+  },
+  "exclude": ["node_modules"]
 }

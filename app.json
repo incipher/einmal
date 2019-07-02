@@ -4,7 +4,7 @@
     "slug": "secure-authenticator",
     "description": "",
     "version": "0.1.0",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "privacy": "unlisted",
     "platforms": ["ios", "android"],
     "orientation": "portrait",

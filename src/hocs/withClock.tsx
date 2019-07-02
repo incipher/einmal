@@ -19,8 +19,12 @@ export default function withClock<OriginalProps>(
     _timerId: number = 0;
 
     componentDidMount() {
-      /* FIXME: Use UNIX seconds (factual passage of time) */
-      this._timerId = setInterval(this._incrementSeconds, 1000);
+      const nowMillis = Date.now();
+      const nowSeconds = Math.round(nowMillis / 1000);
+
+      this.setState({ seconds: nowSeconds }, () => {
+        this._timerId = setInterval(this._incrementSeconds, 1000);
+      });
     }
 
     componentWillUnmount() {

@@ -16,6 +16,7 @@ export default function withClock<OriginalProps>(
       seconds: 0,
     };
 
+    /* FIXME: Fix timerId variable type*/
     _timerId: number = 0;
 
     componentDidMount() {
@@ -41,7 +42,7 @@ export default function withClock<OriginalProps>(
       return (
         <WrappedComponent
           seconds={this.state.seconds}
-          {...this.props as OriginalProps}
+          {...(this.props as OriginalProps)}
         />
       );
     }

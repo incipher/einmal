@@ -1,2 +1,2 @@
 export { acquireCameraPermission } from './permissions';
-export { parseOtpAuthUri } from './strings';
+export { parseOtpAuthUri } from './otp';

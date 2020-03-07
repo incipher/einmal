@@ -9,6 +9,7 @@ import {
 import { Text, TouchableRipple, Snackbar } from 'react-native-paper';
 import ProgressCircle from 'react-native-progress-circle';
 import { compose, withClock, ClockData } from '../hocs';
+import { hmac, CryptoDigestAlgorithm } from '../utilities/crypto';
 
 type Props = {} & ClockData;
 
@@ -23,6 +24,26 @@ class Home extends React.Component<Props, State> {
   state: State = {
     snackbarText: '',
   };
+
+  async componentDidMount() {
+    // const data = '';
+    // const key = '';
+    const data = 'Sample #1';
+    const key =
+      '000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f';
+    const hashFunction = CryptoDigestAlgorithm.SHA1;
+
+    const expectedDigest = 'fbdb1d1b18aa6c08324b7d64b71fb76370690e1d';
+    const computedDigest = await hmac(hashFunction)({ key, data });
+
+    // console.log('EXPECTED OUTER DIGEST >', expectedDigest);
+    // console.log('COMPUTED OUTER DIGEST >', computedDigest);
+
+    // console.log(
+    //   'IS CORRECT >',
+    //   computedDigest === expectedDigest ? '✅' : '🚫',
+    // );
+  }
 
   render() {
     const { seconds } = this.props;

@@ -1,1 +1,1 @@
-export { authenticatorToken } from './otp';
+export { totp, totpExpiry } from './otp';

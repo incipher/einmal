@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { authenticatorToken } from './crypto';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Totp } from './components';
 
 export default function App() {
-  const [token, setToken] = useState('');
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const totp = authenticatorToken('CFNMN7VBAIC5XYVG');
-      setToken(totp);
-    }, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{token}</Text>
+      <Totp style={styles.text} secret="CFNMN7VBAIC5XYVG" />
     </View>
   );
 }

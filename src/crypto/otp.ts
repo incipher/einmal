@@ -1,10 +1,15 @@
 global.Buffer = global.Buffer || require('buffer').Buffer;
 
-import { totpToken, totpOptions, KeyEncodings } from '@otplib/core';
+import {
+  totpToken,
+  totpOptions,
+  totpTimeRemaining,
+  KeyEncodings,
+} from '@otplib/core';
 import { createDigest } from '@otplib/plugin-crypto-js';
 import { keyDecoder } from '@otplib/plugin-base32-enc-dec';
 
-export const authenticatorToken = (secret: string): string => {
+export const totp = (secret: string): string => {
   return totpToken(
     keyDecoder(secret, KeyEncodings.HEX),
     totpOptions({
@@ -12,4 +17,8 @@ export const authenticatorToken = (secret: string): string => {
       encoding: KeyEncodings.HEX,
     }),
   );
+};
+
+export const totpExpiry = (): number => {
+  return totpTimeRemaining(Date.now(), 30);
 };

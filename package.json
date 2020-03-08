@@ -8,6 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@otplib/core": "^12.0.1",
+    "@otplib/plugin-base32-enc-dec": "^12.0.1",
+    "@otplib/plugin-crypto-js": "^12.0.1",
+    "buffer": "^5.5.0",
     "expo": "~36.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -16,9 +20,10 @@
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@types/node": "^13.9.0",
     "@types/react": "~16.9.0",
     "@types/react-native": "~0.60.23",
-    "@babel/core": "^7.0.0",
     "babel-preset-expo": "~8.0.0",
     "typescript": "~3.6.3"
   },

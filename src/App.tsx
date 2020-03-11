@@ -1,14 +1,33 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import { Totp } from './components';
 
-export default function App() {
+const App: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <Totp style={styles.text} secret="CFNMN7VBAIC5XYVG" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={accounts}
+        renderItem={({ item }) => {
+          return <Totp style={styles.text} secret={item.secret} />;
+        }}
+        keyExtractor={(_, index) => String(index)}
+      />
+    </SafeAreaView>
   );
-}
+};
+
+const accounts = [
+  {
+    issuer: 'github.com',
+    account: 'john@example.com',
+    secret: 'CFNMN7VBAIC5XYVG',
+  },
+  {
+    issuer: 'npmjs.com',
+    account: 'john@example.com',
+    secret: 'CFNMN7VBAIC5XYVG',
+  },
+];
 
 const styles = StyleSheet.create({
   container: {
@@ -21,3 +40,5 @@ const styles = StyleSheet.create({
     fontSize: 40,
   },
 });
+
+export default App;

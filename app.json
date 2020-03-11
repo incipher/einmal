@@ -2,7 +2,7 @@
   "expo": {
     "name": "Einmal",
     "slug": "einmal",
-    "privacy": "private",
+    "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",

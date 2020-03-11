@@ -8,9 +8,9 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@otplib/core": "^12.0.1",
-    "@otplib/plugin-base32-enc-dec": "^12.0.1",
-    "@otplib/plugin-crypto-js": "^12.0.1",
+    "@otplib/core": "12.0.1",
+    "@otplib/plugin-base32-enc-dec": "12.0.1",
+    "@otplib/plugin-crypto-js": "12.0.1",
     "buffer": "^5.5.0",
     "expo": "~36.0.0",
     "react": "~16.9.0",

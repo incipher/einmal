@@ -993,12 +993,12 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@otplib/core@^12.0.1":
+"@otplib/core@12.0.1", "@otplib/core@^12.0.1":
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/@otplib/core/-/core-12.0.1.tgz#73720a8cedce211fe5b3f683cd5a9c098eaf0f8d"
   integrity sha512-4sGntwbA/AC+SbPhbsziRiD+jNDdIzsZ3JUyfZwjtKyc/wufl1pnSIaG4Uqx8ymPagujub0o92kgBnB89cuAMA==
 
-"@otplib/plugin-base32-enc-dec@^12.0.1":
+"@otplib/plugin-base32-enc-dec@12.0.1":
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/@otplib/plugin-base32-enc-dec/-/plugin-base32-enc-dec-12.0.1.tgz#8de5b89a61a1aea2c794910a81c7c92c1c8d3a91"
   integrity sha512-tYdIu9gUb0k9EMYH2CMcV66IDoKxfCILjz3a0UCwXkPlV26SpJ1GJykpqe429UXRpEQpvNhJLpGCfXZ1UvqYFw==
@@ -1007,7 +1007,7 @@
     base32-decode "^1.0.0"
     base32-encode "^1.1.1"
 
-"@otplib/plugin-crypto-js@^12.0.1":
+"@otplib/plugin-crypto-js@12.0.1":
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/@otplib/plugin-crypto-js/-/plugin-crypto-js-12.0.1.tgz#c5aae9e01cb777f6e1efc0014c3ea57561070689"
   integrity sha512-NGspFU0GKCAHgwfk6trvP8Xd22fzI6YyNpP88hpEHCXxjsgqTMcIw6E7x20BxpvFU4HWSxde9ykGTdK3/iintQ==

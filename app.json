@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Volta",
-    "slug": "volta",
+    "name": "Einmal",
+    "slug": "einmal",
     "privacy": "private",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],

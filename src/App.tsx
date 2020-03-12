@@ -1,22 +1,21 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
 import { ThemeProvider, DefaultTheme } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { TokensList } from './screens';
 
-const App: React.FC = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <ThemeProvider theme={DefaultTheme}>
-        <TokensList />
-      </ThemeProvider>
-    </SafeAreaView>
-  );
-};
+const Stack = createStackNavigator();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+function App() {
+  return (
+    <ThemeProvider theme={DefaultTheme}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={TokensList} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
+  );
+}
 
 export default App;

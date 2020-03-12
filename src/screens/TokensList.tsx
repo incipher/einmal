@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, Avatar, TouchableRipple } from 'react-native-paper';
 import { Totp } from '../components';
 
-const TokensList: React.FC = () => {
+function TokensList() {
   return (
     <View style={styles.container}>
       <FlatList
@@ -38,7 +38,7 @@ const TokensList: React.FC = () => {
       />
     </View>
   );
-};
+}
 
 const accounts = [
   {
@@ -64,7 +64,6 @@ const accounts = [
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 32,
     backgroundColor: '#f5f5f5',
   },
   listItem: {

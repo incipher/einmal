@@ -11,7 +11,7 @@
     <i>/ˈainmaːl/</i>
   </div>
 
-  <a href="https://expo.io/" target="_blank"><img alt="Documentation" src="https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000" /></a>
+  <a href="https://expo.io/" target="_blank"><img src="https://img.shields.io/badge/Runs%20with%20Expo-4630EB.svg?style=flat-square&logo=EXPO&labelColor=f3f3f3&logoColor=000" /></a>
 </div>
 
 ## Development

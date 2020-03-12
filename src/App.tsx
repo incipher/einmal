@@ -7,7 +7,7 @@ import { GlobalStateProvider } from './hooks';
 
 const Stack = createStackNavigator();
 
-function App() {
+const App: React.FC = () => {
   return (
     <ThemeProvider theme={DefaultTheme}>
       <GlobalStateProvider>
@@ -19,6 +19,6 @@ function App() {
       </GlobalStateProvider>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

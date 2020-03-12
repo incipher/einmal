@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 26,
+    color: '#0F52BA',
   },
   listItemDivider: {
     padding: 8,

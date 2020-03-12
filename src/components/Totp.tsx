@@ -21,7 +21,7 @@ const Totp: React.FC<Props> = props => {
     };
   }, []);
 
-  return <Text {...rest}>{token}</Text>;
+  return <Text {...rest}>{token || '000000'}</Text>;
 };
 
 export default Totp;

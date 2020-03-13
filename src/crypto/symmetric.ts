@@ -97,7 +97,5 @@ const generateRandomBytes = (count: number): Uint8Array => {
     KeyEncodings.BASE64,
   );
 
-  const generatedRandomBytes = decodeBase64(generatedRandomBytesBase64);
-
-  return generatedRandomBytes;
+  return decodeBase64(generatedRandomBytesBase64);
 };

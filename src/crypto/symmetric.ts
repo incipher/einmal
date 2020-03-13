@@ -16,6 +16,10 @@ setPRNG((requiredRandomBytes, requiredRandomBytesCount) => {
   }
 });
 
+export const generateRandomKey = (): string => {
+  return encodeBase64(randomBytes(secretbox.keyLength));
+};
+
 export const encrypt = (key: string) => (message: string): string => {
   const keyBytes = decodeBase64(key);
   const messageBytes = decodeUTF8(message);
@@ -81,10 +85,6 @@ const decryptBytes = (keyBytes: Uint8Array) => (
   }
 
   return decryptedMessageBytes;
-};
-
-export const generateRandomKey = (): string => {
-  return encodeBase64(randomBytes(secretbox.keyLength));
 };
 
 const generateRandomNonce = (): Uint8Array => {

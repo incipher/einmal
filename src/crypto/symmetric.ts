@@ -92,10 +92,6 @@ const generateRandomNonce = (): Uint8Array => {
 };
 
 const generateRandomBytes = (count: number): Uint8Array => {
-  const generatedRandomBytesBase64 = createRandomBytes(
-    count,
-    KeyEncodings.BASE64,
-  );
-
-  return decodeBase64(generatedRandomBytesBase64);
+  const encodedRandomBytes = createRandomBytes(count, KeyEncodings.BASE64);
+  return decodeBase64(encodedRandomBytes);
 };

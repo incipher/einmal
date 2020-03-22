@@ -3,7 +3,7 @@ import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { ThemeProvider, DarkTheme, Theme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Welcome, SetupAuthentication, TokensList } from './screens';
+import { Welcome, SetupAuthentication, Home } from './screens';
 import { GlobalStateProvider } from './hooks';
 
 const theme: Theme = {
@@ -38,7 +38,7 @@ const App: React.FC = () => {
               />
               <Stack.Screen
                 name="Home"
-                component={TokensList}
+                component={Home}
                 options={{
                   headerTitle: 'Einmal',
                   headerStyle: {

@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, Avatar, TouchableRipple } from 'react-native-paper';
 import { Totp } from '../components';
 
-const TokensList: React.FC = () => {
+const Home: React.FC = () => {
   return (
     <View style={styles.container}>
       <FlatList
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TokensList;
+export default Home;

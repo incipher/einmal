@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { Text, HelperText, TextInput, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useDimensions } from '@react-native-community/hooks';
@@ -47,10 +47,9 @@ const SetupAuthentication: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Icon */}
-      <View />
-
       <View style={{ width: windowWidth * 0.8 }}>
+        <Image style={styles.logo} source={require('../../assets/logo.png')} />
+
         <Text style={styles.header}>Set Password</Text>
 
         <HelperText style={styles.warningText}>
@@ -102,8 +101,6 @@ const SetupAuthentication: React.FC = () => {
           Create Vault
         </Button>
       </View>
-
-      <View />
     </View>
   );
 };
@@ -111,10 +108,16 @@ const SetupAuthentication: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
     backgroundColor: 'black',
+  },
+  logo: {
+    alignSelf: 'center',
+    marginBottom: 40,
+    width: 75,
+    height: 75 * 1.32,
   },
   header: {
     marginHorizontal: 10,

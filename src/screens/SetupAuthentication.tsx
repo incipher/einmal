@@ -96,7 +96,7 @@ const SetupAuthentication: React.FC = () => {
           color="white"
           disabled={isInvalidForm}
           onPress={() => {
-            navigation.navigate('SetupAuthentication');
+            navigation.navigate('Home');
           }}
         >
           Create Vault

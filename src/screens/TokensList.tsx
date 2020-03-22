@@ -64,14 +64,13 @@ const accounts = [
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'black',
   },
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: 'white',
   },
   avatar: {
     marginRight: 16,
@@ -79,7 +78,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 26,
-    color: '#0F52BA',
+    color: 'white',
   },
   listItemDivider: {
     padding: 8,

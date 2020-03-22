@@ -7,6 +7,7 @@ import {
 } from 'tweetnacl-util';
 import { createRandomBytes } from '@otplib/plugin-crypto-js';
 import { KeyEncodings } from '@otplib/core';
+import scrypt from 'scrypt-async';
 
 setPRNG((requiredRandomBytes, requiredRandomBytesCount) => {
   const generatedRandomBytes = generateRandomBytes(requiredRandomBytesCount);
@@ -18,6 +19,24 @@ setPRNG((requiredRandomBytes, requiredRandomBytesCount) => {
 
 export const generateRandomKey = (): string => {
   return encodeBase64(randomBytes(secretbox.keyLength));
+};
+
+export const deriveKey = (salt: string) => (
+  password: string,
+): Promise<string> => {
+  return new Promise(resolve => {
+    const options = {
+      N: 16384,
+      r: 8,
+      p: 1,
+      dkLen: 32,
+      encoding: 'base64',
+    };
+
+    scrypt(password, salt, options, (derivedKey: string) => {
+      resolve(derivedKey);
+    });
+  });
 };
 
 export const encrypt = (key: string) => (message: string): string => {

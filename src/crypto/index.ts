@@ -1,2 +1,2 @@
 export { totp, totpExpiry } from './otp';
-export { generateRandomKey, encrypt, decrypt } from './symmetric';
+export { generateRandomKey, deriveKey, encrypt, decrypt } from './symmetric';

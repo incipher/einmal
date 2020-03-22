@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
 import { ThemeProvider, DarkTheme, Theme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,6 +20,24 @@ const theme: Theme = {
 const Stack = createStackNavigator();
 
 const App: React.FC = () => {
+  const [isReady, setReady] = useState(false);
+
+  const loadAssets = async () => {
+    await Asset.loadAsync([require('../assets/logo.png')]);
+  };
+
+  if (!isReady) {
+    return (
+      <AppLoading
+        startAsync={loadAssets}
+        onFinish={() => {
+          setReady(true);
+        }}
+        onError={console.warn}
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />

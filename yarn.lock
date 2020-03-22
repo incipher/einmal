@@ -1121,6 +1121,11 @@
     wcwidth "^1.0.1"
     ws "^1.1.0"
 
+"@react-native-community/hooks@^2.4.7":
+  version "2.4.7"
+  resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.4.7.tgz#1378290f566a38788940c172b4ca69b5f89f6178"
+  integrity sha512-KFEP4dKlRk2peFoX2pCkInH3FGNJABXG+zQQFLjqVncwCT3lKI1EpVaK4mgQQgf0s6wcehK83XJ3liHmAnaNcQ==
+
 "@react-native-community/masked-view@0.1.5":
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.5.tgz#25421be6cd943a4b1660b62cfbcd45be8891462c"

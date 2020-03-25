@@ -1,42 +1,59 @@
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, Avatar, TouchableRipple } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Totp } from '../components';
 
 const Home: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={accounts}
-        renderItem={({ item }) => {
-          return (
-            <TouchableRipple
-              style={styles.listItem}
-              rippleColor="rgba(0, 0, 0, .10)"
-              onPress={() => {}}
-            >
-              <>
-                <Avatar.Image
-                  style={styles.avatar}
-                  size={32}
-                  source={{ uri: item.issuer.icon }}
-                />
+    <FlatList
+      style={styles.container}
+      contentContainerStyle={styles.listContentContainer}
+      data={accounts}
+      renderItem={({ item }) => {
+        return (
+          <TouchableRipple
+            style={styles.listItem}
+            rippleColor="rgba(0, 0, 0, .10)"
+            onPress={() => {}}
+          >
+            <>
+              <Avatar.Image
+                style={styles.avatar}
+                size={32}
+                source={{ uri: item.issuer.icon }}
+              />
 
-                <View>
-                  <Totp style={styles.text} secret={item.secret} />
+              <View>
+                <Totp style={styles.text} secret={item.secret} />
 
-                  <Text>{item.issuer.name}</Text>
-                </View>
-              </>
-            </TouchableRipple>
-          );
-        }}
-        ListHeaderComponent={<View style={styles.listItemDivider} />}
-        ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
-        ListFooterComponent={<View style={styles.listItemDivider} />}
-        keyExtractor={(_, index) => String(index)}
-      />
-    </View>
+                <Text>{item.issuer.name}</Text>
+              </View>
+            </>
+          </TouchableRipple>
+        );
+      }}
+      ListEmptyComponent={
+        <View style={styles.emptyStateContainer}>
+          <MaterialCommunityIcons
+            style={styles.emptyStateIcon}
+            name="shield-plus-outline"
+            size={120}
+            color="#aaa"
+          />
+
+          <Text style={styles.emptyStateHeading}>Your vault is empty</Text>
+
+          <Text style={styles.emptyStateSubheading}>
+            Configure your accounts to use two-step verification
+          </Text>
+        </View>
+      }
+      ListHeaderComponent={<View style={styles.listItemDivider} />}
+      ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
+      ListFooterComponent={<View style={styles.listItemDivider} />}
+      keyExtractor={(_, index) => String(index)}
+    />
   );
 };
 
@@ -66,6 +83,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'black',
   },
+  listContentContainer: {
+    flex: 1,
+  },
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -79,6 +99,27 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 26,
     color: 'white',
+  },
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  emptyStateIcon: {
+    margin: 8,
+  },
+  emptyStateHeading: {
+    margin: 8,
+    textAlign: 'center',
+    fontSize: 26,
+    color: '#aaa',
+  },
+  emptyStateSubheading: {
+    margin: 8,
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#aaa',
   },
   listItemDivider: {
     padding: 8,

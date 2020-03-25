@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
 import { writeAsStringAsync, documentDirectory } from 'expo-file-system';
 import { Text, HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
@@ -61,7 +61,7 @@ const SetupAuthentication: React.FC = () => {
   const isInvalidForm = isInvalidPassword || isInvalidRepeatedPassword;
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={{ width: windowWidth * 0.8 }}>
         <Image style={styles.logo} source={require('../../assets/logo.png')} />
 
@@ -114,7 +114,7 @@ const SetupAuthentication: React.FC = () => {
           Create Vault
         </Button>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -5,8 +5,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
-
-type Vault = {};
+import { Vault } from '../types';
 
 type Data = {
   vault: Vault;

@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
-import {
-  readAsStringAsync,
-  deleteAsync,
-  documentDirectory,
-} from 'expo-file-system';
 import { Asset } from 'expo-asset';
 import { ThemeProvider, DarkTheme, Theme } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Welcome, SetupAuthentication, Home } from './screens';
 import { GlobalStateProvider } from './hooks';
+import * as vault from './vault';
 import { settings } from './constants';
 
 const theme: Theme = {
@@ -26,7 +22,7 @@ const theme: Theme = {
 const Stack = createStackNavigator();
 
 const App: React.FC = () => {
-  const [vault, setVault] = useState(null);
+  const [initialVault, setInitialVault] = useState(null);
   const [isReady, setReady] = useState(false);
 
   const loadAssets = async () => {
@@ -38,23 +34,17 @@ const App: React.FC = () => {
   };
 
   const deleteVault = async () => {
-    const vaultPath = documentDirectory + 'vault.json';
-
     try {
-      await deleteAsync(vaultPath);
+      await vault.erase();
     } catch (error) {
-      console.log('Failed to delete vault');
+      console.log('Failed to erase vault');
     }
   };
 
   const loadVault = async () => {
-    const vaultPath = documentDirectory + 'vault.json';
-
     try {
-      const vaultContents = await readAsStringAsync(vaultPath);
-      const parsedVaultContents = JSON.parse(vaultContents);
-
-      setVault(parsedVaultContents);
+      const loadedVault = await vault.load();
+      setInitialVault(loadedVault);
     } catch (error) {
       console.log('Failed to load vault');
     }
@@ -81,7 +71,7 @@ const App: React.FC = () => {
       <StatusBar barStyle="light-content" />
 
       <ThemeProvider theme={theme}>
-        <GlobalStateProvider vault={vault}>
+        <GlobalStateProvider vault={initialVault}>
           {globalState => (
             <NavigationContainer>
               <Stack.Navigator>

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+import { writeAsStringAsync, documentDirectory } from 'expo-file-system';
 import { Text, HelperText, TextInput, Button } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 import { useDimensions } from '@react-native-community/hooks';
+import { useGlobalState } from '../hooks';
 
 const SetupAuthentication: React.FC = () => {
-  const navigation = useNavigation();
   const {
     window: { width: windowWidth },
   } = useDimensions();
+
+  const [, globalActions] = useGlobalState();
+  const { setData } = globalActions;
 
   const [password, setPassword] = useState('');
   const [repeatedPassword, setRepeatedPassword] = useState('');
@@ -35,6 +38,18 @@ const SetupAuthentication: React.FC = () => {
     }
 
     return null;
+  };
+
+  const handleCreateVaultPress = async () => {
+    const vaultPath = documentDirectory + 'vault.json';
+    const vaultContents = { hello: 'world' };
+
+    try {
+      await writeAsStringAsync(vaultPath, JSON.stringify(vaultContents));
+      setData({ vault: vaultContents });
+    } catch (error) {
+      console.log('Failed to write vault');
+    }
   };
 
   const passwordError = validatePassword();
@@ -94,9 +109,7 @@ const SetupAuthentication: React.FC = () => {
           mode="contained"
           color="white"
           disabled={isInvalidForm}
-          onPress={() => {
-            navigation.navigate('Home');
-          }}
+          onPress={handleCreateVaultPress}
         >
           Create Vault
         </Button>

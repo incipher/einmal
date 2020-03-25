@@ -6,7 +6,11 @@ import React, {
   SetStateAction,
 } from 'react';
 
-type Data = {};
+type Vault = {};
+
+type Data = {
+  vault: Vault;
+};
 
 type State = {
   data: Data;
@@ -18,17 +22,26 @@ type Actions = {
 
 const GlobalStateContext = createContext<[State, Actions]>([
   {
-    data: {},
+    data: {
+      vault: null,
+    },
   },
   {
     setData: () => {},
   },
 ]);
 
-export const GlobalStateProvider: React.FC = props => {
-  const { children } = props;
+type ProviderProps = {
+  children: (state: State) => React.ReactNode;
+  vault?: Vault;
+};
 
-  const [data, setData] = useState<Data>({});
+export const GlobalStateProvider: React.FC<ProviderProps> = props => {
+  const { children, vault = null } = props;
+
+  const [data, setData] = useState<Data>({
+    vault,
+  });
 
   const state: State = {
     data,
@@ -40,7 +53,7 @@ export const GlobalStateProvider: React.FC = props => {
 
   return (
     <GlobalStateContext.Provider value={[state, actions]}>
-      {children}
+      {children(state)}
     </GlobalStateContext.Provider>
   );
 };

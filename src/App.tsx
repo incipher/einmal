@@ -9,7 +9,7 @@ import {
 } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Welcome, SetupAuthentication, Home } from './screens';
+import { Welcome, AuthenticationSetup, Home } from './screens';
 import { GlobalStateProvider } from './hooks';
 import * as vault from './vault';
 import { settings } from './constants';
@@ -103,8 +103,8 @@ const App: React.FC = () => {
                       options={{ headerShown: false }}
                     />
                     <Stack.Screen
-                      name="SetupAuthentication"
-                      component={SetupAuthentication}
+                      name="AuthenticationSetup"
+                      component={AuthenticationSetup}
                       options={{ headerShown: false }}
                     />
                   </>

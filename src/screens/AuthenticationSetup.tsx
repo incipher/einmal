@@ -5,7 +5,7 @@ import { Text, HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState } from '../hooks';
 
-const SetupAuthentication: React.FC = () => {
+const AuthenticationSetup: React.FC = () => {
   const {
     window: { width: windowWidth },
   } = useDimensions();
@@ -146,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SetupAuthentication;
+export default AuthenticationSetup;

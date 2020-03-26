@@ -18,7 +18,7 @@ const Welcome: React.FC = () => {
         <Button
           mode="contained"
           onPress={() => {
-            navigation.navigate('SetupAuthentication');
+            navigation.navigate('AuthenticationSetup');
           }}
         >
           Get Started

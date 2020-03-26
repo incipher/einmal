@@ -16,7 +16,6 @@ const BarcodeScanner: React.FC<Props> = props => {
   const { onBarcodeScanned } = props;
 
   const [, globalDispatch] = useGlobalState();
-
   const navigation = useNavigation();
 
   const [permission, setPermission] = useState(null);

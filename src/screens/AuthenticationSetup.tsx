@@ -10,7 +10,6 @@ const AuthenticationSetup: React.FC = () => {
   const {
     window: { width: windowWidth },
   } = useDimensions();
-
   const [, globalDispatch] = useGlobalState();
 
   const [isLoading, setLoading] = useState(false);

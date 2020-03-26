@@ -9,7 +9,7 @@ import {
 import { createDigest } from '@otplib/plugin-crypto-js';
 import { keyDecoder } from '@otplib/plugin-base32-enc-dec';
 
-export const totp = (secret: string): string => {
+export const generateTotp = (secret: string): string => {
   return totpToken(
     keyDecoder(secret, KeyEncodings.HEX),
     totpOptions({

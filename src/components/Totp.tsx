@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, TextProps } from 'react-native';
-import { totp } from '../crypto';
+import { generateTotp } from '../crypto';
 
 type Props = TextProps & {
   secret: string;
@@ -13,7 +13,7 @@ const Totp: React.FC<Props> = props => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setToken(totp(secret));
+      setToken(generateTotp(secret));
     }, 1000);
 
     return () => {

@@ -33,7 +33,8 @@
     "react-native-web": "~0.11.7",
     "scrypt-async": "^2.0.1",
     "tweetnacl": "1.0.3",
-    "tweetnacl-util": "0.15.1"
+    "tweetnacl-util": "0.15.1",
+    "url-otpauth": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

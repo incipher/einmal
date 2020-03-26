@@ -47,10 +47,12 @@ const AuthenticationSetup: React.FC = () => {
     setLoading(true);
 
     try {
-      const vaultContents = await vault.initialize();
+      const initialVault = [];
+
+      await vault.set(initialVault);
       await sleep(1000);
 
-      globalDispatch({ type: 'SET_VAULT', vault: vaultContents });
+      globalDispatch({ type: 'SET_VAULT', vault: initialVault });
     } catch (error) {
       console.log('Failed to write vault');
     }

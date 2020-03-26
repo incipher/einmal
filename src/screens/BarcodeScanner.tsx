@@ -42,9 +42,7 @@ const BarcodeScanner: React.FC<Props> = props => {
   };
 
   if (permission === null) {
-    return (
-      <EmptyState icon="camera-off" heading="Requesting camera permission" />
-    );
+    return <EmptyState icon="camera" heading="Requesting camera permission" />;
   }
 
   if (permission !== 'granted') {

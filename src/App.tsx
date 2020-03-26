@@ -39,15 +39,15 @@ const App: React.FC = () => {
 
   const deleteVault = async () => {
     try {
-      await vault.erase();
+      await vault.clear();
     } catch (error) {
-      console.log('Failed to erase vault');
+      console.log('Failed to delete vault');
     }
   };
 
   const loadVault = async () => {
     try {
-      const loadedVault = await vault.load();
+      const loadedVault = await vault.get();
       setInitialVault(loadedVault);
     } catch (error) {
       console.log('Failed to load vault');

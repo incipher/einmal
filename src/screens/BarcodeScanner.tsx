@@ -35,7 +35,7 @@ const BarcodeScanner: React.FC<Props> = props => {
     const vaultEntry = parseOtpauthUri(data);
     await haptics.selectionAsync();
 
-    globalDispatch({ type: 'ADD_VAULT_ENTRY', payload: vaultEntry });
+    globalDispatch({ type: 'ADD_VAULT_ENTRY', vaultEntry });
     onBarcodeScanned?.(vaultEntry);
 
     navigation.goBack();

@@ -48,5 +48,13 @@
     "lint-staged": ">=10",
     "prettier": "^1.19.1",
     "typescript": "~3.6.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,json}": "prettier --write"
   }
 }

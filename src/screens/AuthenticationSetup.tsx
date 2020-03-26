@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
 import { writeAsStringAsync, documentDirectory } from 'expo-file-system';
 import { Text, HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState } from '../hooks';
+import { sleep } from '../utilities';
 
 const AuthenticationSetup: React.FC = () => {
   const {
@@ -13,12 +14,15 @@ const AuthenticationSetup: React.FC = () => {
   const [, globalActions] = useGlobalState();
   const { setData } = globalActions;
 
+  const [isLoading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [repeatedPassword, setRepeatedPassword] = useState('');
   const [hasPasswordBeenBlurred, setPasswordBlurred] = useState(false);
   const [hasRepeatedPasswordBeenBlurred, setRepeatedPasswordBlurred] = useState(
     false,
   );
+
+  const repeatedPasswordRef = useRef(null);
 
   const validatePassword = (): string => {
     if (!password) {
@@ -41,15 +45,21 @@ const AuthenticationSetup: React.FC = () => {
   };
 
   const handleCreateVaultPress = async () => {
+    setLoading(true);
+
     const vaultPath = documentDirectory + 'vault.json';
     const vaultContents = [];
 
     try {
       await writeAsStringAsync(vaultPath, JSON.stringify(vaultContents));
+      await sleep(1000);
+
       setData({ vault: vaultContents });
     } catch (error) {
       console.log('Failed to write vault');
     }
+
+    setLoading(false);
   };
 
   const passwordError = validatePassword();
@@ -81,6 +91,9 @@ const AuthenticationSetup: React.FC = () => {
           onBlur={() => {
             setPasswordBlurred(true);
           }}
+          onSubmitEditing={() => {
+            repeatedPasswordRef.current.focus();
+          }}
         />
 
         <HelperText>
@@ -88,6 +101,7 @@ const AuthenticationSetup: React.FC = () => {
         </HelperText>
 
         <TextInput
+          ref={repeatedPasswordRef}
           label="Repeat Password"
           secureTextEntry={true}
           value={repeatedPassword}
@@ -96,6 +110,7 @@ const AuthenticationSetup: React.FC = () => {
           onBlur={() => {
             setRepeatedPasswordBlurred(true);
           }}
+          onSubmitEditing={handleCreateVaultPress}
         />
 
         <HelperText>
@@ -108,6 +123,7 @@ const AuthenticationSetup: React.FC = () => {
           style={styles.button}
           mode="contained"
           color="white"
+          loading={isLoading}
           disabled={isInvalidForm}
           onPress={handleCreateVaultPress}
         >

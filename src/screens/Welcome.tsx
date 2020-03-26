@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginVertical: 24,
+    textAlign: 'center',
     fontSize: 32,
   },
 });

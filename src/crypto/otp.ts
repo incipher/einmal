@@ -19,6 +19,6 @@ export const generateTotp = (secret: string): string => {
   );
 };
 
-export const totpExpiry = (): number => {
+export const getTotpExpiry = (): number => {
   return totpTimeRemaining(Date.now(), 30);
 };

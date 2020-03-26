@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { Totp } from '../components';
+import { EmptyState, Totp } from '../components';
 import { useGlobalState } from '../hooks';
 
 const Home: React.FC = () => {
@@ -43,20 +42,11 @@ const Home: React.FC = () => {
           );
         }}
         ListEmptyComponent={
-          <View style={styles.emptyStateContainer}>
-            <MaterialCommunityIcons
-              style={styles.emptyStateIcon}
-              name="shield-plus-outline"
-              size={120}
-              color="#aaa"
-            />
-
-            <Text style={styles.emptyStateHeading}>Your vault is empty</Text>
-
-            <Text style={styles.emptyStateSubheading}>
-              Configure your accounts to use two-step verification
-            </Text>
-          </View>
+          <EmptyState
+            icon="shield-plus-outline"
+            heading="Your vault is empty"
+            subheading="Configure your accounts to use two-step verification"
+          />
         }
         ListHeaderComponent={<View style={styles.listItemDivider} />}
         ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
@@ -112,27 +102,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 26,
     color: 'white',
-  },
-  emptyStateContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  emptyStateIcon: {
-    margin: 8,
-  },
-  emptyStateHeading: {
-    margin: 8,
-    textAlign: 'center',
-    fontSize: 26,
-    color: '#aaa',
-  },
-  emptyStateSubheading: {
-    margin: 8,
-    textAlign: 'center',
-    fontSize: 16,
-    color: '#aaa',
   },
   listItemDivider: {
     padding: 8,

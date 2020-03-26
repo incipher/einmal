@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { EmptyState } from '../components';
 import { useGlobalState } from '../hooks';
 import { parseOtpauthUri } from '../crypto';
 import { VaultEntry } from '../types';
@@ -43,37 +42,17 @@ const BarcodeScanner: React.FC<Props> = props => {
 
   if (permission === null) {
     return (
-      <View style={styles.emptyStateContainer}>
-        <MaterialCommunityIcons
-          style={styles.emptyStateIcon}
-          name="camera"
-          size={120}
-          color="#aaa"
-        />
-
-        <Text style={styles.emptyStateHeading}>
-          Requesting camera permission
-        </Text>
-      </View>
+      <EmptyState icon="camera-off" heading="Requesting camera permission" />
     );
   }
 
   if (permission !== 'granted') {
     return (
-      <View style={styles.emptyStateContainer}>
-        <MaterialCommunityIcons
-          style={styles.emptyStateIcon}
-          name="camera-off"
-          size={120}
-          color="#aaa"
-        />
-
-        <Text style={styles.emptyStateHeading}>Cannot access camera</Text>
-
-        <Text style={styles.emptyStateSubheading}>
-          Give the app permission to access your camera
-        </Text>
-      </View>
+      <EmptyState
+        icon="camera-off"
+        heading="Cannot access camera"
+        subheading="Give the app permission to access your camera"
+      />
     );
   }
 
@@ -93,28 +72,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     backgroundColor: 'black',
-  },
-  emptyStateContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: 'black',
-  },
-  emptyStateIcon: {
-    margin: 8,
-  },
-  emptyStateHeading: {
-    margin: 8,
-    textAlign: 'center',
-    fontSize: 26,
-    color: '#aaa',
-  },
-  emptyStateSubheading: {
-    margin: 8,
-    textAlign: 'center',
-    fontSize: 16,
-    color: '#aaa',
   },
 });
 

@@ -7,7 +7,7 @@ import { useGlobalState } from '../hooks';
 import { isPhysicalDevice } from '../utilities';
 
 const Home: React.FC = () => {
-  const [{ vault }] = useGlobalState();
+  const [globalState] = useGlobalState();
   const navigation = useNavigation();
 
   const [isFABGroupOpen, setFABGroupOpen] = useState(false);
@@ -16,7 +16,7 @@ const Home: React.FC = () => {
     <View style={styles.container}>
       <FlatList
         contentContainerStyle={styles.listContentContainer}
-        data={vault}
+        data={globalState.vault}
         renderItem={({ item }) => {
           const { issuer, key } = item;
 

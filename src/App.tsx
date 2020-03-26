@@ -79,7 +79,7 @@ const App: React.FC = () => {
           {globalState => (
             <NavigationContainer>
               <Stack.Navigator>
-                {globalState.data.vault ? (
+                {globalState.vault ? (
                   <>
                     <Stack.Screen
                       name="Home"

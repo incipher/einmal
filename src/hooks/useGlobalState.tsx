@@ -1,33 +1,32 @@
 import React, {
-  useState,
+  useReducer,
   useContext,
   createContext,
   Dispatch,
-  SetStateAction,
+  ReducerAction,
 } from 'react';
 import { Vault } from '../types';
 
-type Data = {
+type State = {
   vault: Vault;
 };
 
-type State = {
-  data: Data;
+type ActionType = 'SET_VAULT' | 'ADD_VAULT_ENTRY';
+
+type Action = {
+  type: ActionType;
+  payload: any;
 };
 
-type Actions = {
-  setData: Dispatch<SetStateAction<Data>>;
-};
+type Reducer = (previousState: State, action: Action) => State;
 
-const GlobalStateContext = createContext<[State, Actions]>([
+type DispatchAction = Dispatch<ReducerAction<Reducer>>;
+
+const GlobalStateContext = createContext<[State, DispatchAction]>([
   {
-    data: {
-      vault: null,
-    },
+    vault: [],
   },
-  {
-    setData: () => {},
-  },
+  () => {},
 ]);
 
 type ProviderProps = {
@@ -38,25 +37,40 @@ type ProviderProps = {
 export const GlobalStateProvider: React.FC<ProviderProps> = props => {
   const { children, vault = [] } = props;
 
-  const [data, setData] = useState<Data>({
-    vault,
-  });
+  const [state, dispatch] = useReducer<Reducer>(
+    (previousState, action) => {
+      const { type, payload } = action;
 
-  const state: State = {
-    data,
-  };
+      if (type === 'SET_VAULT') {
+        return {
+          ...previousState,
+          vault: payload,
+        };
+      }
 
-  const actions: Actions = {
-    setData,
-  };
+      if (type === 'ADD_VAULT_ENTRY') {
+        return {
+          ...previousState,
+          vault: previousState.vault.concat(payload),
+        };
+      }
+
+      return {
+        ...previousState,
+      };
+    },
+    {
+      vault,
+    },
+  );
 
   return (
-    <GlobalStateContext.Provider value={[state, actions]}>
+    <GlobalStateContext.Provider value={[state, dispatch]}>
       {children(state)}
     </GlobalStateContext.Provider>
   );
 };
 
-export const useGlobalState = (): [State, Actions] => {
-  return useContext<[State, Actions]>(GlobalStateContext);
+export const useGlobalState = (): [State, DispatchAction] => {
+  return useContext<[State, DispatchAction]>(GlobalStateContext);
 };

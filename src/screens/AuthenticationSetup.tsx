@@ -11,8 +11,7 @@ const AuthenticationSetup: React.FC = () => {
     window: { width: windowWidth },
   } = useDimensions();
 
-  const [, globalActions] = useGlobalState();
-  const { setData } = globalActions;
+  const [, globalDispatch] = useGlobalState();
 
   const [isLoading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
@@ -51,7 +50,7 @@ const AuthenticationSetup: React.FC = () => {
       const vaultContents = await vault.initialize();
       await sleep(1000);
 
-      setData({ vault: vaultContents });
+      globalDispatch({ type: 'SET_VAULT', payload: vaultContents });
     } catch (error) {
       console.log('Failed to write vault');
     }

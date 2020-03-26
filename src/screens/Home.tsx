@@ -7,9 +7,7 @@ import { useGlobalState } from '../hooks';
 import { isPhysicalDevice } from '../utilities';
 
 const Home: React.FC = () => {
-  const [globalState] = useGlobalState();
-  const { vault } = globalState.data;
-
+  const [{ vault }] = useGlobalState();
   const navigation = useNavigation();
 
   const [isFABGroupOpen, setFABGroupOpen] = useState(false);

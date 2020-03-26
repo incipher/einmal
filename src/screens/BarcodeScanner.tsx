@@ -5,6 +5,7 @@ import * as haptics from 'expo-haptics';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState } from '../components';
 import { useGlobalState } from '../hooks';
+import * as vault from '../vault';
 import { parseOtpauthUri } from '../crypto';
 import { VaultEntry } from '../types';
 
@@ -15,7 +16,7 @@ type Props = {
 const BarcodeScanner: React.FC<Props> = props => {
   const { onBarcodeScanned } = props;
 
-  const [, globalDispatch] = useGlobalState();
+  const [globalState, globalDispatch] = useGlobalState();
   const navigation = useNavigation();
 
   const [permission, setPermission] = useState(null);
@@ -27,6 +28,10 @@ const BarcodeScanner: React.FC<Props> = props => {
       setPermission(status);
     })();
   }, []);
+
+  useEffect(() => {
+    vault.set(globalState.vault);
+  }, [globalState.vault]);
 
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true);

@@ -8,6 +8,8 @@ import {
 } from '@otplib/core';
 import { createDigest } from '@otplib/plugin-crypto-js';
 import { keyDecoder } from '@otplib/plugin-base32-enc-dec';
+import { parse } from 'url-otpauth';
+import { VaultEntry } from '../types';
 
 export const generateTotp = (secret: string): string => {
   return totpToken(
@@ -21,4 +23,12 @@ export const generateTotp = (secret: string): string => {
 
 export const getTotpExpiry = (): number => {
   return totpTimeRemaining(Date.now(), 30);
+};
+
+export const parseOtpauthUri = (uri: string): VaultEntry => {
+  try {
+    return parse(uri);
+  } catch (error) {
+    throw new Error('Could not parse otpauth:// URI');
+  }
 };

@@ -4,6 +4,7 @@ import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState, Totp } from '../components';
 import { useGlobalState } from '../hooks';
+import { isPhysicalDevice } from '../utilities';
 
 const Home: React.FC = () => {
   const [globalState] = useGlobalState();
@@ -64,6 +65,10 @@ const Home: React.FC = () => {
             icon: 'qrcode-scan',
             label: 'Scan QR code',
             onPress: () => {
+              if (!isPhysicalDevice()) {
+                return alert('Camera only works on physical devices');
+              }
+
               navigation.navigate('BarcodeScanner');
             },
           },

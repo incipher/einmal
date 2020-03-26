@@ -22,6 +22,7 @@
     "expo-asset": "~8.0.0",
     "expo-barcode-scanner": "~8.0.0",
     "expo-file-system": "~8.0.0",
+    "expo-haptics": "~8.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
@@ -46,13 +47,5 @@
     "lint-staged": ">=10",
     "prettier": "^1.19.1",
     "typescript": "~3.6.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx,json}": "prettier --write"
   }
 }

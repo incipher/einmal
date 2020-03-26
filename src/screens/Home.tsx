@@ -20,6 +20,8 @@ const Home: React.FC = () => {
         contentContainerStyle={styles.listContentContainer}
         data={vault}
         renderItem={({ item }) => {
+          const { issuer, key } = item;
+
           return (
             <TouchableRipple
               style={styles.listItem}
@@ -27,16 +29,24 @@ const Home: React.FC = () => {
               onPress={() => {}}
             >
               <>
-                <Avatar.Image
-                  style={styles.avatar}
-                  size={32}
-                  source={{ uri: null }}
-                />
+                {true /* TODO: If favicon exists */ ? (
+                  <Avatar.Text
+                    style={styles.avatar}
+                    size={40}
+                    label={issuer.substring(0, 1)}
+                  />
+                ) : (
+                  <Avatar.Image
+                    style={styles.avatar}
+                    size={32}
+                    source={{ uri: null }}
+                  />
+                )}
 
                 <View>
-                  <Totp style={styles.text} secret={item.key} />
+                  <Totp style={styles.text} secret={key} />
 
-                  <Text>{item.issuer}</Text>
+                  <Text>{issuer}</Text>
                 </View>
               </>
             </TouchableRipple>

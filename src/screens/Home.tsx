@@ -1,59 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { Text, Avatar, TouchableRipple } from 'react-native-paper';
+import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Totp } from '../components';
 
 const Home: React.FC = () => {
+  const [isFABGroupOpen, setFABGroupOpen] = useState(false);
+
   return (
-    <FlatList
-      style={styles.container}
-      contentContainerStyle={styles.listContentContainer}
-      data={accounts}
-      renderItem={({ item }) => {
-        return (
-          <TouchableRipple
-            style={styles.listItem}
-            rippleColor="rgba(0, 0, 0, .10)"
-            onPress={() => {}}
-          >
-            <>
-              <Avatar.Image
-                style={styles.avatar}
-                size={32}
-                source={{ uri: item.issuer.icon }}
-              />
+    <View style={styles.container}>
+      <FlatList
+        contentContainerStyle={styles.listContentContainer}
+        data={accounts}
+        renderItem={({ item }) => {
+          return (
+            <TouchableRipple
+              style={styles.listItem}
+              rippleColor="rgba(0, 0, 0, .10)"
+              onPress={() => {}}
+            >
+              <>
+                <Avatar.Image
+                  style={styles.avatar}
+                  size={32}
+                  source={{ uri: item.issuer.icon }}
+                />
 
-              <View>
-                <Totp style={styles.text} secret={item.secret} />
+                <View>
+                  <Totp style={styles.text} secret={item.secret} />
 
-                <Text>{item.issuer.name}</Text>
-              </View>
-            </>
-          </TouchableRipple>
-        );
-      }}
-      ListEmptyComponent={
-        <View style={styles.emptyStateContainer}>
-          <MaterialCommunityIcons
-            style={styles.emptyStateIcon}
-            name="shield-plus-outline"
-            size={120}
-            color="#aaa"
-          />
+                  <Text>{item.issuer.name}</Text>
+                </View>
+              </>
+            </TouchableRipple>
+          );
+        }}
+        ListEmptyComponent={
+          <View style={styles.emptyStateContainer}>
+            <MaterialCommunityIcons
+              style={styles.emptyStateIcon}
+              name="shield-plus-outline"
+              size={120}
+              color="#aaa"
+            />
 
-          <Text style={styles.emptyStateHeading}>Your vault is empty</Text>
+            <Text style={styles.emptyStateHeading}>Your vault is empty</Text>
 
-          <Text style={styles.emptyStateSubheading}>
-            Configure your accounts to use two-step verification
-          </Text>
-        </View>
-      }
-      ListHeaderComponent={<View style={styles.listItemDivider} />}
-      ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
-      ListFooterComponent={<View style={styles.listItemDivider} />}
-      keyExtractor={(_, index) => String(index)}
-    />
+            <Text style={styles.emptyStateSubheading}>
+              Configure your accounts to use two-step verification
+            </Text>
+          </View>
+        }
+        ListHeaderComponent={<View style={styles.listItemDivider} />}
+        ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
+        ListFooterComponent={<View style={styles.listItemDivider} />}
+        keyExtractor={(_, index) => String(index)}
+      />
+
+      <FAB.Group
+        style={styles.fab}
+        visible={true}
+        open={isFABGroupOpen}
+        icon={isFABGroupOpen ? 'close' : 'plus'}
+        actions={[
+          {
+            icon: 'qrcode-scan',
+            label: 'Scan QR code',
+            onPress: () => {},
+          },
+          {
+            icon: 'keyboard',
+            label: 'Enter manually',
+            onPress: () => {},
+          },
+        ]}
+        onStateChange={({ open }) => {
+          setFABGroupOpen(open);
+        }}
+      />
+    </View>
   );
 };
 
@@ -123,6 +148,9 @@ const styles = StyleSheet.create({
   },
   listItemDivider: {
     padding: 8,
+  },
+  fab: {
+    margin: 16,
   },
 });
 

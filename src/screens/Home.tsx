@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { Totp } from '../components';
 
 const Home: React.FC = () => {
+  const navigation = useNavigation();
+
   const [isFABGroupOpen, setFABGroupOpen] = useState(false);
 
   return (
@@ -66,7 +69,9 @@ const Home: React.FC = () => {
           {
             icon: 'qrcode-scan',
             label: 'Scan QR code',
-            onPress: () => {},
+            onPress: () => {
+              navigation.navigate('BarcodeScanner');
+            },
           },
           {
             icon: 'keyboard',
@@ -150,7 +155,8 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   fab: {
-    margin: 16,
+    marginVertical: 16,
+    marginHorizontal: 8,
   },
 });
 

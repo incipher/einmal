@@ -9,7 +9,7 @@ import {
 } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Welcome, AuthenticationSetup, Home } from './screens';
+import { Welcome, AuthenticationSetup, Home, BarcodeScanner } from './screens';
 import { GlobalStateProvider } from './hooks';
 import * as vault from './vault';
 import { settings } from './constants';
@@ -93,6 +93,11 @@ const App: React.FC = () => {
                           color: 'white',
                         },
                       }}
+                    />
+                    <Stack.Screen
+                      name="BarcodeScanner"
+                      component={BarcodeScanner}
+                      options={{ headerShown: false }}
                     />
                   </>
                 ) : (

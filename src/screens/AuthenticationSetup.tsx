@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
-import { writeAsStringAsync, documentDirectory } from 'expo-file-system';
 import { Text, HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState } from '../hooks';
+import * as vault from '../vault';
 import { sleep } from '../utilities';
 
 const AuthenticationSetup: React.FC = () => {
@@ -47,11 +47,8 @@ const AuthenticationSetup: React.FC = () => {
   const handleCreateVaultPress = async () => {
     setLoading(true);
 
-    const vaultPath = documentDirectory + 'vault.json';
-    const vaultContents = [];
-
     try {
-      await writeAsStringAsync(vaultPath, JSON.stringify(vaultContents));
+      const vaultContents = await vault.initialize();
       await sleep(1000);
 
       setData({ vault: vaultContents });

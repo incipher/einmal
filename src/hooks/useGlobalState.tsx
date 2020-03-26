@@ -36,7 +36,7 @@ type ProviderProps = {
 };
 
 export const GlobalStateProvider: React.FC<ProviderProps> = props => {
-  const { children, vault = null } = props;
+  const { children, vault = [] } = props;
 
   const [data, setData] = useState<Data>({
     vault,

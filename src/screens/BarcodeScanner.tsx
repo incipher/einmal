@@ -4,13 +4,19 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { useGlobalState } from '../hooks';
+import { parseOtpauthUri } from '../crypto';
+import { VaultEntry } from '../types';
 
 type Props = {
-  onBarcodeScanned?: () => void;
+  onBarcodeScanned?: (entry: VaultEntry) => void;
 };
 
 const BarcodeScanner: React.FC<Props> = props => {
   const { onBarcodeScanned } = props;
+
+  const [, globalActions] = useGlobalState();
+  const { setData } = globalActions;
 
   const navigation = useNavigation();
 
@@ -24,12 +30,15 @@ const BarcodeScanner: React.FC<Props> = props => {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data }) => {
     setScanned(true);
 
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    const vaultEntry = parseOtpauthUri(data);
 
-    onBarcodeScanned?.();
+    setData(data => ({ vault: data.vault.concat(vaultEntry) }));
+    onBarcodeScanned?.(vaultEntry);
+
+    navigation.goBack();
   };
 
   if (permission === null) {

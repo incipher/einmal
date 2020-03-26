@@ -4,8 +4,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { Totp } from '../components';
+import { useGlobalState } from '../hooks';
 
 const Home: React.FC = () => {
+  const [globalState] = useGlobalState();
+  const { vault } = globalState.data;
+
   const navigation = useNavigation();
 
   const [isFABGroupOpen, setFABGroupOpen] = useState(false);
@@ -14,7 +18,7 @@ const Home: React.FC = () => {
     <View style={styles.container}>
       <FlatList
         contentContainerStyle={styles.listContentContainer}
-        data={accounts}
+        data={vault}
         renderItem={({ item }) => {
           return (
             <TouchableRipple
@@ -26,13 +30,13 @@ const Home: React.FC = () => {
                 <Avatar.Image
                   style={styles.avatar}
                   size={32}
-                  source={{ uri: item.issuer.icon }}
+                  source={{ uri: null }}
                 />
 
                 <View>
-                  <Totp style={styles.text} secret={item.secret} />
+                  <Totp style={styles.text} secret={item.key} />
 
-                  <Text>{item.issuer.name}</Text>
+                  <Text>{item.issuer}</Text>
                 </View>
               </>
             </TouchableRipple>
@@ -86,27 +90,6 @@ const Home: React.FC = () => {
     </View>
   );
 };
-
-const accounts = [
-  {
-    account: 'john@example.com',
-    secret: 'CFNMN7VBAIC5XYVG',
-    issuer: {
-      name: 'GitHub',
-      icon:
-        'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fnewmerator.github.io%2Fblacktocat.png&f=1&nofb=1',
-    },
-  },
-  {
-    account: 'john@example.com',
-    secret: 'CFNMN7VBAIC5XYVG',
-    issuer: {
-      name: 'npm',
-      icon:
-        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Favatars2.githubusercontent.com%2Fu%2F6078720%3Fs%3D400%26v%3D4&f=1&nofb=1',
-    },
-  },
-];
 
 const styles = StyleSheet.create({
   container: {

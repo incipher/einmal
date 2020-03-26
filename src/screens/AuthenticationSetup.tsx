@@ -42,7 +42,7 @@ const AuthenticationSetup: React.FC = () => {
 
   const handleCreateVaultPress = async () => {
     const vaultPath = documentDirectory + 'vault.json';
-    const vaultContents = { hello: 'world' };
+    const vaultContents = [];
 
     try {
       await writeAsStringAsync(vaultPath, JSON.stringify(vaultContents));

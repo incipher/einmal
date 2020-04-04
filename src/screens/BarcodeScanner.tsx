@@ -13,7 +13,7 @@ type Props = {
   onBarcodeScanned?: (entry: VaultEntry) => void;
 };
 
-const BarcodeScanner: React.FC<Props> = props => {
+const BarcodeScanner: React.FC<Props> = (props) => {
   const { onBarcodeScanned } = props;
 
   const [globalState, globalDispatch] = useGlobalState();

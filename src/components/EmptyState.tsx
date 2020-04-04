@@ -9,7 +9,7 @@ type Props = {
   subheading?: string;
 };
 
-const EmptyState: React.FC<Props> = props => {
+const EmptyState: React.FC<Props> = (props) => {
   const { icon, heading = '', subheading = '' } = props;
 
   return (

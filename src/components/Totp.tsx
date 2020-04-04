@@ -6,7 +6,7 @@ type Props = TextProps & {
   secret: string;
 };
 
-const Totp: React.FC<Props> = props => {
+const Totp: React.FC<Props> = (props) => {
   const { secret, ...rest } = props;
 
   const [token, setToken] = useState('');

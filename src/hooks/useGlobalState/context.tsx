@@ -14,7 +14,7 @@ const GlobalStateContext = createContext<[State, DispatchAction]>([
   () => {},
 ]);
 
-export const GlobalStateProvider: React.FC<ProviderProps> = props => {
+export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
   const { children, vault = [] } = props;
 
   const [state, dispatch] = useGlobalReducer({

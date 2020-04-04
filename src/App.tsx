@@ -76,7 +76,7 @@ const App: React.FC = () => {
 
       <ThemeProvider theme={theme}>
         <GlobalStateProvider vault={initialVault}>
-          {globalState => (
+          {(globalState) => (
             <NavigationContainer>
               <Stack.Navigator>
                 {globalState.vault ? (

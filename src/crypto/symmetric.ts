@@ -24,7 +24,7 @@ export const generateRandomKey = (): string => {
 export const deriveKey = (salt: string) => (
   password: string,
 ): Promise<string> => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const options = {
       N: 16384,
       r: 8,

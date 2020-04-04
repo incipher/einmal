@@ -44,9 +44,9 @@
     "@types/react": "~16.9.0",
     "@types/react-native": "~0.60.23",
     "babel-preset-expo": "~8.0.0",
-    "husky": ">=4",
-    "lint-staged": ">=10",
-    "prettier": "^1.19.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "prettier": "^2.0.2",
     "typescript": "~3.6.3"
   },
   "husky": {
@@ -55,6 +55,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts,tsx,json}": "prettier --write"
+    "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
   }
 }

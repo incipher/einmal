@@ -5164,7 +5164,7 @@ scheduler@0.15.0, scheduler@^0.15.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
-scrypt-async@^2.0.1:
+scrypt-async@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/scrypt-async/-/scrypt-async-2.0.1.tgz#4318dae48a8b7cc3b8fe05f75f4164a7d973d25d"
   integrity sha512-wHR032jldwZNy7Tzrfu7RccOgGf8r5hyDMSP2uV6DpLiBUsR8JsDcx/in73o2UGVVrH5ivRFdNsFPcjtl3LErQ==
@@ -5865,7 +5865,7 @@ urix@^0.1.0:
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
-url-otpauth@^2.0.0:
+url-otpauth@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/url-otpauth/-/url-otpauth-2.0.0.tgz#f145f1a18117fdf990efcfbabc7833bbb6140a48"
   integrity sha1-8UXxoYEX/fmQ78+6vHgzu7YUCkg=

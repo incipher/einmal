@@ -60,6 +60,7 @@ const Home: React.FC = () => {
         ListHeaderComponent={<View style={styles.listItemDivider} />}
         ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
         ListFooterComponent={<View style={styles.listItemDivider} />}
+        /* FIXME: Extracting key from index is a bad idea */
         keyExtractor={(_, index) => String(index)}
       />
 

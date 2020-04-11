@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState } from '../components';
-import { useGlobalState, useClock } from '../hooks';
+import { useGlobalState, useInteractables, useClock } from '../hooks';
 import { generateTotp } from '../crypto';
 import { isPhysicalDevice } from '../utilities';
 
 const Home: React.FC = () => {
   const [globalState] = useGlobalState();
+  const { showSnackbar } = useInteractables();
   const navigation = useNavigation();
 
   const [tokens, setTokens] = useState([]);
@@ -36,13 +37,17 @@ const Home: React.FC = () => {
         contentContainerStyle={styles.listContentContainer}
         data={globalState.vault}
         renderItem={({ item, index }) => {
-          const { issuer, key } = item;
+          const { issuer } = item;
+
+          const token = tokens[index];
 
           return (
             <TouchableRipple
               style={styles.listItem}
-              rippleColor="rgba(0, 0, 0, .10)"
-              onPress={() => {}}
+              onPress={() => {
+                Clipboard.setString(token);
+                showSnackbar('Copied to clipboard');
+              }}
             >
               <>
                 {true /* TODO: If favicon exists */ ? (
@@ -60,7 +65,7 @@ const Home: React.FC = () => {
                 )}
 
                 <View>
-                  <Text style={styles.text}>{tokens[index] || '000000'}</Text>
+                  <Text style={styles.text}>{token || '000000'}</Text>
 
                   <Text>{issuer}</Text>
                 </View>
@@ -75,9 +80,7 @@ const Home: React.FC = () => {
             subheading="Configure your accounts to use two-step verification"
           />
         }
-        ListHeaderComponent={<View style={styles.listItemDivider} />}
         ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
-        ListFooterComponent={<View style={styles.listItemDivider} />}
         keyExtractor={(item) => [item.issuer, item.account].join(':')}
       />
 
@@ -123,8 +126,7 @@ const styles = StyleSheet.create({
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    padding: 16,
   },
   avatar: {
     marginRight: 16,
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   listItemDivider: {
-    padding: 8,
+    paddingVertical: 8,
   },
   fab: {
     marginVertical: 16,

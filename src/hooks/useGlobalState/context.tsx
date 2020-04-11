@@ -1,5 +1,6 @@
-import React, { useContext, createContext } from 'react';
+import React, { useEffect, useContext, createContext } from 'react';
 import { useGlobalReducer, State, DispatchAction } from './reducer';
+import * as vault from '../../vault';
 import { Vault } from '../../types';
 
 type ProviderProps = {
@@ -15,11 +16,19 @@ const GlobalStateContext = createContext<[State, DispatchAction]>([
 ]);
 
 export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
-  const { children, vault = [] } = props;
+  const { children, vault: initialVault = [] } = props;
 
   const [state, dispatch] = useGlobalReducer({
-    vault,
+    vault: initialVault,
   });
+
+  useEffect(() => {
+    try {
+      vault.set(state.vault);
+    } catch (error) {
+      console.log('Failed to write vault:', error);
+    }
+  }, [state.vault]);
 
   return (
     <GlobalStateContext.Provider value={[state, dispatch]}>

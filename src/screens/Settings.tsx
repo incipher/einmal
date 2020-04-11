@@ -62,10 +62,9 @@ const Settings: React.FC = () => {
                   text: 'Clear vault',
                   onPress: async () => {
                     try {
-                      await vault.set([]);
                       globalDispatch({ type: 'CLEAR_VAULT' });
-
                       showSnackbar('Vault cleared');
+
                       navigation.navigate('Home');
                     } catch (error) {
                       console.log('Failed to write vault');

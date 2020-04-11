@@ -4,7 +4,6 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
-import * as vault from '../vault';
 import { parseOtpauthUri } from '../crypto';
 import { actuateHapticFeedback } from '../utilities';
 import { VaultEntry } from '../types';
@@ -29,10 +28,6 @@ const BarcodeScanner: React.FC<Props> = (props) => {
       setPermission(status);
     })();
   }, []);
-
-  useEffect(() => {
-    vault.set(globalState.vault);
-  }, [globalState.vault]);
 
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true);

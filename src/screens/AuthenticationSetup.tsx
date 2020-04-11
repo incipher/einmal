@@ -3,7 +3,6 @@ import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
 import { Text, HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState } from '../hooks';
-import * as vault from '../vault';
 import { sleep } from '../utilities';
 
 const AuthenticationSetup: React.FC = () => {
@@ -45,16 +44,8 @@ const AuthenticationSetup: React.FC = () => {
   const handleCreateVaultPress = async () => {
     setLoading(true);
 
-    try {
-      const initialVault = [];
-
-      await vault.set(initialVault);
-      await sleep(1000);
-
-      globalDispatch({ type: 'SET_VAULT', vault: initialVault });
-    } catch (error) {
-      console.log('Failed to write vault');
-    }
+    await sleep(1000);
+    globalDispatch({ type: 'SET_VAULT', vault: [] });
 
     setLoading(false);
   };

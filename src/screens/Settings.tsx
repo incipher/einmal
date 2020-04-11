@@ -1,35 +1,71 @@
 import React from 'react';
 import { View, SectionList, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { useGlobalState, useInteractables } from '../hooks';
+import * as vault from '../vault';
 import { settings } from '../constants';
 
 const Settings: React.FC = () => {
-  const navigation = useNavigation();
+  const [, globalDispatch] = useGlobalState();
+  const { showSnackbar, showDialog } = useInteractables();
 
   const sections = [
     {
       title: 'Vault',
       data: [
         {
+          title: 'Change password',
+          description: 'Set a new password to the vault',
+          onPress: () => {
+            showSnackbar('Coming soon');
+          },
+        },
+        {
           title: 'Cloud backup',
-          description: 'Backup encrypted vault to the cloud',
-          onPress: () => {},
+          description: 'Back up encrypted vault to the cloud',
+          onPress: () => {
+            showSnackbar('Coming soon');
+          },
         },
         {
           title: 'Import',
           description: 'Import vault from a file',
-          onPress: () => {},
+          onPress: () => {
+            showSnackbar('Coming soon');
+          },
         },
         {
           title: 'Export',
-          description: 'Export the vault',
-          onPress: () => {},
+          description: 'Export vault to a file',
+          onPress: () => {
+            showSnackbar('Coming soon');
+          },
         },
         {
           title: 'Clear',
           description: 'Delete vault contents',
-          onPress: () => {},
+          onPress: () => {
+            showDialog({
+              title: 'Clear vault?',
+              paragraphs: [
+                'Clearing your vault will lock you out of your accounts with two-factor authentication enabled.',
+                'You are advised to export your vault to a file first, or disable two-factor authentication for your accounts.',
+              ],
+              actions: [
+                {
+                  text: 'Cancel',
+                  onPress: () => {},
+                },
+                {
+                  text: 'Clear vault',
+                  onPress: async () => {
+                    await vault.clear();
+                    globalDispatch({ type: 'CLEAR_VAULT' });
+                  },
+                },
+              ],
+            });
+          },
         },
       ],
     },
@@ -48,6 +84,7 @@ const Settings: React.FC = () => {
   return (
     <View style={styles.container}>
       <SectionList
+        stickySectionHeadersEnabled={false}
         sections={sections}
         renderItem={({ item }) => {
           const { title, description, onPress } = item;

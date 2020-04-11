@@ -1,6 +1,10 @@
 import { useReducer, Dispatch, ReducerAction } from 'react';
 import { Action } from './actions';
-import { isSetVaultAction, isAddVaultEntryAction } from './typeGuards';
+import {
+  isSetVaultAction,
+  isAddVaultEntryAction,
+  isClearVaultAction,
+} from './typeGuards';
 import { Vault } from '../../types';
 
 export type State = {
@@ -26,6 +30,13 @@ export const useGlobalReducer = (
       return {
         ...previousState,
         vault: previousState.vault.concat(action.vaultEntry),
+      };
+    }
+
+    if (isClearVaultAction(action)) {
+      return {
+        ...previousState,
+        vault: null,
       };
     }
 

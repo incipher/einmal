@@ -1,24 +1,16 @@
-import { secretbox, randomBytes, setPRNG } from 'tweetnacl';
+import { secretbox } from 'tweetnacl';
 import {
   decodeUTF8,
   encodeUTF8,
   encodeBase64,
   decodeBase64,
 } from 'tweetnacl-util';
-import { createRandomBytes } from '@otplib/plugin-crypto-js';
-import { KeyEncodings } from '@otplib/core';
 import scrypt from 'scrypt-async';
+import { generateRandomBytes } from './random';
 
-setPRNG((requiredRandomBytes, requiredRandomBytesCount) => {
-  const generatedRandomBytes = generateRandomBytes(requiredRandomBytesCount);
-
-  for (let i = 0; i < generatedRandomBytes.length; i++) {
-    requiredRandomBytes[i] = generatedRandomBytes[i];
-  }
-});
-
-export const generateRandomKey = (): string => {
-  return encodeBase64(randomBytes(secretbox.keyLength));
+export const generateRandomKey = async (): Promise<string> => {
+  const randomKeyBytes = await generateRandomKeyBytes();
+  return encodeBase64(randomKeyBytes);
 };
 
 export const deriveKey = (salt: string) => (
@@ -39,11 +31,15 @@ export const deriveKey = (salt: string) => (
   });
 };
 
-export const encrypt = (key: string) => (message: string): string => {
+export const encrypt = (key: string) => async (
+  message: string,
+): Promise<string> => {
   const keyBytes = decodeBase64(key);
   const messageBytes = decodeUTF8(message);
 
-  const encryptedMessageWithNonceBytes = encryptBytes(keyBytes)(messageBytes);
+  const encryptedMessageWithNonceBytes = await encryptBytes(keyBytes)(
+    messageBytes,
+  );
 
   return encodeBase64(encryptedMessageWithNonceBytes);
 };
@@ -63,10 +59,10 @@ export const decrypt = (key: string) => (
   return encodeUTF8(decryptedMessageBytes);
 };
 
-const encryptBytes = (keyBytes: Uint8Array) => (
+const encryptBytes = (keyBytes: Uint8Array) => async (
   messageBytes: Uint8Array,
-): Uint8Array => {
-  const nonceBytes = generateRandomNonce();
+): Promise<Uint8Array> => {
+  const nonceBytes = await generateRandomNonceBytes();
 
   const encryptedMessageBytes = secretbox(messageBytes, nonceBytes, keyBytes);
 
@@ -106,11 +102,10 @@ const decryptBytes = (keyBytes: Uint8Array) => (
   return decryptedMessageBytes;
 };
 
-const generateRandomNonce = (): Uint8Array => {
-  return randomBytes(secretbox.nonceLength);
+const generateRandomKeyBytes = (): Promise<Uint8Array> => {
+  return generateRandomBytes(secretbox.keyLength);
 };
 
-const generateRandomBytes = (count: number): Uint8Array => {
-  const encodedRandomBytes = createRandomBytes(count, KeyEncodings.BASE64);
-  return decodeBase64(encodedRandomBytes);
+const generateRandomNonceBytes = (): Promise<Uint8Array> => {
+  return generateRandomBytes(secretbox.nonceLength);
 };

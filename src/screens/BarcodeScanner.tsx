@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState } from '../components';
-import { useGlobalState } from '../hooks';
+import { useGlobalState, useSnackbar } from '../hooks';
 import * as vault from '../vault';
 import { parseOtpauthUri } from '../crypto';
 import { actuateHapticFeedback } from '../utilities';
@@ -17,6 +17,7 @@ const BarcodeScanner: React.FC<Props> = (props) => {
   const { onBarcodeScanned } = props;
 
   const [globalState, globalDispatch] = useGlobalState();
+  const setSnackbarText = useSnackbar();
   const navigation = useNavigation();
 
   const [permission, setPermission] = useState(null);
@@ -35,12 +36,32 @@ const BarcodeScanner: React.FC<Props> = (props) => {
 
   const handleBarCodeScanned = async ({ data }) => {
     setScanned(true);
-
-    const vaultEntry = parseOtpauthUri(data);
     await actuateHapticFeedback();
 
-    globalDispatch({ type: 'ADD_VAULT_ENTRY', vaultEntry });
-    onBarcodeScanned?.(vaultEntry);
+    try {
+      const { type, account, digits, issuer, key } = parseOtpauthUri(data);
+
+      if (!type || !account || !digits || !issuer || !key) {
+        throw new Error('Insufficient OTP parameters');
+      }
+
+      if (type !== 'totp' || digits !== 6) {
+        throw new Error('Unsupported OTP parameters');
+      }
+
+      const vaultEntry = {
+        type,
+        account,
+        digits,
+        issuer,
+        key,
+      };
+
+      globalDispatch({ type: 'ADD_VAULT_ENTRY', vaultEntry });
+      onBarcodeScanned?.(vaultEntry);
+    } catch (error) {
+      setSnackbarText('Unsupported QR code');
+    }
 
     navigation.goBack();
   };

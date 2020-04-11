@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { EmptyState, Totp } from '../components';
-import { useGlobalState } from '../hooks';
+import { EmptyState } from '../components';
+import { useGlobalState, useClock } from '../hooks';
+import { generateTotp } from '../crypto';
 import { isPhysicalDevice } from '../utilities';
 
 const Home: React.FC = () => {
   const [globalState] = useGlobalState();
   const navigation = useNavigation();
 
+  const [tokens, setTokens] = useState([]);
   const [isFABGroupOpen, setFABGroupOpen] = useState(false);
+
+  useEffect(() => {
+    generateTokens();
+  }, []);
+
+  useClock(({ second }) => {
+    if (second === 0 || second === 30) {
+      generateTokens();
+    }
+  });
+
+  const generateTokens = () => {
+    setTokens(
+      globalState.vault.map((vaultEntry) => generateTotp(vaultEntry.key)),
+    );
+  };
 
   return (
     <View style={styles.container}>
       <FlatList
         contentContainerStyle={styles.listContentContainer}
         data={globalState.vault}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const { issuer, key } = item;
 
           return (
@@ -42,7 +60,7 @@ const Home: React.FC = () => {
                 )}
 
                 <View>
-                  <Totp style={styles.text} secret={key} />
+                  <Text style={styles.text}>{tokens[index] || '000000'}</Text>
 
                   <Text>{issuer}</Text>
                 </View>

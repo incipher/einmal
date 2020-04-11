@@ -1,2 +1,2 @@
-export { generateTotp, getTotpExpiry, parseOtpauthUri } from './otp';
+export { generateTotp, parseOtpauthUri } from './otp';
 export { generateRandomKey, deriveKey, encrypt, decrypt } from './symmetric';

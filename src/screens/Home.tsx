@@ -50,24 +50,26 @@ const Home: React.FC = () => {
               }}
             >
               <>
-                {true /* TODO: If favicon exists */ ? (
-                  <Avatar.Text
-                    style={styles.avatar}
-                    size={40}
-                    label={issuer.substring(0, 1)}
-                  />
-                ) : (
+                {false /* TODO: If favicon exists */ ? (
                   <Avatar.Image
                     style={styles.avatar}
-                    size={32}
+                    size={48}
                     source={{ uri: null }}
+                  />
+                ) : (
+                  <Avatar.Text
+                    style={styles.avatar}
+                    size={48}
+                    label={issuer.substring(0, 1)}
                   />
                 )}
 
                 <View>
-                  <Text style={styles.text}>{token || '000000'}</Text>
+                  <Text style={styles.token}>
+                    {[token.substring(0, 3), ' ', token.substring(3, 6)]}
+                  </Text>
 
-                  <Text>{issuer}</Text>
+                  <Text style={styles.issuer}>{issuer}</Text>
                 </View>
               </>
             </TouchableRipple>
@@ -129,12 +131,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   avatar: {
-    marginRight: 16,
-    backgroundColor: 'white',
+    marginRight: 24,
   },
-  text: {
-    fontSize: 26,
-    color: 'white',
+  token: {
+    fontSize: 36,
+  },
+  issuer: {
+    fontSize: 16,
   },
   listItemDivider: {
     paddingVertical: 8,

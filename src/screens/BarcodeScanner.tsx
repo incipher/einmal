@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import * as haptics from 'expo-haptics';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState } from '../components';
 import { useGlobalState } from '../hooks';
 import * as vault from '../vault';
 import { parseOtpauthUri } from '../crypto';
+import { actuateHapticFeedback } from '../utilities';
 import { VaultEntry } from '../types';
 
 type Props = {
@@ -37,7 +37,7 @@ const BarcodeScanner: React.FC<Props> = (props) => {
     setScanned(true);
 
     const vaultEntry = parseOtpauthUri(data);
-    await haptics.selectionAsync();
+    await actuateHapticFeedback();
 
     globalDispatch({ type: 'ADD_VAULT_ENTRY', vaultEntry });
     onBarcodeScanned?.(vaultEntry);

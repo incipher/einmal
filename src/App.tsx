@@ -2,14 +2,22 @@ import React, { useState } from 'react';
 import { SafeAreaView, Image, StatusBar, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
+import { FontAwesome } from '@expo/vector-icons';
 import {
   Provider as ThemeProvider,
   DarkTheme,
   Theme,
+  IconButton,
 } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Welcome, AuthenticationSetup, Home, BarcodeScanner } from './screens';
+import {
+  Welcome,
+  AuthenticationSetup,
+  Home,
+  BarcodeScanner,
+  Settings,
+} from './screens';
 import { GlobalStateProvider, SnackbarProvider } from './hooks';
 import * as vault from './vault';
 import { settings } from './constants';
@@ -79,19 +87,29 @@ const App: React.FC = () => {
           <GlobalStateProvider vault={initialVault}>
             {(globalState) => (
               <NavigationContainer>
-                <Stack.Navigator>
+                <Stack.Navigator
+                  screenOptions={{
+                    headerStyle: {
+                      backgroundColor: 'black',
+                      borderBottomColor: 'grey',
+                      borderBottomWidth: 0.5,
+                    },
+                    headerTitleStyle: {
+                      color: 'white',
+                    },
+                    headerBackTitleStyle: {
+                      color: 'white',
+                    },
+                    headerTintColor: 'white',
+                  }}
+                >
                   {globalState.vault ? (
                     <>
                       <Stack.Screen
                         name="Home"
                         component={Home}
-                        options={{
+                        options={({ navigation }) => ({
                           headerTitle: null,
-                          headerStyle: {
-                            backgroundColor: 'black',
-                            borderBottomColor: 'grey',
-                            borderBottomWidth: 0.5,
-                          },
                           headerLeft: () => (
                             <Image
                               style={{
@@ -102,8 +120,23 @@ const App: React.FC = () => {
                               source={require('../assets/logo.png')}
                             />
                           ),
-                        }}
+                          headerRight: () => (
+                            <IconButton
+                              icon={() => (
+                                <FontAwesome
+                                  name="cog"
+                                  color="white"
+                                  size={24}
+                                />
+                              )}
+                              onPress={() => {
+                                navigation.navigate('Settings');
+                              }}
+                            />
+                          ),
+                        })}
                       />
+                      <Stack.Screen name="Settings" component={Settings} />
                       <Stack.Screen
                         name="BarcodeScanner"
                         component={BarcodeScanner}

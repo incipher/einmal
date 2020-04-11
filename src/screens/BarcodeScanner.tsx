@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState } from '../components';
-import { useGlobalState, useSnackbar } from '../hooks';
+import { useGlobalState, useInteractables } from '../hooks';
 import * as vault from '../vault';
 import { parseOtpauthUri } from '../crypto';
 import { actuateHapticFeedback } from '../utilities';
@@ -17,7 +17,7 @@ const BarcodeScanner: React.FC<Props> = (props) => {
   const { onBarcodeScanned } = props;
 
   const [globalState, globalDispatch] = useGlobalState();
-  const setSnackbarText = useSnackbar();
+  const { showSnackbar } = useInteractables();
   const navigation = useNavigation();
 
   const [permission, setPermission] = useState(null);
@@ -60,7 +60,7 @@ const BarcodeScanner: React.FC<Props> = (props) => {
       globalDispatch({ type: 'ADD_VAULT_ENTRY', vaultEntry });
       onBarcodeScanned?.(vaultEntry);
     } catch (error) {
-      setSnackbarText('Unsupported QR code');
+      showSnackbar('Unsupported QR code');
     }
 
     navigation.goBack();

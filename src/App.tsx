@@ -18,7 +18,7 @@ import {
   BarcodeScanner,
   Settings,
 } from './screens';
-import { GlobalStateProvider, SnackbarProvider } from './hooks';
+import { GlobalStateProvider, InteractablesProvider } from './hooks';
 import * as vault from './vault';
 import { settings } from './constants';
 
@@ -83,7 +83,7 @@ const App: React.FC = () => {
       <StatusBar barStyle="light-content" />
 
       <ThemeProvider theme={theme}>
-        <SnackbarProvider>
+        <InteractablesProvider>
           <GlobalStateProvider vault={initialVault}>
             {(globalState) => (
               <NavigationContainer>
@@ -161,7 +161,7 @@ const App: React.FC = () => {
               </NavigationContainer>
             )}
           </GlobalStateProvider>
-        </SnackbarProvider>
+        </InteractablesProvider>
       </ThemeProvider>
     </SafeAreaView>
   );

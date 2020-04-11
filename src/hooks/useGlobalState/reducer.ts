@@ -36,7 +36,7 @@ export const useGlobalReducer = (
     if (isClearVaultAction(action)) {
       return {
         ...previousState,
-        vault: null,
+        vault: [],
       };
     }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, SectionList, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { useGlobalState, useInteractables } from '../hooks';
 import * as vault from '../vault';
 import { settings } from '../constants';
@@ -8,6 +9,7 @@ import { settings } from '../constants';
 const Settings: React.FC = () => {
   const [, globalDispatch] = useGlobalState();
   const { showSnackbar, showDialog } = useInteractables();
+  const navigation = useNavigation();
 
   const sections = [
     {
@@ -59,8 +61,15 @@ const Settings: React.FC = () => {
                 {
                   text: 'Clear vault',
                   onPress: async () => {
-                    await vault.clear();
-                    globalDispatch({ type: 'CLEAR_VAULT' });
+                    try {
+                      await vault.set([]);
+                      globalDispatch({ type: 'CLEAR_VAULT' });
+
+                      showSnackbar('Vault cleared');
+                      navigation.navigate('Home');
+                    } catch (error) {
+                      console.log('Failed to write vault');
+                    }
                   },
                 },
               ],

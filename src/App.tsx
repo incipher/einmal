@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { SafeAreaView, Image, StatusBar, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import {
@@ -86,13 +86,22 @@ const App: React.FC = () => {
                         name="Home"
                         component={Home}
                         options={{
-                          headerTitle: 'Einmal',
+                          headerTitle: null,
                           headerStyle: {
                             backgroundColor: 'black',
+                            borderBottomColor: 'grey',
+                            borderBottomWidth: 0.5,
                           },
-                          headerTitleStyle: {
-                            color: 'white',
-                          },
+                          headerLeft: () => (
+                            <Image
+                              style={{
+                                width: 20,
+                                height: 20,
+                                marginHorizontal: 16,
+                              }}
+                              source={require('../assets/logo.png')}
+                            />
+                          ),
                         }}
                       />
                       <Stack.Screen

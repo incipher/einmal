@@ -66,7 +66,7 @@ const Home: React.FC = () => {
 
                 <View>
                   <Text style={styles.token}>
-                    {[token.substring(0, 3), ' ', token.substring(3, 6)]}
+                    {[token?.substring(0, 3), ' ', token?.substring(3, 6)]}
                   </Text>
 
                   <Text style={styles.issuer}>{issuer}</Text>

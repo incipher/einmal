@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
   },
   linearIndicator: {
     flex: 0.005,
-    backgroundColor: 'red',
   },
   listContentContainer: {
     flex: 1,

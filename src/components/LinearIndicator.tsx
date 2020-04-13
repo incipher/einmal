@@ -16,6 +16,7 @@ import Animated, {
   clockRunning,
   startClock,
 } from 'react-native-reanimated';
+import { interpolateColor } from 'react-native-redash';
 import { useMemoOne } from 'use-memo-one';
 import { useDimensions } from '@react-native-community/hooks';
 
@@ -50,8 +51,18 @@ const LinearIndicator: React.FC<Props> = (props) => {
     outputRange: [0, windowWidth],
   });
 
+  const backgroundColor = interpolateColor(
+    progress,
+    {
+      inputRange: [0, 1],
+      outputRange: ['green', 'red'],
+    },
+    'hsv',
+  );
+
   const animatedStyle = {
     right,
+    backgroundColor,
   };
 
   const baseStyle = {
@@ -59,7 +70,7 @@ const LinearIndicator: React.FC<Props> = (props) => {
     backgroundColor: '#591EE5',
   };
 
-  return <Animated.View style={[animatedStyle, baseStyle, style]} />;
+  return <Animated.View style={[baseStyle, style, animatedStyle]} />;
 };
 
 const runLoop = ({

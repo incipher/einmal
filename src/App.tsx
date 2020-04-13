@@ -91,8 +91,6 @@ const App: React.FC = () => {
                   screenOptions={{
                     headerStyle: {
                       backgroundColor: 'black',
-                      borderBottomColor: '#222',
-                      borderBottomWidth: 1,
                     },
                     headerTitleStyle: {
                       color: 'white',

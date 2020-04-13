@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { EmptyState } from '../components';
+import { EmptyState, LinearIndicator } from '../components';
 import { useGlobalState, useInteractables, useClock } from '../hooks';
 import { generateTotp } from '../crypto';
 import { isPhysicalDevice } from '../utilities';
@@ -31,8 +31,18 @@ const Home: React.FC = () => {
     );
   };
 
+  const SECONDS_CAP = 30;
+  const cappedSeconds = new Date().getSeconds() % SECONDS_CAP;
+  const progress = cappedSeconds / SECONDS_CAP;
+
   return (
     <View style={styles.container}>
+      <LinearIndicator
+        style={styles.linearIndicator}
+        initialProgress={progress}
+        duration={SECONDS_CAP * 1000}
+      />
+
       <FlatList
         contentContainerStyle={styles.listContentContainer}
         data={globalState.vault}
@@ -121,6 +131,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
+  },
+  linearIndicator: {
+    flex: 0.005,
+    backgroundColor: 'red',
   },
   listContentContainer: {
     flex: 1,

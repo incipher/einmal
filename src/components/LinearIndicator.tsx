@@ -44,9 +44,7 @@ const LinearIndicator: React.FC<Props> = (props) => {
   );
 
   useCode(() => {
-    return block([
-      set(progress, runLoop({ clock, initialProgress, duration, onFinish })),
-    ]);
+    return set(progress, loop({ clock, initialProgress, duration, onFinish }));
   }, []);
 
   const right = interpolate(progress, {
@@ -76,7 +74,7 @@ const LinearIndicator: React.FC<Props> = (props) => {
   return <Animated.View style={[baseStyle, style, animatedStyle]} />;
 };
 
-const runLoop = ({
+const loop = ({
   clock,
   initialProgress,
   duration,

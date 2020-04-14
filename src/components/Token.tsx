@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   },
   tokenText: {
     fontSize: 36,
+    fontFamily: 'Inter-Regular',
     color: 'white',
   },
   tokenSeparator: {

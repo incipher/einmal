@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { SafeAreaView, Image, StatusBar, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
 import { FontAwesome } from '@expo/vector-icons';
 import {
+  configureFonts,
   Provider as ThemeProvider,
   DarkTheme,
   Theme,
@@ -29,6 +31,26 @@ const theme: Theme = {
     primary: 'white',
     background: 'black',
   },
+  fonts: configureFonts({
+    default: {
+      regular: {
+        fontFamily: 'Inter-Regular',
+        fontWeight: 'normal',
+      },
+      medium: {
+        fontFamily: 'Inter-Medium',
+        fontWeight: 'normal',
+      },
+      light: {
+        fontFamily: 'Inter-Light',
+        fontWeight: 'normal',
+      },
+      thin: {
+        fontFamily: 'Inter-Thin',
+        fontWeight: 'normal',
+      },
+    },
+  }),
 };
 
 const Stack = createStackNavigator();
@@ -42,7 +64,7 @@ const App: React.FC = () => {
       await Promise.all([deleteVault()]);
     }
 
-    await Promise.all([loadVault(), loadImages()]);
+    await Promise.all([loadVault(), loadImages(), loadFonts()]);
   };
 
   const deleteVault = async () => {
@@ -64,6 +86,15 @@ const App: React.FC = () => {
 
   const loadImages = async () => {
     await Asset.loadAsync([require('../assets/logo.png')]);
+  };
+
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      'Inter-Regular': require('../assets/fonts/Inter-Regular.otf'),
+      'Inter-Medium': require('../assets/fonts/Inter-Medium.otf'),
+      'Inter-Light': require('../assets/fonts/Inter-Light.otf'),
+      'Inter-Thin': require('../assets/fonts/Inter-Thin.otf'),
+    });
   };
 
   if (!isReady) {

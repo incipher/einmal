@@ -1,6 +1,17 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Avatar, TouchableRipple } from 'react-native-paper';
+import Animated, {
+  set,
+  interpolate,
+  concat,
+  useCode,
+  Value,
+  Easing,
+} from 'react-native-reanimated';
+import { timing } from 'react-native-redash';
+import ReText from './ReText';
+import { usePrevious } from '../hooks';
 
 type Props = {
   issuer: string;
@@ -10,6 +21,23 @@ type Props = {
 
 const Token: React.FC<Props> = (props) => {
   const { issuer, token, onPress } = props;
+
+  const currentToken = token ?? '000000';
+  const previousToken = usePrevious(token) ?? '000000';
+
+  const progress = new Value(0);
+
+  useCode(() => {
+    return set(
+      progress,
+      timing({ from: 0, to: 1, duration: 400, easing: Easing.linear }),
+    );
+  }, [token]);
+
+  const animatedToken = interpolate(progress, {
+    inputRange: [0, 1],
+    outputRange: [Number(previousToken), Number(currentToken)],
+  });
 
   return (
     <TouchableRipple
@@ -34,9 +62,11 @@ const Token: React.FC<Props> = (props) => {
         )}
 
         <View>
-          <Text style={styles.token}>
-            {[token?.substring(0, 3), ' ', token?.substring(3, 6)]}
-          </Text>
+          <ReText
+            style={styles.token}
+            text={concat('', animatedToken)}
+            maxLength={6}
+          />
 
           <Text style={styles.issuer}>{issuer}</Text>
         </View>
@@ -56,6 +86,7 @@ const styles = StyleSheet.create({
   },
   token: {
     fontSize: 36,
+    color: 'white',
   },
   issuer: {
     fontSize: 16,

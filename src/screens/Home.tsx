@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { EmptyState, LinearIndicator } from '../components';
-import { useGlobalState, useInteractables, useClock } from '../hooks';
+import { useGlobalState, useInteractables } from '../hooks';
 import { generateTotp } from '../crypto';
 import { isPhysicalDevice } from '../utilities';
 
@@ -18,12 +18,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     generateTokens();
   }, []);
-
-  useClock(({ second }) => {
-    if (second === 0 || second === 30) {
-      generateTokens();
-    }
-  });
 
   const generateTokens = () => {
     setTokens(
@@ -41,6 +35,7 @@ const Home: React.FC = () => {
         style={styles.linearIndicator}
         initialProgress={progress}
         duration={SECONDS_CAP * 1000}
+        onFinish={generateTokens}
       />
 
       <FlatList

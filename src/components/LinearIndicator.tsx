@@ -6,6 +6,7 @@ import Animated, {
   eq,
   not,
   cond,
+  call,
   timing,
   interpolate,
   useCode,
@@ -24,27 +25,29 @@ type Props = {
   initialProgress?: number;
   duration?: number;
   style?: StyleProp<ViewStyle>;
+  onFinish?: () => void;
 };
 
 const LinearIndicator: React.FC<Props> = (props) => {
-  const { initialProgress = 0, duration = 1000, style } = props;
+  const { initialProgress = 0, duration = 1000, style, onFinish } = props;
 
   const {
     window: { width: windowWidth },
   } = useDimensions();
 
-  const { progress, clock } = useMemoOne(
+  const { clock, progress } = useMemoOne(
     () => ({
-      progress: new Value(0),
       clock: new Clock(),
+      progress: new Value(0),
     }),
     [],
   );
 
-  useCode(
-    () => block([set(progress, runLoop({ clock, initialProgress, duration }))]),
-    [],
-  );
+  useCode(() => {
+    return block([
+      set(progress, runLoop({ clock, initialProgress, duration, onFinish })),
+    ]);
+  }, []);
 
   const right = interpolate(progress, {
     inputRange: [0, 1],
@@ -77,10 +80,12 @@ const runLoop = ({
   clock,
   initialProgress,
   duration,
+  onFinish,
 }: {
   clock: Clock;
   initialProgress: number;
   duration: number;
+  onFinish?: () => void;
 }): Node<number> => {
   const state = {
     /* Start first loop at an initial position */
@@ -104,6 +109,7 @@ const runLoop = ({
     timing(clock, state, configuration),
     /* When animation finishes, restart it */
     cond(eq(state.finished, 1), [
+      call([], () => onFinish?.()),
       set(state.finished, 0),
       set(state.position, 0),
       set(state.frameTime, 0),

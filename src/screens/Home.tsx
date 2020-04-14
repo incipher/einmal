@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet, Clipboard } from 'react-native';
-import { Text, Avatar, TouchableRipple, FAB } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { EmptyState, LinearIndicator } from '../components';
+import { EmptyState, LinearIndicator, Token } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
 import { generateTotp } from '../crypto';
 import { isPhysicalDevice } from '../utilities';
@@ -41,45 +41,16 @@ const Home: React.FC = () => {
       <FlatList
         contentContainerStyle={styles.listContentContainer}
         data={globalState.vault}
-        renderItem={({ item, index }) => {
-          const { issuer } = item;
-
-          const token = tokens[index];
-
-          return (
-            <TouchableRipple
-              style={styles.listItem}
-              onPress={() => {
-                Clipboard.setString(token);
-                showSnackbar('Copied to clipboard');
-              }}
-            >
-              <>
-                {false /* TODO: If favicon exists */ ? (
-                  <Avatar.Image
-                    style={styles.avatar}
-                    size={48}
-                    source={{ uri: null }}
-                  />
-                ) : (
-                  <Avatar.Text
-                    style={styles.avatar}
-                    size={48}
-                    label={issuer.substring(0, 1)}
-                  />
-                )}
-
-                <View>
-                  <Text style={styles.token}>
-                    {[token?.substring(0, 3), ' ', token?.substring(3, 6)]}
-                  </Text>
-
-                  <Text style={styles.issuer}>{issuer}</Text>
-                </View>
-              </>
-            </TouchableRipple>
-          );
-        }}
+        renderItem={({ item, index }) => (
+          <Token
+            issuer={item.issuer}
+            token={tokens[index]}
+            onPress={({ token }) => {
+              Clipboard.setString(token);
+              showSnackbar('Copied to clipboard');
+            }}
+          />
+        )}
         ListEmptyComponent={
           <EmptyState
             icon="shield-plus-outline"
@@ -132,20 +103,6 @@ const styles = StyleSheet.create({
   },
   listContentContainer: {
     flex: 1,
-  },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-  },
-  avatar: {
-    marginRight: 24,
-  },
-  token: {
-    fontSize: 36,
-  },
-  issuer: {
-    fontSize: 16,
   },
   listItemDivider: {
     paddingVertical: 8,

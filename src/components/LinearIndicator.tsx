@@ -8,14 +8,14 @@ import Animated, {
   cond,
   call,
   timing,
+  startClock,
+  clockRunning,
   interpolate,
   useCode,
   Value,
   Clock,
   Node,
   Easing,
-  clockRunning,
-  startClock,
 } from 'react-native-reanimated';
 import { interpolateColor } from 'react-native-redash';
 import { useMemoOne } from 'use-memo-one';

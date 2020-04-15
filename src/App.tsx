@@ -94,6 +94,7 @@ const App: React.FC = () => {
       'Inter-Medium': require('../assets/fonts/Inter-Medium.otf'),
       'Inter-Light': require('../assets/fonts/Inter-Light.otf'),
       'Inter-Thin': require('../assets/fonts/Inter-Thin.otf'),
+      'IBMPlexMono-Regular': require('../assets/fonts/IBMPlexMono-Regular.ttf'),
     });
   };
 

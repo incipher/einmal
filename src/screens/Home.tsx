@@ -41,7 +41,6 @@ const Home: React.FC = () => {
       )}
 
       <FlatList
-        contentContainerStyle={styles.listContentContainer}
         data={globalState.vault}
         renderItem={({ item, index }) => (
           <Token
@@ -102,9 +101,6 @@ const styles = StyleSheet.create({
   },
   linearIndicator: {
     flex: 0.005,
-  },
-  listContentContainer: {
-    flex: 1,
   },
   listItemDivider: {
     paddingVertical: 8,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { Text, Avatar, TouchableRipple } from 'react-native-paper';
 import {
   block,
@@ -20,13 +20,14 @@ import ReText from './ReText';
 import { usePrevious } from '../hooks';
 
 type Props = {
+  style?: StyleProp<ViewStyle>;
   issuer: string;
   token: string;
   onPress?: (data: { issuer: string; token: string }) => void;
 };
 
 const Token: React.FC<Props> = (props) => {
-  const { issuer, token, onPress } = props;
+  const { style, issuer, token, onPress } = props;
 
   const currentToken = token ?? '000000';
   const previousToken = usePrevious(token) ?? '000000';
@@ -36,7 +37,7 @@ const Token: React.FC<Props> = (props) => {
   useCode(() => {
     return set(
       progress,
-      timing({ from: 0, to: 1, duration: 400, easing: Easing.linear }),
+      timing({ from: 0, to: 1, duration: 500, easing: Easing.linear }),
     );
   }, [token]);
 
@@ -47,7 +48,7 @@ const Token: React.FC<Props> = (props) => {
 
   return (
     <TouchableRipple
-      style={styles.container}
+      style={[styles.container, style]}
       onPress={() => {
         onPress?.({ issuer, token });
       }}
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   },
   tokenText: {
     fontSize: 36,
-    fontFamily: 'Inter-Regular',
+    fontFamily: 'IBMPlexMono-Regular',
     color: 'white',
   },
   tokenSeparator: {

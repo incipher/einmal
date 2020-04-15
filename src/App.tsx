@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Image, StatusBar, StyleSheet } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';

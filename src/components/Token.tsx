@@ -52,7 +52,7 @@ const Token: React.FC<Props> = (props) => {
   useCode(() => {
     return set(
       progress,
-      timing({ from: 0, to: 1, duration: 500, easing: Easing.linear }),
+      timing({ from: 0, to: 1, duration: 400, easing: Easing.linear }),
     );
   }, [token]);
 

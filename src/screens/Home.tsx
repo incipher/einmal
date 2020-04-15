@@ -46,6 +46,8 @@ const Home: React.FC = () => {
           <Token
             issuer={item.issuer}
             token={tokens[index]}
+            enableConcealment={false}
+            conceal={false}
             onPress={({ token }) => {
               Clipboard.setString(token);
               showSnackbar('Copied to clipboard');

@@ -90,10 +90,10 @@ const App: React.FC = () => {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      'Inter-Regular': require('../assets/fonts/Inter-Regular.otf'),
-      'Inter-Medium': require('../assets/fonts/Inter-Medium.otf'),
-      'Inter-Light': require('../assets/fonts/Inter-Light.otf'),
-      'Inter-Thin': require('../assets/fonts/Inter-Thin.otf'),
+      'Inter-Regular': require('../assets/fonts/Inter-Regular.ttf'),
+      'Inter-Medium': require('../assets/fonts/Inter-Medium.ttf'),
+      'Inter-Light': require('../assets/fonts/Inter-Light.ttf'),
+      'Inter-Thin': require('../assets/fonts/Inter-Thin.ttf'),
       'IBMPlexMono-Regular': require('../assets/fonts/IBMPlexMono-Regular.ttf'),
     });
   };

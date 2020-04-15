@@ -22,6 +22,7 @@ import { useMemoOne } from 'use-memo-one';
 import { useDimensions } from '@react-native-community/hooks';
 
 type Props = {
+  visible?: boolean;
   initialProgress?: number;
   duration?: number;
   style?: StyleProp<ViewStyle>;
@@ -29,11 +30,19 @@ type Props = {
 };
 
 const LinearIndicator: React.FC<Props> = (props) => {
-  const { initialProgress = 0, duration = 1000, style, onFinish } = props;
+  const {
+    visible = true,
+    initialProgress = 0,
+    duration = 1000,
+    style,
+    onFinish,
+  } = props;
 
   const {
     window: { width: windowWidth },
   } = useDimensions();
+
+  /* FIXME: Fix frame drops when the visible prop changes */
 
   const { clock, progress } = useMemoOne(
     () => ({
@@ -63,7 +72,7 @@ const LinearIndicator: React.FC<Props> = (props) => {
 
   const animatedStyle = {
     right,
-    backgroundColor,
+    backgroundColor: visible ? backgroundColor : 'transparent',
   };
 
   const baseStyle = {

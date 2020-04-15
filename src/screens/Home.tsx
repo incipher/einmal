@@ -33,6 +33,7 @@ const Home: React.FC = () => {
     <View style={styles.container}>
       <LinearIndicator
         style={styles.linearIndicator}
+        visible={globalState.vault.length !== 0}
         initialProgress={progress}
         duration={SECONDS_CAP * 1000}
         onFinish={generateTokens}

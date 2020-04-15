@@ -72,6 +72,7 @@ const AuthenticationSetup: React.FC = () => {
 
         <TextInput
           label="Password"
+          selectionColor="grey"
           secureTextEntry={true}
           value={password}
           error={isInvalidPassword && hasPasswordBeenBlurred}
@@ -91,6 +92,7 @@ const AuthenticationSetup: React.FC = () => {
         <TextInput
           ref={repeatedPasswordRef}
           label="Repeat Password"
+          selectionColor="grey"
           secureTextEntry={true}
           value={repeatedPassword}
           error={isInvalidRepeatedPassword && hasRepeatedPasswordBeenBlurred}

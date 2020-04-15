@@ -3,13 +3,11 @@ import { SafeAreaView, Image, StatusBar, StyleSheet } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import { FontAwesome } from '@expo/vector-icons';
 import {
   configureFonts,
   Provider as ThemeProvider,
   DarkTheme,
   Theme,
-  IconButton,
 } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -135,37 +133,7 @@ const App: React.FC = () => {
                 >
                   {globalState.vault ? (
                     <>
-                      <Stack.Screen
-                        name="Home"
-                        component={Home}
-                        options={({ navigation }) => ({
-                          headerTitle: null,
-                          headerLeft: () => (
-                            <Image
-                              style={{
-                                width: 20,
-                                height: 20,
-                                marginHorizontal: 16,
-                              }}
-                              source={require('../assets/logo.png')}
-                            />
-                          ),
-                          headerRight: () => (
-                            <IconButton
-                              icon={() => (
-                                <FontAwesome
-                                  name="cog"
-                                  color="white"
-                                  size={24}
-                                />
-                              )}
-                              onPress={() => {
-                                navigation.navigate('Settings');
-                              }}
-                            />
-                          ),
-                        })}
-                      />
+                      <Stack.Screen name="Home" component={Home} />
                       <Stack.Screen name="Settings" component={Settings} />
                       <Stack.Screen
                         name="BarcodeScanner"

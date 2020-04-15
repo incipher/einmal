@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, FlatList, StyleSheet, Clipboard } from 'react-native';
-import { FAB } from 'react-native-paper';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+} from 'react';
+import { View, Image, FlatList, StyleSheet, Clipboard } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { IconButton, Searchbar, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import { useDimensions, useBackHandler } from '@react-native-community/hooks';
 import { EmptyState, LinearIndicator, Token } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
 import { generateTotp } from '../crypto';
@@ -12,18 +19,96 @@ const Home: React.FC = () => {
   const { showSnackbar } = useInteractables();
   const navigation = useNavigation();
 
+  const {
+    window: { width: windowWidth },
+  } = useDimensions();
+
   const [tokens, setTokens] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchbarVisible, setSearchbarVisible] = useState(false);
   const [isFABGroupOpen, setFABGroupOpen] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: null,
+      headerLeftContainerStyle: {
+        width: windowWidth * 0.9,
+      },
+      headerRightContainerStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      headerRight: () => {
+        return (
+          <>
+            {isSearchbarVisible ? null : (
+              <IconButton
+                icon={() => (
+                  <FontAwesome name="search" color="white" size={24} />
+                )}
+                onPress={() => {
+                  setSearchbarVisible(true);
+                }}
+              />
+            )}
+
+            <IconButton
+              icon={() => <FontAwesome name="cog" color="white" size={24} />}
+              onPress={() => {
+                navigation.navigate('Settings');
+              }}
+            />
+          </>
+        );
+      },
+      headerLeft: () => {
+        if (isSearchbarVisible) {
+          return (
+            <Searchbar
+              style={styles.searchbar}
+              autoFocus={true}
+              placeholder="Search"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              icon="arrow-left"
+              onIconPress={clearAndCloseSearchbar}
+            />
+          );
+        }
+
+        return (
+          <Image
+            style={styles.headerLogo}
+            source={require('../../assets/logo.png')}
+          />
+        );
+      },
+    });
+  }, [navigation, isSearchbarVisible, searchQuery]);
 
   useEffect(() => {
     generateTokens();
   }, [globalState.vault]);
+
+  useBackHandler(() => {
+    if (isSearchbarVisible) {
+      clearAndCloseSearchbar();
+      return true;
+    }
+
+    return false;
+  });
 
   const generateTokens = useCallback(() => {
     setTokens(
       globalState.vault.map((vaultEntry) => generateTotp(vaultEntry.key)),
     );
   }, [globalState.vault]);
+
+  const clearAndCloseSearchbar = () => {
+    setSearchbarVisible(false);
+    setSearchQuery('');
+  };
 
   const SECONDS_CAP = 30;
   const cappedSeconds = new Date().getSeconds() % SECONDS_CAP;
@@ -41,7 +126,9 @@ const Home: React.FC = () => {
       )}
 
       <FlatList
-        data={globalState.vault}
+        data={globalState.vault.filter((entry) => {
+          return entry.issuer.toLowerCase().includes(searchQuery.toLowerCase());
+        })}
         renderItem={({ item, index }) => (
           <Token
             issuer={item.issuer}
@@ -55,11 +142,13 @@ const Home: React.FC = () => {
           />
         )}
         ListEmptyComponent={
-          <EmptyState
-            icon="shield-plus-outline"
-            heading="Your vault is empty"
-            subheading="Configure your accounts to use two-step verification"
-          />
+          isSearchbarVisible ? null : (
+            <EmptyState
+              icon="shield-plus-outline"
+              heading="Your vault is empty"
+              subheading="Configure your accounts to use two-step verification"
+            />
+          )
         }
         ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
         keyExtractor={(item) => [item.issuer, item.account].join(':')}
@@ -97,6 +186,14 @@ const Home: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  headerLogo: {
+    width: 20,
+    height: 20,
+    marginHorizontal: 16,
+  },
+  searchbar: {
+    backgroundColor: 'black',
+  },
   container: {
     flex: 1,
     backgroundColor: 'black',

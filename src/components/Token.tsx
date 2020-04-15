@@ -16,6 +16,7 @@ import {
   Easing,
 } from 'react-native-reanimated';
 import { timing } from 'react-native-redash';
+import { useMemoOne } from 'use-memo-one';
 import ReText from './ReText';
 import { usePrevious } from '../hooks';
 
@@ -32,7 +33,12 @@ const Token: React.FC<Props> = (props) => {
   const currentToken = token ?? '000000';
   const previousToken = usePrevious(token) ?? '000000';
 
-  const progress = new Value(0);
+  const { progress } = useMemoOne(
+    () => ({
+      progress: new Value(0),
+    }),
+    [],
+  );
 
   useCode(() => {
     return set(

@@ -17,7 +17,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     generateTokens();
-  }, []);
+  }, [globalState.vault]);
 
   const generateTokens = () => {
     setTokens(

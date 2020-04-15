@@ -45,7 +45,7 @@ const LinearIndicator: React.FC<Props> = (props) => {
 
   useCode(() => {
     return set(progress, loop({ clock, initialProgress, duration, onFinish }));
-  }, []);
+  }, [duration, onFinish]);
 
   const right = interpolate(progress, {
     inputRange: [0, 1],

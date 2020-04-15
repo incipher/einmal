@@ -2,17 +2,22 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Avatar, TouchableRipple } from 'react-native-paper';
 import {
+  block,
   set,
-  interpolate,
+  cond,
+  and,
+  lessThan,
+  greaterOrEq,
   concat,
+  interpolate,
   useCode,
   Value,
+  Node,
   Easing,
 } from 'react-native-reanimated';
 import { timing } from 'react-native-redash';
 import ReText from './ReText';
 import { usePrevious } from '../hooks';
-import { splitAt } from '../utilities';
 
 type Props = {
   issuer: string;
@@ -31,29 +36,14 @@ const Token: React.FC<Props> = (props) => {
   useCode(() => {
     return set(
       progress,
-      timing({ from: 0, to: 1, duration: 200, easing: Easing.linear }),
+      timing({ from: 0, to: 1, duration: 400, easing: Easing.linear }),
     );
   }, [token]);
 
-  /**
-   * Token digits are animated individually, for two reasons:
-   *
-   * 1. When the token as a whole is fed into the interpolation function,
-   *    leading zeroes are ignored. For example: if the token "012345" is
-   *    generated, we end up with the interpolated value of "12345.0".
-   *
-   * 2. Padding the token in the middle (so "123456" becomes "123 456", for
-   *    a better UX) is impossible due to the limited available operations
-   *    on string animated values.
-   */
-  const tokenDigits = Array.from({ length: 6 }, (_, index) => {
-    return interpolate(progress, {
-      inputRange: [0, 1],
-      outputRange: [Number(previousToken[index]), Number(currentToken[index])],
-    });
+  const animatedToken = interpolate(progress, {
+    inputRange: [0, 1],
+    outputRange: [Number(previousToken), Number(currentToken)],
   });
-
-  const [firstThreeTokenDigits, lastThreeTokenDigits] = splitAt(3)(tokenDigits);
 
   return (
     <TouchableRipple
@@ -79,25 +69,11 @@ const Token: React.FC<Props> = (props) => {
 
         <View>
           <View style={styles.tokenContainer}>
-            {firstThreeTokenDigits.map((digit, index) => (
-              <ReText
-                key={index}
-                style={styles.tokenText}
-                text={concat(digit)}
-                maxLength={1}
-              />
-            ))}
-
-            <View style={styles.tokenSeparator} />
-
-            {lastThreeTokenDigits.map((digit, index) => (
-              <ReText
-                key={index}
-                style={styles.tokenText}
-                text={concat(digit)}
-                maxLength={1}
-              />
-            ))}
+            <ReText
+              style={styles.tokenText}
+              text={padToken(animatedToken)}
+              maxLength={6}
+            />
           </View>
 
           <Text style={styles.issuer}>{issuer}</Text>
@@ -105,6 +81,32 @@ const Token: React.FC<Props> = (props) => {
       </>
     </TouchableRipple>
   );
+};
+
+const padToken = (token: Node<number>): Node<string> => {
+  const paddedToken = new Value<string>();
+
+  return block([
+    cond(and(greaterOrEq(token, 100000), lessThan(token, 1000000)), [
+      set(paddedToken, concat(token)),
+    ]),
+    cond(and(greaterOrEq(token, 10000), lessThan(token, 100000)), [
+      set(paddedToken, concat('0', token)),
+    ]),
+    cond(and(greaterOrEq(token, 1000), lessThan(token, 10000)), [
+      set(paddedToken, concat('00', token)),
+    ]),
+    cond(and(greaterOrEq(token, 100), lessThan(token, 1000)), [
+      set(paddedToken, concat('000', token)),
+    ]),
+    cond(and(greaterOrEq(token, 10), lessThan(token, 100)), [
+      set(paddedToken, concat('0000', token)),
+    ]),
+    cond(and(greaterOrEq(token, 0), lessThan(token, 10)), [
+      set(paddedToken, concat('00000', token)),
+    ]),
+    paddedToken,
+  ]);
 };
 
 const styles = StyleSheet.create({

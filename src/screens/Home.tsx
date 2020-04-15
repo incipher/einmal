@@ -8,7 +8,7 @@ import { View, Image, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { IconButton, Searchbar, FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { useDimensions, useBackHandler } from '@react-native-community/hooks';
+import { useBackHandler } from '@react-native-community/hooks';
 import { EmptyState, LinearIndicator, Token } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
 import { generateTotp } from '../crypto';
@@ -19,10 +19,6 @@ const Home: React.FC = () => {
   const { showSnackbar } = useInteractables();
   const navigation = useNavigation();
 
-  const {
-    window: { width: windowWidth },
-  } = useDimensions();
-
   const [tokens, setTokens] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchbarVisible, setSearchbarVisible] = useState(false);
@@ -30,57 +26,47 @@ const Home: React.FC = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: null,
-      headerLeftContainerStyle: {
-        width: windowWidth * 0.9,
-      },
-      headerRightContainerStyle: {
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-      headerRight: () => {
+      header: () => {
         return (
-          <>
-            {isSearchbarVisible ? null : (
-              <IconButton
-                icon={() => (
-                  <FontAwesome name="search" color="white" size={24} />
-                )}
-                onPress={() => {
-                  setSearchbarVisible(true);
-                }}
+          <View style={styles.header}>
+            {isSearchbarVisible ? (
+              <Searchbar
+                style={styles.searchbar}
+                autoFocus={true}
+                placeholder="Search"
+                selectionColor="grey"
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                icon="arrow-left"
+                onIconPress={clearAndCloseSearchbar}
+              />
+            ) : (
+              <Image
+                style={styles.headerLogo}
+                source={require('../../assets/logo.png')}
               />
             )}
 
-            <IconButton
-              icon={() => <FontAwesome name="cog" color="white" size={24} />}
-              onPress={() => {
-                navigation.navigate('Settings');
-              }}
-            />
-          </>
-        );
-      },
-      headerLeft: () => {
-        if (isSearchbarVisible) {
-          return (
-            <Searchbar
-              style={styles.searchbar}
-              autoFocus={true}
-              placeholder="Search"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              icon="arrow-left"
-              onIconPress={clearAndCloseSearchbar}
-            />
-          );
-        }
+            <View style={styles.headerRight}>
+              {isSearchbarVisible ? null : (
+                <IconButton
+                  icon={() => (
+                    <FontAwesome name="search" color="white" size={24} />
+                  )}
+                  onPress={() => {
+                    setSearchbarVisible(true);
+                  }}
+                />
+              )}
 
-        return (
-          <Image
-            style={styles.headerLogo}
-            source={require('../../assets/logo.png')}
-          />
+              <IconButton
+                icon={() => <FontAwesome name="cog" color="white" size={24} />}
+                onPress={() => {
+                  navigation.navigate('Settings');
+                }}
+              />
+            </View>
+          </View>
         );
       },
     });
@@ -126,6 +112,7 @@ const Home: React.FC = () => {
       )}
 
       <FlatList
+        contentContainerStyle={styles.listContentContainer}
         data={globalState.vault.filter((entry) => {
           return entry.issuer.toLowerCase().includes(searchQuery.toLowerCase());
         })}
@@ -186,12 +173,23 @@ const Home: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 4,
+    backgroundColor: 'black',
+  },
+  headerRight: {
+    flexDirection: 'row',
+  },
   headerLogo: {
     width: 20,
     height: 20,
     marginHorizontal: 16,
   },
   searchbar: {
+    flex: 1,
     backgroundColor: 'black',
   },
   container: {
@@ -200,6 +198,9 @@ const styles = StyleSheet.create({
   },
   linearIndicator: {
     flex: 0.005,
+  },
+  listContentContainer: {
+    flex: 1,
   },
   listItemDivider: {
     paddingVertical: 8,

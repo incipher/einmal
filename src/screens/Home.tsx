@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -19,11 +19,11 @@ const Home: React.FC = () => {
     generateTokens();
   }, [globalState.vault]);
 
-  const generateTokens = () => {
+  const generateTokens = useCallback(() => {
     setTokens(
       globalState.vault.map((vaultEntry) => generateTotp(vaultEntry.key)),
     );
-  };
+  }, [globalState.vault]);
 
   const SECONDS_CAP = 30;
   const cappedSeconds = new Date().getSeconds() % SECONDS_CAP;
@@ -31,13 +31,14 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <LinearIndicator
-        style={styles.linearIndicator}
-        visible={globalState.vault.length !== 0}
-        initialProgress={progress}
-        duration={SECONDS_CAP * 1000}
-        onFinish={generateTokens}
-      />
+      {globalState.vault.length === 0 ? null : (
+        <LinearIndicator
+          style={styles.linearIndicator}
+          initialProgress={progress}
+          duration={SECONDS_CAP * 1000}
+          onFinish={generateTokens}
+        />
+      )}
 
       <FlatList
         contentContainerStyle={styles.listContentContainer}

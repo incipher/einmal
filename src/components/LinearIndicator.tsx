@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import Animated, {
   block,
@@ -22,27 +22,18 @@ import { useMemoOne } from 'use-memo-one';
 import { useDimensions } from '@react-native-community/hooks';
 
 type Props = {
-  visible?: boolean;
+  style?: StyleProp<ViewStyle>;
   initialProgress?: number;
   duration?: number;
-  style?: StyleProp<ViewStyle>;
   onFinish?: () => void;
 };
 
 const LinearIndicator: React.FC<Props> = (props) => {
-  const {
-    visible = true,
-    initialProgress = 0,
-    duration = 1000,
-    style,
-    onFinish,
-  } = props;
+  const { style, initialProgress = 0, duration = 1000, onFinish } = props;
 
   const {
     window: { width: windowWidth },
   } = useDimensions();
-
-  /* FIXME: Fix frame drops when the visible prop changes */
 
   const { clock, progress } = useMemoOne(
     () => ({
@@ -72,7 +63,7 @@ const LinearIndicator: React.FC<Props> = (props) => {
 
   const animatedStyle = {
     right,
-    backgroundColor: visible ? backgroundColor : 'transparent',
+    backgroundColor,
   };
 
   const baseStyle = {
@@ -128,4 +119,9 @@ const loop = ({
   ]);
 };
 
-export default LinearIndicator;
+export default memo(LinearIndicator, (previousProps, nextProps) => {
+  return (
+    previousProps.duration === nextProps.duration &&
+    previousProps.onFinish === nextProps.onFinish
+  );
+});

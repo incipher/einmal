@@ -3,7 +3,7 @@ import { View, SectionList, StyleSheet } from 'react-native';
 import { List, Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useGlobalState, useInteractables } from '../hooks';
-import { settings } from '../constants';
+import { configuration } from '../constants';
 import { Sections } from '../types';
 
 type Setting = {
@@ -102,7 +102,7 @@ const Settings: React.FC = () => {
       data: [
         {
           title: 'Version',
-          description: settings.version,
+          description: configuration.version,
           onPress: undefined,
         },
       ],

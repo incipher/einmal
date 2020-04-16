@@ -21,7 +21,7 @@ import {
 import { GlobalStateProvider, InteractablesProvider } from './hooks';
 import * as vault from './vault';
 import * as storage from './async-storage';
-import { settings } from './constants';
+import { configuration } from './constants';
 
 const theme: Theme = {
   ...DarkTheme,
@@ -60,7 +60,7 @@ const App: React.FC = () => {
   const [isReady, setReady] = useState(false);
 
   const loadAssets = async () => {
-    if (settings.shouldReset) {
+    if (configuration.shouldReset) {
       await Promise.all([deleteVault(), storage.clear()]);
     }
 

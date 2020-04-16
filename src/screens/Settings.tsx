@@ -3,7 +3,6 @@ import { View, SectionList, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useGlobalState, useInteractables } from '../hooks';
-import * as vault from '../vault';
 import { settings } from '../constants';
 
 const Settings: React.FC = () => {

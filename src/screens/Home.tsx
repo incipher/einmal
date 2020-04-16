@@ -6,8 +6,8 @@ import React, {
 } from 'react';
 import { View, Image, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { IconButton, Searchbar, FAB } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
+import { Portal, IconButton, Searchbar, FAB } from 'react-native-paper';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { EmptyState, LinearIndicator, Token } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
@@ -18,6 +18,7 @@ const Home: React.FC = () => {
   const [globalState] = useGlobalState();
   const { showSnackbar } = useInteractables();
   const navigation = useNavigation();
+  const isNavigationFocused = useIsFocused();
 
   const [tokens, setTokens] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -140,33 +141,35 @@ const Home: React.FC = () => {
         keyExtractor={(item) => [item.issuer, item.account].join(':')}
       />
 
-      <FAB.Group
-        style={styles.fab}
-        visible={true}
-        open={isFABGroupOpen}
-        icon={isFABGroupOpen ? 'close' : 'plus'}
-        actions={[
-          {
-            icon: 'qrcode-scan',
-            label: 'Scan QR code',
-            onPress: () => {
-              if (!isPhysicalDevice()) {
-                return alert('Camera only works on physical devices');
-              }
+      <Portal>
+        <FAB.Group
+          fabStyle={styles.fab}
+          visible={isNavigationFocused}
+          open={isFABGroupOpen}
+          icon={isFABGroupOpen ? 'close' : 'plus'}
+          actions={[
+            {
+              icon: 'qrcode-scan',
+              label: 'Scan QR code',
+              onPress: () => {
+                if (!isPhysicalDevice()) {
+                  return alert('Camera only works on physical devices');
+                }
 
-              navigation.navigate('BarcodeScanner');
+                navigation.navigate('BarcodeScanner');
+              },
             },
-          },
-          {
-            icon: 'keyboard',
-            label: 'Enter manually',
-            onPress: () => {},
-          },
-        ]}
-        onStateChange={({ open }) => {
-          setFABGroupOpen(open);
-        }}
-      />
+            {
+              icon: 'keyboard',
+              label: 'Enter manually',
+              onPress: () => {},
+            },
+          ]}
+          onStateChange={({ open }) => {
+            setFABGroupOpen(open);
+          }}
+        />
+      </Portal>
     </View>
   );
 };
@@ -205,8 +208,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   fab: {
-    marginVertical: 16,
-    marginHorizontal: 8,
+    marginBottom: 32,
   },
 });
 

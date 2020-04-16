@@ -59,7 +59,7 @@ export const InteractablesProvider: React.FC = (props) => {
 
       <Snackbar
         visible={Boolean(snackbarText)}
-        duration={Snackbar.DURATION_MEDIUM}
+        duration={2500}
         onDismiss={() => {
           setSnackbarText('');
         }}

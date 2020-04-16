@@ -24,20 +24,12 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   issuer: string;
   token: string;
-  enableConcealment?: boolean;
-  conceal?: boolean;
+  shouldConceal?: boolean;
   onPress?: (data: { issuer: string; token: string }) => void;
 };
 
 const Token: React.FC<Props> = (props) => {
-  const {
-    style,
-    issuer,
-    token,
-    enableConcealment = false,
-    conceal = false,
-    onPress,
-  } = props;
+  const { style, issuer, token, shouldConceal = false, onPress } = props;
 
   const currentToken = token ?? '000000';
   const previousToken = usePrevious(token) ?? '000000';
@@ -61,18 +53,18 @@ const Token: React.FC<Props> = (props) => {
     outputRange: [Number(previousToken), Number(currentToken)],
   });
 
-  const [shouldConceal, setShouldConceal] = useState(conceal);
+  const [conceal, setConceal] = useState(shouldConceal);
 
   React.useEffect(() => {
-    setShouldConceal(conceal);
-  }, [conceal]);
+    setConceal(shouldConceal);
+  }, [shouldConceal]);
 
   return (
     <TouchableRipple
       style={[styles.container, style]}
       onPress={() => {
-        if (enableConcealment) {
-          setShouldConceal((shouldConceal) => !shouldConceal);
+        if (shouldConceal) {
+          setConceal((conceal) => !conceal);
         }
 
         onPress?.({ issuer, token });
@@ -99,7 +91,7 @@ const Token: React.FC<Props> = (props) => {
               style={styles.tokenText}
               text={padToken(animatedToken)}
               maxLength={6}
-              secureTextEntry={shouldConceal}
+              secureTextEntry={conceal}
             />
           </View>
 

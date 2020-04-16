@@ -1,25 +1,32 @@
 import React, { useEffect, useContext, createContext } from 'react';
 import { useGlobalReducer, State, DispatchAction } from './reducer';
 import * as vault from '../../vault';
-import { Vault } from '../../types';
+import { Vault, Settings } from '../../types';
 
 type ProviderProps = {
   children: (state: State) => React.ReactNode;
   vault?: Vault;
+  settings?: Settings;
 };
 
 const GlobalStateContext = createContext<[State, DispatchAction]>([
   {
     vault: [],
+    settings: { concealTokens: false },
   },
   () => {},
 ]);
 
 export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
-  const { children, vault: initialVault = [] } = props;
+  const {
+    children,
+    vault: initialVault = [],
+    settings = { concealTokens: false },
+  } = props;
 
   const [state, dispatch] = useGlobalReducer({
     vault: initialVault,
+    settings,
   });
 
   useEffect(() => {

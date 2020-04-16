@@ -1,6 +1,10 @@
 import { Vault, VaultEntry } from '../../types';
 
-export type Action = SetVaultAction | AddVaultEntryAction | ClearVaultAction;
+export type Action =
+  | SetVaultAction
+  | AddVaultEntryAction
+  | ClearVaultAction
+  | ToggleConcealTokensAction;
 
 export type SetVaultAction = {
   type: 'SET_VAULT';
@@ -14,4 +18,8 @@ export type AddVaultEntryAction = {
 
 export type ClearVaultAction = {
   type: 'CLEAR_VAULT';
+};
+
+export type ToggleConcealTokensAction = {
+  type: 'TOGGLE_CONCEAL_TOKENS';
 };

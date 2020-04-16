@@ -3,6 +3,7 @@ import {
   SetVaultAction,
   AddVaultEntryAction,
   ClearVaultAction,
+  ToggleConcealTokensAction,
 } from './actions';
 
 export const isSetVaultAction = (action: Action): action is SetVaultAction => {
@@ -19,4 +20,10 @@ export const isClearVaultAction = (
   action: Action,
 ): action is ClearVaultAction => {
   return action.type === 'CLEAR_VAULT';
+};
+
+export const isToggleConcealTokensAction = (
+  action: Action,
+): action is ToggleConcealTokensAction => {
+  return action.type === 'TOGGLE_CONCEAL_TOKENS';
 };

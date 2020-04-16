@@ -1,16 +1,25 @@
 import React from 'react';
 import { View, SectionList, StyleSheet } from 'react-native';
-import { List } from 'react-native-paper';
+import { List, Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useGlobalState, useInteractables } from '../hooks';
 import { settings } from '../constants';
+import { Sections } from '../types';
+
+type Setting = {
+  title: string;
+  description: string;
+  value?: boolean;
+  onPress?: () => void;
+  onToggle?: () => void;
+};
 
 const Settings: React.FC = () => {
-  const [, globalDispatch] = useGlobalState();
+  const [globalState, globalDispatch] = useGlobalState();
   const { showSnackbar, showDialog } = useInteractables();
   const navigation = useNavigation();
 
-  const sections = [
+  const sections: Sections<Setting> = [
     {
       title: 'Vault',
       data: [
@@ -59,19 +68,31 @@ const Settings: React.FC = () => {
                 },
                 {
                   text: 'Clear vault',
-                  onPress: async () => {
-                    try {
-                      globalDispatch({ type: 'CLEAR_VAULT' });
-                      showSnackbar('Vault cleared');
+                  onPress: () => {
+                    globalDispatch({ type: 'CLEAR_VAULT' });
+                    showSnackbar('Vault cleared');
 
-                      navigation.navigate('Home');
-                    } catch (error) {
-                      console.log('Failed to write vault');
-                    }
+                    navigation.navigate('Home');
                   },
                 },
               ],
             });
+          },
+        },
+      ],
+    },
+    {
+      title: 'Security',
+      data: [
+        {
+          title: 'Conceal tokens',
+          description: 'Tap to reveal tokens individually',
+          value: globalState.settings.concealTokens,
+          onPress: () => {
+            globalDispatch({ type: 'TOGGLE_CONCEAL_TOKENS' });
+          },
+          onToggle: () => {
+            globalDispatch({ type: 'TOGGLE_CONCEAL_TOKENS' });
           },
         },
       ],
@@ -94,7 +115,7 @@ const Settings: React.FC = () => {
         stickySectionHeadersEnabled={false}
         sections={sections}
         renderItem={({ item }) => {
-          const { title, description, onPress } = item;
+          const { title, description, value, onPress, onToggle } = item;
 
           return (
             <List.Item
@@ -102,6 +123,19 @@ const Settings: React.FC = () => {
               title={title}
               description={description}
               onPress={onPress}
+              right={() => {
+                if (onToggle) {
+                  return (
+                    <Switch
+                      trackColor={{ false: 'grey', true: '#009999' }}
+                      value={value}
+                      onValueChange={onToggle}
+                    />
+                  );
+                }
+
+                return null;
+              }}
             />
           );
         }}

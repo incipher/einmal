@@ -4,11 +4,13 @@ import {
   isSetVaultAction,
   isAddVaultEntryAction,
   isClearVaultAction,
+  isToggleConcealTokensAction,
 } from './typeGuards';
-import { Vault } from '../../types';
+import { Vault, Settings } from '../../types';
 
 export type State = {
   vault: Vault;
+  settings: Settings;
 };
 
 type Reducer = (previousState: State, action: Action) => State;
@@ -37,6 +39,16 @@ export const useGlobalReducer = (
       return {
         ...previousState,
         vault: [],
+      };
+    }
+
+    if (isToggleConcealTokensAction(action)) {
+      return {
+        ...previousState,
+        settings: {
+          ...previousState.settings,
+          concealTokens: !previousState.settings.concealTokens,
+        },
       };
     }
 

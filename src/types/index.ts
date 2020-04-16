@@ -22,3 +22,9 @@ export type VaultEntry = {
   key: string;
   type: string;
 };
+
+// Settings
+
+export type Settings = {
+  concealTokens: boolean;
+};

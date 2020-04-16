@@ -120,8 +120,7 @@ const Home: React.FC = () => {
           <Token
             issuer={item.issuer}
             token={tokens[index]}
-            enableConcealment={false}
-            conceal={false}
+            shouldConceal={globalState.settings.concealTokens}
             onPress={({ token }) => {
               Clipboard.setString(token);
               showSnackbar('Copied to clipboard');

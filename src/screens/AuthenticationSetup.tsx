@@ -42,6 +42,10 @@ const AuthenticationSetup: React.FC = () => {
   };
 
   const handleCreateVaultPress = async () => {
+    if (isInvalidForm) {
+      return;
+    }
+
     setLoading(true);
 
     await sleep(1000);

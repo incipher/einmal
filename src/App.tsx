@@ -20,6 +20,7 @@ import {
 } from './screens';
 import { GlobalStateProvider, InteractablesProvider } from './hooks';
 import * as vault from './vault';
+import * as storage from './async-storage';
 import { settings } from './constants';
 
 const theme: Theme = {
@@ -55,14 +56,15 @@ const Stack = createStackNavigator();
 
 const App: React.FC = () => {
   const [initialVault, setInitialVault] = useState(null);
+  const [initialSettings, setInitialSettings] = useState(null);
   const [isReady, setReady] = useState(false);
 
   const loadAssets = async () => {
     if (settings.shouldReset) {
-      await Promise.all([deleteVault()]);
+      await Promise.all([deleteVault(), storage.clear()]);
     }
 
-    await Promise.all([loadVault(), loadImages(), loadFonts()]);
+    await Promise.all([loadVault(), loadSettings(), loadImages(), loadFonts()]);
   };
 
   const deleteVault = async () => {
@@ -80,6 +82,14 @@ const App: React.FC = () => {
     } catch (error) {
       console.log('Failed to load vault');
     }
+  };
+
+  const loadSettings = async () => {
+    const loadedSettings = {
+      concealTokens: (await storage.getConcealTokens()) ?? false,
+    };
+
+    setInitialSettings(loadedSettings);
   };
 
   const loadImages = async () => {
@@ -114,7 +124,7 @@ const App: React.FC = () => {
 
       <ThemeProvider theme={theme}>
         <InteractablesProvider>
-          <GlobalStateProvider vault={initialVault}>
+          <GlobalStateProvider vault={initialVault} settings={initialSettings}>
             {(globalState) => (
               <NavigationContainer>
                 <Stack.Navigator

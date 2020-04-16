@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, createContext } from 'react';
 import { useGlobalReducer, State, DispatchAction } from './reducer';
 import * as vault from '../../vault';
+import * as storage from '../../async-storage';
 import { Vault, Settings } from '../../types';
 
 type ProviderProps = {
@@ -36,6 +37,10 @@ export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
       console.log('Failed to write vault:', error);
     }
   }, [state.vault]);
+
+  useEffect(() => {
+    storage.setConcealTokens(state.settings.concealTokens);
+  }, [state.settings.concealTokens]);
 
   return (
     <GlobalStateContext.Provider value={[state, dispatch]}>

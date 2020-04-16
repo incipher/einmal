@@ -88,7 +88,7 @@ const Home: React.FC = () => {
 
   const generateTokens = useCallback(() => {
     setTokens(
-      globalState.vault.map((vaultEntry) => generateTotp(vaultEntry.key)),
+      globalState.vault.map((vaultEntry) => generateTotp(vaultEntry.secret)),
     );
   }, [globalState.vault]);
 

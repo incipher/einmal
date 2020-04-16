@@ -18,7 +18,15 @@ export const generateTotp = (secret: string): string => {
 
 export const parseOtpauthUri = (uri: string): VaultEntry => {
   try {
-    return parse(uri);
+    const { account, digits, issuer, key, type } = parse(uri);
+
+    return {
+      secret: key,
+      issuer,
+      account,
+      digits,
+      type,
+    };
   } catch (error) {
     throw new Error('Could not parse otpauth:// URI');
   }

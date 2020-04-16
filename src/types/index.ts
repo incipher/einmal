@@ -19,7 +19,7 @@ export type VaultEntry = {
   account: string;
   digits: number;
   issuer: string;
-  key: string;
+  secret: string;
   type: string;
 };
 

@@ -34,9 +34,9 @@ const BarcodeScanner: React.FC<Props> = (props) => {
     await actuateHapticFeedback();
 
     try {
-      const { type, account, digits, issuer, key } = parseOtpauthUri(data);
+      const { type, account, digits, issuer, secret } = parseOtpauthUri(data);
 
-      if (!type || !account || !digits || !issuer || !key) {
+      if (!type || !account || !digits || !issuer || !secret) {
         throw new Error('Insufficient OTP parameters');
       }
 
@@ -49,7 +49,7 @@ const BarcodeScanner: React.FC<Props> = (props) => {
         account,
         digits,
         issuer,
-        key,
+        secret,
       };
 
       globalDispatch({ type: 'ADD_VAULT_ENTRY', vaultEntry });

@@ -15,6 +15,7 @@ import {
   Welcome,
   AuthenticationSetup,
   Home,
+  Sorting,
   BarcodeScanner,
   Settings,
 } from './screens';
@@ -144,12 +145,13 @@ const App: React.FC = () => {
                   {globalState.vault ? (
                     <>
                       <Stack.Screen name="Home" component={Home} />
-                      <Stack.Screen name="Settings" component={Settings} />
+                      <Stack.Screen name="Sorting" component={Sorting} />
                       <Stack.Screen
                         name="BarcodeScanner"
                         component={BarcodeScanner}
                         options={{ headerShown: false }}
                       />
+                      <Stack.Screen name="Settings" component={Settings} />
                     </>
                   ) : (
                     <>

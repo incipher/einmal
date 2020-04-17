@@ -5,7 +5,7 @@ import React, {
   useCallback,
 } from 'react';
 import { View, Image, FlatList, StyleSheet, Clipboard } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Portal, IconButton, Searchbar, FAB } from 'react-native-paper';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useBackHandler } from '@react-native-community/hooks';
@@ -52,7 +52,7 @@ const Home: React.FC = () => {
               {isSearchbarVisible ? null : (
                 <IconButton
                   icon={() => (
-                    <FontAwesome name="search" color="white" size={24} />
+                    <MaterialIcons name="search" color="white" size={26} />
                   )}
                   onPress={() => {
                     setSearchbarVisible(true);
@@ -61,7 +61,18 @@ const Home: React.FC = () => {
               )}
 
               <IconButton
-                icon={() => <FontAwesome name="cog" color="white" size={24} />}
+                icon={() => (
+                  <MaterialIcons name="sort" color="white" size={30} />
+                )}
+                onPress={() => {
+                  navigation.navigate('Sorting');
+                }}
+              />
+
+              <IconButton
+                icon={() => (
+                  <MaterialIcons name="settings" color="white" size={24} />
+                )}
                 onPress={() => {
                   navigation.navigate('Settings');
                 }}
@@ -184,6 +195,7 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   headerLogo: {
     width: 20,

@@ -43,9 +43,9 @@ const Sorting: React.FC = () => {
         )}
         ListEmptyComponent={
           <EmptyState
-            icon="shield-plus-outline"
-            heading="Your vault is empty"
-            subheading="Configure your accounts to use two-step verification"
+            icon="sort"
+            heading="No entries to sort"
+            subheading="Add accounts to enable sorting"
           />
         }
         keyExtractor={(item) => [item.issuer, item.account].join(':')}

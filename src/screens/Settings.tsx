@@ -85,8 +85,8 @@ const Settings: React.FC = () => {
       title: 'Security',
       data: [
         {
-          title: 'Conceal tokens',
-          description: 'Tap to reveal tokens individually',
+          title: 'Discreet mode',
+          description: 'Conceal tokens by default',
           value: globalState.settings.concealTokens,
           onPress: () => {
             globalDispatch({ type: 'TOGGLE_CONCEAL_TOKENS' });

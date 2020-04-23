@@ -1,26 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
-import { Text, HelperText, TextInput, Button } from 'react-native-paper';
+import { HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
-import { useGlobalState } from '../hooks';
+import { useGlobalState, useInteractables } from '../hooks';
 import { deriveKey } from '../crypto';
+import * as vault from '../vault';
 import { sleep } from '../utilities';
 
-const AuthenticationSetup: React.FC = () => {
+const Authentication: React.FC = () => {
   const {
     window: { width: windowWidth },
   } = useDimensions();
   const [, globalDispatch] = useGlobalState();
+  const { showSnackbar } = useInteractables();
 
   const [isLoading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
-  const [repeatedPassword, setRepeatedPassword] = useState('');
   const [hasPasswordBeenBlurred, setPasswordBlurred] = useState(false);
-  const [hasRepeatedPasswordBeenBlurred, setRepeatedPasswordBlurred] = useState(
-    false,
-  );
-
-  const repeatedPasswordRef = useRef(null);
 
   const validatePassword = (): string => {
     if (!password) {
@@ -34,15 +30,7 @@ const AuthenticationSetup: React.FC = () => {
     return null;
   };
 
-  const validateRepeatedPassword = (): string => {
-    if (repeatedPassword !== password) {
-      return 'Passwords do not match';
-    }
-
-    return null;
-  };
-
-  const handleCreateVaultPress = async () => {
+  const handleUnlockVaultPress = async () => {
     if (isInvalidForm || isLoading) {
       return;
     }
@@ -51,31 +39,31 @@ const AuthenticationSetup: React.FC = () => {
 
     await sleep(1000);
 
-    const derivedKey = await deriveKey('abc')(password);
-    globalDispatch({ type: 'INITIALIZE_VAULT', key: derivedKey, vault: [] });
+    try {
+      const derivedKey = await deriveKey('abc')(password);
+      const decryptedVault = await vault.get({ key: derivedKey });
+
+      globalDispatch({
+        type: 'INITIALIZE_VAULT',
+        key: derivedKey,
+        vault: decryptedVault,
+      });
+    } catch (error) {
+      showSnackbar('Failed to decrypt vault');
+    }
 
     setLoading(false);
   };
 
   const passwordError = validatePassword();
-  const repeatedPasswordError = validateRepeatedPassword();
 
   const isInvalidPassword = Boolean(passwordError);
-  const isInvalidRepeatedPassword = Boolean(repeatedPasswordError);
-
-  const isInvalidForm = isInvalidPassword || isInvalidRepeatedPassword;
+  const isInvalidForm = isInvalidPassword;
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={{ width: windowWidth * 0.8 }}>
         <Image style={styles.logo} source={require('../../assets/logo.png')} />
-
-        <Text style={styles.header}>Set Password</Text>
-
-        <HelperText style={styles.warningText}>
-          If you forget this password, you will permanently lose access to your
-          vault.
-        </HelperText>
 
         <TextInput
           label="Password"
@@ -87,33 +75,11 @@ const AuthenticationSetup: React.FC = () => {
           onBlur={() => {
             setPasswordBlurred(true);
           }}
-          onSubmitEditing={() => {
-            repeatedPasswordRef.current.focus();
-          }}
+          onSubmitEditing={handleUnlockVaultPress}
         />
 
         <HelperText>
           {isInvalidPassword && hasPasswordBeenBlurred ? passwordError : ''}
-        </HelperText>
-
-        <TextInput
-          ref={repeatedPasswordRef}
-          label="Repeat Password"
-          selectionColor="grey"
-          secureTextEntry={true}
-          value={repeatedPassword}
-          error={isInvalidRepeatedPassword && hasRepeatedPasswordBeenBlurred}
-          onChangeText={setRepeatedPassword}
-          onBlur={() => {
-            setRepeatedPasswordBlurred(true);
-          }}
-          onSubmitEditing={handleCreateVaultPress}
-        />
-
-        <HelperText>
-          {isInvalidRepeatedPassword && hasRepeatedPasswordBeenBlurred
-            ? repeatedPasswordError
-            : ''}
         </HelperText>
 
         <Button
@@ -122,9 +88,9 @@ const AuthenticationSetup: React.FC = () => {
           color="white"
           loading={isLoading}
           disabled={isInvalidForm}
-          onPress={handleCreateVaultPress}
+          onPress={handleUnlockVaultPress}
         >
-          Create Vault
+          Unlock Vault
         </Button>
       </View>
     </KeyboardAvoidingView>
@@ -159,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthenticationSetup;
+export default Authentication;

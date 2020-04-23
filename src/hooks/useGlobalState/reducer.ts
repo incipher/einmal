@@ -1,6 +1,7 @@
 import { useReducer, Dispatch, ReducerAction } from 'react';
 import { Action } from './actions';
 import {
+  isInitializeVaultAction,
   isSetVaultAction,
   isAddVaultEntryAction,
   isClearVaultAction,
@@ -9,6 +10,7 @@ import {
 import { Vault, Settings } from '../../types';
 
 export type State = {
+  key: string;
   vault: Vault;
   settings: Settings;
 };
@@ -21,6 +23,14 @@ export const useGlobalReducer = (
   initialState: State,
 ): [State, DispatchAction] => {
   return useReducer<Reducer>((previousState, action) => {
+    if (isInitializeVaultAction(action)) {
+      return {
+        ...previousState,
+        key: action.key,
+        vault: action.vault,
+      };
+    }
+
     if (isSetVaultAction(action)) {
       return {
         ...previousState,
@@ -52,8 +62,6 @@ export const useGlobalReducer = (
       };
     }
 
-    return {
-      ...previousState,
-    };
+    return previousState;
   }, initialState);
 };

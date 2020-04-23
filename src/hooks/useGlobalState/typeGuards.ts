@@ -1,10 +1,17 @@
 import {
   Action,
+  InitializeVaultAction,
   SetVaultAction,
   AddVaultEntryAction,
   ClearVaultAction,
   ToggleConcealTokensAction,
 } from './actions';
+
+export const isInitializeVaultAction = (
+  action: Action,
+): action is InitializeVaultAction => {
+  return action.type === 'INITIALIZE_VAULT';
+};
 
 export const isSetVaultAction = (action: Action): action is SetVaultAction => {
   return action.type === 'SET_VAULT';

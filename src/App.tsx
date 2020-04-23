@@ -14,6 +14,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   Welcome,
   AuthenticationSetup,
+  Authentication,
   Home,
   Sorting,
   BarcodeScanner,
@@ -56,7 +57,7 @@ const theme: Theme = {
 const Stack = createStackNavigator();
 
 const App: React.FC = () => {
-  const [initialVault, setInitialVault] = useState(null);
+  const [doesVaultExist, setDoesVaultExist] = useState(false);
   const [initialSettings, setInitialSettings] = useState(null);
   const [isReady, setReady] = useState(false);
 
@@ -65,7 +66,12 @@ const App: React.FC = () => {
       await Promise.all([deleteVault(), storage.clear()]);
     }
 
-    await Promise.all([loadVault(), loadSettings(), loadImages(), loadFonts()]);
+    await Promise.all([
+      checkVault(),
+      loadSettings(),
+      loadImages(),
+      loadFonts(),
+    ]);
   };
 
   const deleteVault = async () => {
@@ -76,13 +82,9 @@ const App: React.FC = () => {
     }
   };
 
-  const loadVault = async () => {
-    try {
-      const loadedVault = await vault.get();
-      setInitialVault(loadedVault);
-    } catch (error) {
-      console.log('Failed to load vault');
-    }
+  const checkVault = async () => {
+    const doesVaultExist = await vault.exists();
+    setDoesVaultExist(doesVaultExist);
   };
 
   const loadSettings = async () => {
@@ -125,10 +127,13 @@ const App: React.FC = () => {
 
       <ThemeProvider theme={theme}>
         <InteractablesProvider>
-          <GlobalStateProvider vault={initialVault} settings={initialSettings}>
+          <GlobalStateProvider settings={initialSettings}>
             {(globalState) => (
               <NavigationContainer>
                 <Stack.Navigator
+                  initialRouteName={
+                    doesVaultExist ? 'Authentication' : 'Welcome'
+                  }
                   screenOptions={{
                     headerStyle: {
                       backgroundColor: 'black',
@@ -163,6 +168,11 @@ const App: React.FC = () => {
                       <Stack.Screen
                         name="AuthenticationSetup"
                         component={AuthenticationSetup}
+                        options={{ headerShown: false }}
+                      />
+                      <Stack.Screen
+                        name="Authentication"
+                        component={Authentication}
                         options={{ headerShown: false }}
                       />
                     </>

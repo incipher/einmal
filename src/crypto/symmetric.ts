@@ -17,12 +17,18 @@ export const deriveKey = (salt: string) => (
   password: string,
 ): Promise<string> => {
   return new Promise((resolve) => {
+    const ITERATIONS_COUNT = Math.pow(2, 20);
+    const BLOCK_SIZE = 8;
+    const PARALLELISM_FACTOR = 1;
+    const DERIVED_KEY_LENGTH = 32;
+    const DERIVED_KEY_ENCODING = 'base64';
+
     const options = {
-      N: 16384,
-      r: 8,
-      p: 1,
-      dkLen: 32,
-      encoding: 'base64',
+      N: ITERATIONS_COUNT,
+      r: BLOCK_SIZE,
+      p: PARALLELISM_FACTOR,
+      dkLen: DERIVED_KEY_LENGTH,
+      encoding: DERIVED_KEY_ENCODING,
     };
 
     scrypt(password, salt, options, (derivedKey: string) => {

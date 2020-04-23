@@ -1,10 +1,17 @@
 import { Vault, VaultEntry } from '../../types';
 
 export type Action =
+  | InitializeVaultAction
   | SetVaultAction
   | AddVaultEntryAction
   | ClearVaultAction
   | ToggleConcealTokensAction;
+
+export type InitializeVaultAction = {
+  type: 'INITIALIZE_VAULT';
+  key: string;
+  vault: Vault;
+};
 
 export type SetVaultAction = {
   type: 'SET_VAULT';

@@ -6,13 +6,15 @@ import { Vault, Settings } from '../../types';
 
 type ProviderProps = {
   children: (state: State) => React.ReactNode;
+  key?: string;
   vault?: Vault;
   settings?: Settings;
 };
 
 const GlobalStateContext = createContext<[State, DispatchAction]>([
   {
-    vault: [],
+    key: null,
+    vault: null,
     settings: { concealTokens: false },
   },
   () => {},
@@ -21,22 +23,30 @@ const GlobalStateContext = createContext<[State, DispatchAction]>([
 export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
   const {
     children,
-    vault: initialVault = [],
-    settings = { concealTokens: false },
+    key: initialKey = null,
+    vault: initialVault = null,
+    settings: initialSettings = { concealTokens: false },
   } = props;
 
   const [state, dispatch] = useGlobalReducer({
+    key: initialKey,
     vault: initialVault,
-    settings,
+    settings: initialSettings,
   });
 
   useEffect(() => {
     try {
-      vault.set(state.vault);
+      if (state.vault && state.key) {
+        vault.set({ vault: state.vault, key: state.key });
+      }
     } catch (error) {
       console.log('Failed to write vault:', error);
     }
-  }, [state.vault]);
+  }, [state.vault, state.key]);
+
+  useEffect(() => {
+    // TODO: Update secure store
+  }, [state.key]);
 
   useEffect(() => {
     storage.setConcealTokens(state.settings.concealTokens);

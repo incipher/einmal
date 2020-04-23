@@ -1,2 +1,3 @@
 export { generateTotp, parseOtpauthUri } from './otp';
-export { generateRandomKey, deriveKey, encrypt, decrypt } from './symmetric';
+export { encrypt, decrypt } from './symmetric';
+export { generateRandomSalt, deriveKey } from './kdf';

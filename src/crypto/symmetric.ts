@@ -1,41 +1,11 @@
 import { secretbox } from 'tweetnacl';
 import {
-  decodeUTF8,
-  encodeUTF8,
   encodeBase64,
+  encodeUTF8,
   decodeBase64,
+  decodeUTF8,
 } from 'tweetnacl-util';
-import scrypt from 'scrypt-async';
 import { generateRandomBytes } from './random';
-
-export const generateRandomKey = async (): Promise<string> => {
-  const randomKeyBytes = await generateRandomKeyBytes();
-  return encodeBase64(randomKeyBytes);
-};
-
-export const deriveKey = (salt: string) => (
-  password: string,
-): Promise<string> => {
-  return new Promise((resolve) => {
-    const ITERATIONS_COUNT = Math.pow(2, 20);
-    const BLOCK_SIZE = 8;
-    const PARALLELISM_FACTOR = 1;
-    const DERIVED_KEY_LENGTH = 32;
-    const DERIVED_KEY_ENCODING = 'base64';
-
-    const options = {
-      N: ITERATIONS_COUNT,
-      r: BLOCK_SIZE,
-      p: PARALLELISM_FACTOR,
-      dkLen: DERIVED_KEY_LENGTH,
-      encoding: DERIVED_KEY_ENCODING,
-    };
-
-    scrypt(password, salt, options, (derivedKey: string) => {
-      resolve(derivedKey);
-    });
-  });
-};
 
 export const encrypt = (key: string) => async (
   message: string,
@@ -68,7 +38,7 @@ export const decrypt = (key: string) => (
 const encryptBytes = (keyBytes: Uint8Array) => async (
   messageBytes: Uint8Array,
 ): Promise<Uint8Array> => {
-  const nonceBytes = await generateRandomNonceBytes();
+  const nonceBytes = await generateRandomBytes(secretbox.nonceLength);
 
   const encryptedMessageBytes = secretbox(messageBytes, nonceBytes, keyBytes);
 
@@ -106,12 +76,4 @@ const decryptBytes = (keyBytes: Uint8Array) => (
   }
 
   return decryptedMessageBytes;
-};
-
-const generateRandomKeyBytes = (): Promise<Uint8Array> => {
-  return generateRandomBytes(secretbox.keyLength);
-};
-
-const generateRandomNonceBytes = (): Promise<Uint8Array> => {
-  return generateRandomBytes(secretbox.nonceLength);
 };

@@ -37,7 +37,7 @@
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
     "react-native-web": "^0.11.7",
-    "scrypt-async": "2.0.1",
+    "scrypt-js": "^3.0.0",
     "tweetnacl": "1.0.3",
     "tweetnacl-util": "0.15.1",
     "url-otpauth": "2.0.0",

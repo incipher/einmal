@@ -40,7 +40,7 @@ const Authentication: React.FC = () => {
     await sleep(1000);
 
     try {
-      const derivedKey = await deriveKey('abc')(password);
+      const derivedKey = await deriveKey({ password, salt: 'abc' });
       const decryptedVault = await vault.get({ key: derivedKey });
 
       globalDispatch({

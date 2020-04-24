@@ -2,20 +2,20 @@ import { Vault, VaultEntry } from '../../types';
 
 export type Action =
   | InitializeVaultAction
-  | SetVaultAction
+  | SetVaultEntriesAction
   | AddVaultEntryAction
-  | ClearVaultAction
+  | ClearVaultEntriesAction
   | ToggleConcealTokensAction;
 
 export type InitializeVaultAction = {
   type: 'INITIALIZE_VAULT';
-  key: string;
+  password: string;
   vault: Vault;
 };
 
-export type SetVaultAction = {
-  type: 'SET_VAULT';
-  vault: Vault;
+export type SetVaultEntriesAction = {
+  type: 'SET_VAULT_ENTRIES';
+  vaultEntries: VaultEntry[];
 };
 
 export type AddVaultEntryAction = {
@@ -23,8 +23,8 @@ export type AddVaultEntryAction = {
   vaultEntry: VaultEntry;
 };
 
-export type ClearVaultAction = {
-  type: 'CLEAR_VAULT';
+export type ClearVaultEntriesAction = {
+  type: 'CLEAR_VAULT_ENTRIES';
 };
 
 export type ToggleConcealTokensAction = {

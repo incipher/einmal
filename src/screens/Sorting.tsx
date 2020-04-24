@@ -13,7 +13,7 @@ const Sorting: React.FC = () => {
     <View style={styles.container}>
       <DraggableFlatList
         contentContainerStyle={styles.listContentContainer}
-        data={globalState.vault}
+        data={globalState.vault.entries}
         renderItem={({ item, isActive, drag }) => (
           <TouchableHighlight
             style={[
@@ -50,7 +50,7 @@ const Sorting: React.FC = () => {
         }
         keyExtractor={(item) => [item.issuer, item.account].join(':')}
         onDragEnd={({ data }) => {
-          globalDispatch({ type: 'SET_VAULT', vault: data });
+          globalDispatch({ type: 'SET_VAULT_ENTRIES', vaultEntries: data });
         }}
       />
     </View>

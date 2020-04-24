@@ -13,7 +13,19 @@ export type Sections<T> = Section<T>[];
 
 // Vault
 
-export type Vault = VaultEntry[];
+export type Vault = {
+  entries: VaultEntry[];
+};
+
+export type PersistedVault = {
+  encryption: VaultEncryption;
+  entries: string;
+};
+
+export type VaultEncryption = {
+  salt: string;
+  nonce: string;
+};
 
 export type VaultEntry = {
   account: string;

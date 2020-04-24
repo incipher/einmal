@@ -3,7 +3,6 @@ import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
 import { HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState, useInteractables } from '../hooks';
-import { deriveKey } from '../crypto';
 import * as vault from '../vault';
 import { sleep } from '../utilities';
 
@@ -40,12 +39,11 @@ const Authentication: React.FC = () => {
     await sleep(1000);
 
     try {
-      const derivedKey = await deriveKey({ password, salt: 'abc' });
-      const decryptedVault = await vault.get({ key: derivedKey });
+      const decryptedVault = await vault.get({ password });
 
       globalDispatch({
         type: 'INITIALIZE_VAULT',
-        key: derivedKey,
+        password,
         vault: decryptedVault,
       });
     } catch (error) {

@@ -1,9 +1,9 @@
 import {
   Action,
   InitializeVaultAction,
-  SetVaultAction,
+  SetVaultEntriesAction,
   AddVaultEntryAction,
-  ClearVaultAction,
+  ClearVaultEntriesAction,
   ToggleConcealTokensAction,
 } from './actions';
 
@@ -13,8 +13,10 @@ export const isInitializeVaultAction = (
   return action.type === 'INITIALIZE_VAULT';
 };
 
-export const isSetVaultAction = (action: Action): action is SetVaultAction => {
-  return action.type === 'SET_VAULT';
+export const isSetVaultEntriesAction = (
+  action: Action,
+): action is SetVaultEntriesAction => {
+  return action.type === 'SET_VAULT_ENTRIES';
 };
 
 export const isAddVaultEntryAction = (
@@ -23,10 +25,10 @@ export const isAddVaultEntryAction = (
   return action.type === 'ADD_VAULT_ENTRY';
 };
 
-export const isClearVaultAction = (
+export const isClearVaultEntriesAction = (
   action: Action,
-): action is ClearVaultAction => {
-  return action.type === 'CLEAR_VAULT';
+): action is ClearVaultEntriesAction => {
+  return action.type === 'CLEAR_VAULT_ENTRIES';
 };
 
 export const isToggleConcealTokensAction = (

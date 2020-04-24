@@ -3,7 +3,7 @@ import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
 import { Text, HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState } from '../hooks';
-import { generateRandomSalt, deriveKey } from '../crypto';
+import { sleep } from '../utilities';
 
 const AuthenticationSetup: React.FC = () => {
   const {
@@ -48,15 +48,14 @@ const AuthenticationSetup: React.FC = () => {
 
     setLoading(true);
 
-    const derivedKey = await deriveKey({
-      password,
-      salt: await generateRandomSalt(),
-    });
+    // await sleep(1000);
 
     globalDispatch({
       type: 'INITIALIZE_VAULT',
-      key: derivedKey,
-      vault: [],
+      password,
+      vault: {
+        entries: [],
+      },
     });
 
     setLoading(false);

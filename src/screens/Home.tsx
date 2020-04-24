@@ -99,7 +99,9 @@ const Home: React.FC = () => {
 
   const generateTokens = useCallback(() => {
     setTokens(
-      globalState.vault.map((vaultEntry) => generateTotp(vaultEntry.secret)),
+      globalState.vault.entries.map((vaultEntry) => {
+        return generateTotp(vaultEntry.secret);
+      }),
     );
   }, [globalState.vault]);
 
@@ -114,7 +116,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {globalState.vault.length === 0 ? null : (
+      {globalState.vault.entries.length === 0 ? null : (
         <LinearIndicator
           style={styles.linearIndicator}
           initialProgress={progress}
@@ -125,8 +127,10 @@ const Home: React.FC = () => {
 
       <FlatList
         contentContainerStyle={styles.listContentContainer}
-        data={globalState.vault.filter((entry) => {
-          return entry.issuer.toLowerCase().includes(searchQuery.toLowerCase());
+        data={globalState.vault.entries.filter((vaultEntry) => {
+          return vaultEntry.issuer
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase());
         })}
         renderItem={({ item, index }) => (
           <Token

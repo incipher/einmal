@@ -2,15 +2,15 @@ import { useReducer, Dispatch, ReducerAction } from 'react';
 import { Action } from './actions';
 import {
   isInitializeVaultAction,
-  isSetVaultAction,
+  isSetVaultEntriesAction,
   isAddVaultEntryAction,
-  isClearVaultAction,
+  isClearVaultEntriesAction,
   isToggleConcealTokensAction,
 } from './typeGuards';
 import { Vault, Settings } from '../../types';
 
 export type State = {
-  key: string;
+  password: string;
   vault: Vault;
   settings: Settings;
 };
@@ -26,29 +26,38 @@ export const useGlobalReducer = (
     if (isInitializeVaultAction(action)) {
       return {
         ...previousState,
-        key: action.key,
+        password: action.password,
         vault: action.vault,
       };
     }
 
-    if (isSetVaultAction(action)) {
+    if (isSetVaultEntriesAction(action)) {
       return {
         ...previousState,
-        vault: action.vault,
+        vault: {
+          ...previousState.vault,
+          entries: action.vaultEntries,
+        },
       };
     }
 
     if (isAddVaultEntryAction(action)) {
       return {
         ...previousState,
-        vault: previousState.vault.concat(action.vaultEntry),
+        vault: {
+          ...previousState.vault,
+          entries: previousState.vault.entries.concat(action.vaultEntry),
+        },
       };
     }
 
-    if (isClearVaultAction(action)) {
+    if (isClearVaultEntriesAction(action)) {
       return {
         ...previousState,
-        vault: [],
+        vault: {
+          ...previousState.vault,
+          entries: [],
+        },
       };
     }
 

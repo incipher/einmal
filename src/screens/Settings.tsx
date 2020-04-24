@@ -69,7 +69,7 @@ const Settings: React.FC = () => {
                 {
                   text: 'Clear vault',
                   onPress: () => {
-                    globalDispatch({ type: 'CLEAR_VAULT' });
+                    globalDispatch({ type: 'CLEAR_VAULT_ENTRIES' });
                     showSnackbar('Vault cleared');
 
                     navigation.navigate('Home');

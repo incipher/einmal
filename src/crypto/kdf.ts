@@ -8,7 +8,7 @@ export const deriveKey = async ({
   salt: Uint8Array;
 }): Promise<Uint8Array> => {
   return new Promise((resolve) => {
-    const WORK_FACTOR = Math.pow(2, 20); /* N */
+    const WORK_FACTOR = Math.pow(2, 15); /* N */
     const BLOCK_SIZE = 8; /* r */
     const PARALLELIZATION_FACTOR = 1; /* p */
     const DERIVED_KEY_LENGTH = 32; /* dkLen */

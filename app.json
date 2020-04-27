@@ -18,10 +18,15 @@
       "fallbackToCacheTimeout": 0
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "io.incipher.einmal"
     },
     "androidStatusBar": {
       "barStyle": "light-content"
-    }
+    },
+    "android": {
+      "package": "io.incipher.einmal"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }

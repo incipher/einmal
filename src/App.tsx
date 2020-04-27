@@ -12,6 +12,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as immer from 'immer';
 import {
   Welcome,
   AuthenticationSetup,
@@ -25,6 +26,8 @@ import { GlobalStateProvider, InteractablesProvider } from './hooks';
 import * as vault from './vault';
 import * as storage from './async-storage';
 import { configuration } from './constants';
+
+immer.enableES5();
 
 const theme: Theme = {
   ...DarkTheme,

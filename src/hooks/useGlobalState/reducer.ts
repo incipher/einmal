@@ -1,4 +1,5 @@
 import { useReducer, Dispatch, ReducerAction } from 'react';
+import produce from 'immer';
 import { Action } from './actions';
 import {
   isInitializeVaultAction,
@@ -15,62 +16,45 @@ export type State = {
   settings: Settings;
 };
 
-type Reducer = (previousState: State, action: Action) => State;
+type Reducer = (state: State, action: Action) => State;
 
 export type DispatchAction = Dispatch<ReducerAction<Reducer>>;
 
 export const useGlobalReducer = (
   initialState: State,
 ): [State, DispatchAction] => {
-  return useReducer<Reducer>((previousState, action) => {
+  return useReducer<Reducer>((state, action) => {
     if (isInitializeVaultAction(action)) {
-      return {
-        ...previousState,
-        password: action.password,
-        vault: action.vault,
-      };
+      return produce(state, (draftState) => {
+        draftState.password = action.password;
+        draftState.vault = action.vault;
+      });
     }
 
     if (isSetVaultEntriesAction(action)) {
-      return {
-        ...previousState,
-        vault: {
-          ...previousState.vault,
-          entries: action.vaultEntries,
-        },
-      };
+      return produce(state, (draftState) => {
+        draftState.vault.entries = action.vaultEntries;
+      });
     }
 
     if (isAddVaultEntryAction(action)) {
-      return {
-        ...previousState,
-        vault: {
-          ...previousState.vault,
-          entries: previousState.vault.entries.concat(action.vaultEntry),
-        },
-      };
+      return produce(state, (draftState) => {
+        draftState.vault.entries.push(action.vaultEntry);
+      });
     }
 
     if (isClearVaultEntriesAction(action)) {
-      return {
-        ...previousState,
-        vault: {
-          ...previousState.vault,
-          entries: [],
-        },
-      };
+      return produce(state, (draftState) => {
+        draftState.vault.entries = [];
+      });
     }
 
     if (isToggleConcealTokensAction(action)) {
-      return {
-        ...previousState,
-        settings: {
-          ...previousState.settings,
-          concealTokens: !previousState.settings.concealTokens,
-        },
-      };
+      return produce(state, (draftState) => {
+        draftState.settings.concealTokens = !state.settings.concealTokens;
+      });
     }
 
-    return previousState;
+    return state;
   }, initialState);
 };

@@ -1,5 +1,4 @@
 export { generateTotp, parseOtpauthUri } from './otp';
-
 export { encrypt, decrypt } from './symmetric';
 export { deriveKey } from './kdf';
 export { generateRandomBytes } from './random';
@@ -10,4 +9,4 @@ export {
   decodeBase64,
   normalize,
 } from './utilities';
-export { constants } from './constants';
+export { default as constants } from './constants';

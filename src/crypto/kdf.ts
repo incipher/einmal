@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
-import { constants } from './constants';
+import constants from './constants';
 
 const { CryptoModule } = NativeModules;
 
@@ -16,10 +16,10 @@ type ScryptParameters = {
 export const deriveKey = async ({
   password /* Encoded into Base64 */,
   salt /* Encoded into Base64 */,
-  workFactor = Math.pow(2, 15),
-  blockSize = 8,
-  parallelizationFactor = 1,
-  derivedKeyLength = constants.KEY_LENGTH,
+  workFactor = constants.keyDerivation.WORK_FACTOR,
+  blockSize = constants.keyDerivation.BLOCK_SIZE,
+  parallelizationFactor = constants.keyDerivation.PARALLELIZATION_FACTOR,
+  derivedKeyLength = constants.keyDerivation.DERIVED_KEY_LENGTH,
   derivedKeyEncoding = 'base64',
 }: ScryptParameters): Promise<string> => {
   return CryptoModule.scrypt(

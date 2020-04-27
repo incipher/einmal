@@ -18,12 +18,20 @@ export type Vault = {
 };
 
 export type PersistedVault = {
+  keyDerivation: VaultKeyDerivation;
   encryption: VaultEncryption;
   entries: string;
 };
 
-export type VaultEncryption = {
+export type VaultKeyDerivation = {
   salt: string;
+  workFactor: number;
+  blockSize: number;
+  parallelizationFactor: number;
+  derivedKeyLength: number;
+};
+
+export type VaultEncryption = {
   nonce: string;
 };
 

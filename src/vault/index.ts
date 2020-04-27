@@ -33,14 +33,26 @@ export const get = async (data: { password: string }): Promise<Vault> => {
   const persistedVault = await pipeP(readAsStringAsync, JSON.parse)(VAULT_PATH);
 
   const { salt, nonce, encryptedEntries } = {
-    salt: decodeBase64(persistedVault.encryption.salt),
+    salt: decodeBase64(persistedVault.keyDerivation.salt),
     nonce: decodeBase64(persistedVault.encryption.nonce),
     encryptedEntries: decodeBase64(persistedVault.entries),
   };
 
+  const {
+    workFactor,
+    blockSize,
+    parallelizationFactor,
+    derivedKeyLength,
+  } = persistedVault.keyDerivation;
+
   const key = await deriveKey({
     password: encodeBase64(password),
     salt: encodeBase64(salt),
+    workFactor,
+    blockSize,
+    parallelizationFactor,
+    derivedKeyLength,
+    derivedKeyEncoding: 'base64',
   });
 
   const entries = pipe(
@@ -61,13 +73,18 @@ export const set = async (data: {
   const password = pipe(normalize, decodeUTF8)(data.password);
 
   const [salt, nonce] = await Promise.all([
-    generateRandomBytes(constants.SALT_LENGTH),
-    generateRandomBytes(constants.NONCE_LENGTH),
+    generateRandomBytes(constants.keyDerivation.SALT_LENGTH),
+    generateRandomBytes(constants.encryption.NONCE_LENGTH),
   ]);
 
   const key = await deriveKey({
     password: encodeBase64(password),
     salt: encodeBase64(salt),
+    workFactor: constants.keyDerivation.WORK_FACTOR,
+    blockSize: constants.keyDerivation.BLOCK_SIZE,
+    parallelizationFactor: constants.keyDerivation.PARALLELIZATION_FACTOR,
+    derivedKeyLength: constants.keyDerivation.DERIVED_KEY_LENGTH,
+    derivedKeyEncoding: 'base64',
   });
 
   const encryptedEntries = pipe(
@@ -76,15 +93,22 @@ export const set = async (data: {
     encrypt({ key: decodeBase64(key), nonce }),
   )(data.vault.entries);
 
-  const { encryption, entries } = {
-    encryption: {
+  const { keyDerivation, encryption, entries } = {
+    keyDerivation: {
       salt: encodeBase64(salt),
+      workFactor: constants.keyDerivation.WORK_FACTOR,
+      blockSize: constants.keyDerivation.BLOCK_SIZE,
+      parallelizationFactor: constants.keyDerivation.PARALLELIZATION_FACTOR,
+      derivedKeyLength: constants.keyDerivation.DERIVED_KEY_LENGTH,
+    },
+    encryption: {
       nonce: encodeBase64(nonce),
     },
     entries: encodeBase64(encryptedEntries),
   };
 
   const persistedVault = {
+    keyDerivation,
     encryption,
     entries,
   };

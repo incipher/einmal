@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { AppLoading } from 'expo';
+import * as SplashScreen from 'expo-splash-screen';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import {
@@ -61,6 +61,14 @@ const App: React.FC = () => {
   const [initialSettings, setInitialSettings] = useState(null);
   const [isReady, setReady] = useState(false);
 
+  const initialize = async () => {
+    await SplashScreen.preventAutoHideAsync();
+    await loadAssets();
+
+    setReady(true);
+    await SplashScreen.hideAsync();
+  };
+
   const loadAssets = async () => {
     if (configuration.shouldReset) {
       await Promise.all([deleteVault(), storage.clear()]);
@@ -109,82 +117,78 @@ const App: React.FC = () => {
     });
   };
 
-  if (!isReady) {
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  if (isReady) {
     return (
-      <AppLoading
-        startAsync={loadAssets}
-        onFinish={() => {
-          setReady(true);
-        }}
-        onError={console.warn}
-      />
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" />
+
+        <ThemeProvider theme={theme}>
+          <InteractablesProvider>
+            <GlobalStateProvider settings={initialSettings}>
+              {(globalState) => (
+                <NavigationContainer>
+                  <Stack.Navigator
+                    initialRouteName={
+                      doesVaultExist ? 'Authentication' : 'Welcome'
+                    }
+                    screenOptions={{
+                      headerStyle: {
+                        backgroundColor: 'black',
+                      },
+                      headerTitleStyle: {
+                        color: 'white',
+                      },
+                      headerBackTitleStyle: {
+                        color: 'white',
+                      },
+                      headerTintColor: 'white',
+                    }}
+                  >
+                    {globalState.vault ? (
+                      <>
+                        <Stack.Screen name="Home" component={Home} />
+                        <Stack.Screen name="Sorting" component={Sorting} />
+                        <Stack.Screen
+                          name="BarcodeScanner"
+                          component={BarcodeScanner}
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen name="Settings" component={Settings} />
+                      </>
+                    ) : (
+                      <>
+                        <Stack.Screen
+                          name="Welcome"
+                          component={Welcome}
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="AuthenticationSetup"
+                          component={AuthenticationSetup}
+                          options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                          name="Authentication"
+                          component={Authentication}
+                          options={{ headerShown: false }}
+                        />
+                      </>
+                    )}
+                  </Stack.Navigator>
+                </NavigationContainer>
+              )}
+            </GlobalStateProvider>
+          </InteractablesProvider>
+        </ThemeProvider>
+      </SafeAreaView>
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-
-      <ThemeProvider theme={theme}>
-        <InteractablesProvider>
-          <GlobalStateProvider settings={initialSettings}>
-            {(globalState) => (
-              <NavigationContainer>
-                <Stack.Navigator
-                  initialRouteName={
-                    doesVaultExist ? 'Authentication' : 'Welcome'
-                  }
-                  screenOptions={{
-                    headerStyle: {
-                      backgroundColor: 'black',
-                    },
-                    headerTitleStyle: {
-                      color: 'white',
-                    },
-                    headerBackTitleStyle: {
-                      color: 'white',
-                    },
-                    headerTintColor: 'white',
-                  }}
-                >
-                  {globalState.vault ? (
-                    <>
-                      <Stack.Screen name="Home" component={Home} />
-                      <Stack.Screen name="Sorting" component={Sorting} />
-                      <Stack.Screen
-                        name="BarcodeScanner"
-                        component={BarcodeScanner}
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen name="Settings" component={Settings} />
-                    </>
-                  ) : (
-                    <>
-                      <Stack.Screen
-                        name="Welcome"
-                        component={Welcome}
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="AuthenticationSetup"
-                        component={AuthenticationSetup}
-                        options={{ headerShown: false }}
-                      />
-                      <Stack.Screen
-                        name="Authentication"
-                        component={Authentication}
-                        options={{ headerShown: false }}
-                      />
-                    </>
-                  )}
-                </Stack.Navigator>
-              </NavigationContainer>
-            )}
-          </GlobalStateProvider>
-        </InteractablesProvider>
-      </ThemeProvider>
-    </SafeAreaView>
-  );
+  return null;
 };
 
 const styles = StyleSheet.create({

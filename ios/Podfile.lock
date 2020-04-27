@@ -37,6 +37,8 @@ PODS:
     - UMPermissionsInterface
   - EXRandom (8.1.0):
     - UMCore
+  - EXSplashScreen (0.2.0):
+    - UMCore
   - EXSQLite (8.1.0):
     - UMCore
     - UMFileSystemInterface
@@ -309,6 +311,7 @@ DEPENDENCIES:
   - EXLocation (from `../node_modules/expo-location/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXRandom (from `../node_modules/expo-random/ios`)
+  - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
@@ -390,6 +393,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-permissions/ios"
   EXRandom:
     :path: "../node_modules/expo-random/ios"
+  EXSplashScreen:
+    :path: "../node_modules/expo-splash-screen/ios"
   EXSQLite:
     :path: "../node_modules/expo-sqlite/ios"
   EXUpdates:
@@ -496,6 +501,7 @@ SPEC CHECKSUMS:
   EXLocation: bbd487fd96a18a3ad9725389bbb94c4a5f78edf3
   EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
   EXRandom: cafbaebd177d38a4c4ee514e75824245e6fc2046
+  EXSplashScreen: 3bcc9a6fbedc1a3897428694654b3f8bc0261af6
   EXSQLite: 877ad6c8eb169353a2f94d5ad26510ffadd46a1f
   EXUpdates: c8b35afb562139260e904801e031ab3d270acaf1
   EXWebBrowser: 4118b18d151fd03c935bd9de4cd312d2b33ec2c5

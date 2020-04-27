@@ -141,12 +141,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   tokenText: {
+    padding: 0,
     fontSize: 36,
     fontFamily: 'IBMPlexMono-Regular',
     color: 'white',
-  },
-  tokenSeparator: {
-    marginHorizontal: 4,
   },
   issuer: {
     fontSize: 16,

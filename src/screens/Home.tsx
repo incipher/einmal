@@ -155,8 +155,10 @@ const Home: React.FC = () => {
             />
           )
         }
-        ItemSeparatorComponent={() => <View style={styles.listItemDivider} />}
         keyExtractor={(item) => [item.issuer, item.account].join(':')}
+        getItemLayout={
+          undefined /* TODO: Optimize performance using getItemLayout() */
+        }
       />
 
       <Portal>
@@ -222,9 +224,6 @@ const styles = StyleSheet.create({
   },
   listContentContainer: {
     flex: 1,
-  },
-  listItemDivider: {
-    paddingVertical: 8,
   },
   fab: {
     marginBottom: 32,

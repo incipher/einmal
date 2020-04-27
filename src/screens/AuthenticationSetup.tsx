@@ -48,7 +48,7 @@ const AuthenticationSetup: React.FC = () => {
 
     setLoading(true);
 
-    // await sleep(1000);
+    await sleep(1000);
 
     globalDispatch({
       type: 'INITIALIZE_VAULT',

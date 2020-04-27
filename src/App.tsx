@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { StatusBar } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
@@ -9,6 +9,7 @@ import {
   DarkTheme,
   Theme,
 } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -123,7 +124,7 @@ const App: React.FC = () => {
 
   if (isReady) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaProvider>
         <StatusBar barStyle="light-content" />
 
         <ThemeProvider theme={theme}>
@@ -184,17 +185,11 @@ const App: React.FC = () => {
             </GlobalStateProvider>
           </InteractablesProvider>
         </ThemeProvider>
-      </SafeAreaView>
+      </SafeAreaProvider>
     );
   }
 
   return null;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;

@@ -7,6 +7,7 @@ import React, {
 import { View, Image, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Portal, IconButton, Searchbar, FAB } from 'react-native-paper';
+import { useSafeArea } from 'react-native-safe-area-context';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { EmptyState, LinearIndicator, Token } from '../components';
@@ -15,10 +16,12 @@ import { generateTotp } from '../crypto';
 import { isPhysicalDevice } from '../utilities';
 
 const Home: React.FC = () => {
-  const [globalState] = useGlobalState();
-  const { showSnackbar } = useInteractables();
+  const insets = useSafeArea();
   const navigation = useNavigation();
   const isNavigationFocused = useIsFocused();
+
+  const [globalState] = useGlobalState();
+  const { showSnackbar } = useInteractables();
 
   const [tokens, setTokens] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,7 +32,7 @@ const Home: React.FC = () => {
     navigation.setOptions({
       header: () => {
         return (
-          <View style={styles.header}>
+          <View style={[styles.header, { paddingTop: insets.top }]}>
             {isSearchbarVisible ? (
               <Searchbar
                 style={styles.searchbar}

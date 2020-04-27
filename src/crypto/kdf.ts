@@ -1,28 +1,33 @@
-import scrypt from 'scrypt-async';
+import { NativeModules } from 'react-native';
+
+const { CryptoModule } = NativeModules;
+
+type ScryptParameters = {
+  password: string;
+  salt: string;
+  workFactor?: number;
+  blockSize?: number;
+  parallelizationFactor?: number;
+  derivedKeyLength?: number;
+  derivedKeyEncoding?: 'base64' | 'hex';
+};
 
 export const deriveKey = async ({
-  password,
-  salt,
-}: {
-  password: Uint8Array;
-  salt: Uint8Array;
-}): Promise<Uint8Array> => {
-  return new Promise((resolve) => {
-    const WORK_FACTOR = Math.pow(2, 15); /* N */
-    const BLOCK_SIZE = 8; /* r */
-    const PARALLELIZATION_FACTOR = 1; /* p */
-    const DERIVED_KEY_LENGTH = 32; /* dkLen */
-
-    const parameters = {
-      N: WORK_FACTOR,
-      r: BLOCK_SIZE,
-      p: PARALLELIZATION_FACTOR,
-      dkLen: DERIVED_KEY_LENGTH,
-      encoding: 'binary',
-    };
-
-    scrypt(password, salt, parameters, (derivedKey: Uint8Array) => {
-      return resolve(derivedKey);
-    });
-  });
+  password /* ASCII encoding */,
+  salt /* Base64 encoding */,
+  workFactor = Math.pow(2, 15),
+  blockSize = 8,
+  parallelizationFactor = 1,
+  derivedKeyLength = 32,
+  derivedKeyEncoding = 'base64',
+}: ScryptParameters): Promise<string> => {
+  return CryptoModule.scrypt(
+    password,
+    salt,
+    workFactor /* N */,
+    blockSize /* r */,
+    parallelizationFactor /* p */,
+    derivedKeyLength /* dkLen */,
+    derivedKeyEncoding,
+  );
 };

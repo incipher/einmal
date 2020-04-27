@@ -129,7 +129,7 @@ const Home: React.FC = () => {
       )}
 
       <FlatList
-        contentContainerStyle={styles.listContentContainer}
+        style={styles.list}
         data={globalState.vault.entries.filter((vaultEntry) => {
           return vaultEntry.issuer
             .toLowerCase()
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   linearIndicator: {
     flex: 0.005,
   },
-  listContentContainer: {
+  list: {
     flex: 1,
   },
   fab: {

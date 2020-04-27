@@ -3,8 +3,7 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "web": "expo start --web"
+    "ios": "react-native run-ios"
   },
   "dependencies": {
     "@expo/vector-icons": "^10.0.0",

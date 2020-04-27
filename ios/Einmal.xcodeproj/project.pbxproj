@@ -14,9 +14,9 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		26A27C78245677E2000B1B79 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A27C77245677E2000B1B79 /* Crypto.framework */; };
 		26A27C7A24567813000B1B79 /* CryptoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 26A27C7924567813000B1B79 /* CryptoModule.m */; };
 		26A27C7D24567828000B1B79 /* CryptoModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A27C7C24567828000B1B79 /* CryptoModule.swift */; };
+		26CC2F26245711A30018D27A /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26CC2F25245711A30018D27A /* Crypto.framework */; };
 		3DE4DAD41476765101945408 /* libPods-Einmal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D43FF9D506E70904424FA7E9 /* libPods-Einmal.a */; };
 		8C9FF9F32B8B4930A737CC4E /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC2D70ABFA0E489A9A580C01 /* SplashScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -33,10 +33,10 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Einmal/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Einmal/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Einmal/main.m; sourceTree = "<group>"; };
-		26A27C77245677E2000B1B79 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		26A27C7924567813000B1B79 /* CryptoModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CryptoModule.m; path = Einmal/CryptoModule.m; sourceTree = "<group>"; };
 		26A27C7B24567828000B1B79 /* Einmal-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Einmal-Bridging-Header.h"; sourceTree = "<group>"; };
 		26A27C7C24567828000B1B79 /* CryptoModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CryptoModule.swift; path = Einmal/CryptoModule.swift; sourceTree = "<group>"; };
+		26CC2F25245711A30018D27A /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B47C5AFCB8BDE514B7D1AC6 /* Pods-Einmal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Einmal.debug.xcconfig"; path = "Target Support Files/Pods-Einmal/Pods-Einmal.debug.xcconfig"; sourceTree = "<group>"; };
 		8AC623DBF3A3E2CB072F81F2 /* Pods-Einmal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Einmal.release.xcconfig"; path = "Target Support Files/Pods-Einmal/Pods-Einmal.release.xcconfig"; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DE4DAD41476765101945408 /* libPods-Einmal.a in Frameworks */,
-				26A27C78245677E2000B1B79 /* Crypto.framework in Frameworks */,
+				26CC2F26245711A30018D27A /* Crypto.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +83,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				26A27C77245677E2000B1B79 /* Crypto.framework */,
+				26CC2F25245711A30018D27A /* Crypto.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,

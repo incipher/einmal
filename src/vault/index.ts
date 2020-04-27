@@ -27,11 +27,9 @@ export const exists = async (): Promise<boolean> => {
   return exists;
 };
 
-export const get = async ({
-  password,
-}: {
-  password: string;
-}): Promise<Vault> => {
+export const get = async (data: { password: string }): Promise<Vault> => {
+  const password = pipe(normalize, decodeUTF8)(data.password);
+
   const persistedVault = await pipeP(readAsStringAsync, JSON.parse)(VAULT_PATH);
 
   const { salt, nonce, encryptedEntries } = {
@@ -41,8 +39,7 @@ export const get = async ({
   };
 
   const key = await deriveKey({
-    /* TODO: Ensure password & salt are in ASCII */
-    password: normalize(password),
+    password: encodeBase64(password),
     salt: encodeBase64(salt),
   });
 
@@ -57,21 +54,19 @@ export const get = async ({
   };
 };
 
-export const set = async ({
-  vault,
-  password,
-}: {
+export const set = async (data: {
   vault: Vault;
   password: string;
 }): Promise<void> => {
+  const password = pipe(normalize, decodeUTF8)(data.password);
+
   const [salt, nonce] = await Promise.all([
     generateRandomBytes(constants.SALT_LENGTH),
     generateRandomBytes(constants.NONCE_LENGTH),
   ]);
 
   const key = await deriveKey({
-    /* TODO: Ensure password & salt are in ASCII */
-    password: normalize(password),
+    password: encodeBase64(password),
     salt: encodeBase64(salt),
   });
 
@@ -79,7 +74,7 @@ export const set = async ({
     JSON.stringify,
     decodeUTF8,
     encrypt({ key: decodeBase64(key), nonce }),
-  )(vault.entries);
+  )(data.vault.entries);
 
   const { encryption, entries } = {
     encryption: {

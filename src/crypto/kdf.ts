@@ -14,8 +14,8 @@ type ScryptParameters = {
 };
 
 export const deriveKey = async ({
-  password /* ASCII encoding */,
-  salt /* Base64 encoding */,
+  password /* Encoded into Base64 */,
+  salt /* Encoded into Base64 */,
   workFactor = Math.pow(2, 15),
   blockSize = 8,
   parallelizationFactor = 1,

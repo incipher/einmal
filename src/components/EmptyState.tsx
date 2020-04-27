@@ -1,19 +1,20 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text } from 'react-native-paper';
 
 type Props = {
+  style?: StyleProp<ViewStyle>;
   icon: string;
   heading?: string;
   subheading?: string;
 };
 
 const EmptyState: React.FC<Props> = (props) => {
-  const { icon, heading = '', subheading = '' } = props;
+  const { style, icon, heading = '', subheading = '' } = props;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <MaterialCommunityIcons
         style={styles.icon}
         name={icon}

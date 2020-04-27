@@ -113,13 +113,22 @@ const Home: React.FC = () => {
     setSearchQuery('');
   };
 
+  const isVaultEmpty = globalState.vault.entries.length === 0;
+  const viewableVaultEntries = globalState.vault.entries.filter(
+    (vaultEntry) => {
+      return vaultEntry.issuer
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+    },
+  );
+
   const SECONDS_CAP = 30;
   const cappedSeconds = new Date().getSeconds() % SECONDS_CAP;
   const progress = cappedSeconds / SECONDS_CAP;
 
   return (
     <View style={styles.container}>
-      {globalState.vault.entries.length === 0 ? null : (
+      {isVaultEmpty ? null : (
         <LinearIndicator
           style={styles.linearIndicator}
           initialProgress={progress}
@@ -128,38 +137,33 @@ const Home: React.FC = () => {
         />
       )}
 
-      <FlatList
-        style={styles.list}
-        data={globalState.vault.entries.filter((vaultEntry) => {
-          return vaultEntry.issuer
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase());
-        })}
-        renderItem={({ item, index }) => (
-          <Token
-            issuer={item.issuer}
-            token={tokens[index]}
-            shouldConceal={globalState.settings.concealTokens}
-            onPress={({ token }) => {
-              Clipboard.setString(token);
-              showSnackbar('Copied to clipboard');
-            }}
-          />
-        )}
-        ListEmptyComponent={
-          isSearchbarVisible ? null : (
-            <EmptyState
-              icon="shield-plus-outline"
-              heading="Your vault is empty"
-              subheading="Configure your accounts to use two-step verification"
+      {isVaultEmpty ? (
+        <EmptyState
+          icon="shield-plus-outline"
+          heading="Your vault is empty"
+          subheading="Configure your accounts to use two-step verification"
+        />
+      ) : (
+        <FlatList
+          style={styles.list}
+          data={viewableVaultEntries}
+          renderItem={({ item, index }) => (
+            <Token
+              issuer={item.issuer}
+              token={tokens[index]}
+              shouldConceal={globalState.settings.concealTokens}
+              onPress={({ token }) => {
+                Clipboard.setString(token);
+                showSnackbar('Copied to clipboard');
+              }}
             />
-          )
-        }
-        keyExtractor={(item) => [item.issuer, item.account].join(':')}
-        getItemLayout={
-          undefined /* TODO: Optimize performance using getItemLayout() */
-        }
-      />
+          )}
+          keyExtractor={(item) => [item.issuer, item.account].join(':')}
+          getItemLayout={
+            undefined /* TODO: Optimize performance using getItemLayout() */
+          }
+        />
+      )}
 
       <Portal>
         <FAB.Group

@@ -71,7 +71,7 @@ const LinearIndicator: React.FC<Props> = (props) => {
     backgroundColor: '#591EE5',
   };
 
-  return <Animated.View style={[baseStyle, style, animatedStyle]} />;
+  return <Animated.View style={[baseStyle, animatedStyle, style]} />;
 };
 
 const loop = ({

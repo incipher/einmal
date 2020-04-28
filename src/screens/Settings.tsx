@@ -23,20 +23,20 @@ const Settings: React.FC = () => {
     {
       title: 'Vault',
       data: [
-        {
-          title: 'Change password',
-          description: 'Set a new password to the vault',
-          onPress: () => {
-            showSnackbar('Coming soon');
-          },
-        },
-        {
-          title: 'Cloud backup',
-          description: 'Back up encrypted vault to the cloud',
-          onPress: () => {
-            showSnackbar('Coming soon');
-          },
-        },
+        // {
+        //   title: 'Change password',
+        //   description: 'Set a new password to the vault',
+        //   onPress: () => {
+        //     showSnackbar('Coming soon');
+        //   },
+        // },
+        // {
+        //   title: 'Cloud backup',
+        //   description: 'Back up encrypted vault to the cloud',
+        //   onPress: () => {
+        //     showSnackbar('Coming soon');
+        //   },
+        // },
         {
           title: 'Import',
           description: 'Import vault from a file',

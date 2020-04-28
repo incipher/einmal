@@ -186,7 +186,9 @@ const Home: React.FC = () => {
             {
               icon: 'keyboard',
               label: 'Enter manually',
-              onPress: () => {},
+              onPress: () => {
+                showSnackbar('Coming soon');
+              },
             },
           ]}
           onStateChange={({ open }) => {

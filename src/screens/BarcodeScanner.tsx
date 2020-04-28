@@ -6,16 +6,11 @@ import { EmptyState } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
 import { parseOtpauthUri } from '../crypto';
 import { actuateHapticFeedback } from '../utilities';
-import { VaultEntry } from '../types';
 
-type Props = {
-  onBarcodeScanned?: (entry: VaultEntry) => void;
-};
+type Props = {};
 
 const BarcodeScanner: React.FC<Props> = (props) => {
-  const { onBarcodeScanned } = props;
-
-  const [globalState, globalDispatch] = useGlobalState();
+  const [, globalDispatch] = useGlobalState();
   const { showSnackbar } = useInteractables();
   const navigation = useNavigation();
 
@@ -53,7 +48,6 @@ const BarcodeScanner: React.FC<Props> = (props) => {
       };
 
       globalDispatch({ type: 'ADD_VAULT_ENTRY', vaultEntry });
-      onBarcodeScanned?.(vaultEntry);
     } catch (error) {
       showSnackbar('Unsupported QR code');
     }
@@ -88,8 +82,6 @@ const BarcodeScanner: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
     backgroundColor: 'black',
   },
 });

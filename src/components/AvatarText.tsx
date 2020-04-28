@@ -25,7 +25,7 @@ const AvatarText: React.FC<Props> = (props) => {
         },
         style,
       ]}
-      colors={[randomColor({ luminosity: 'bright' }), 'transparent']}
+      colors={[randomColor(), 'transparent']}
     >
       <Text style={[styles.label, labelStyle]}>{label}</Text>
     </LinearGradient>

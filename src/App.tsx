@@ -23,7 +23,7 @@ import {
   Settings,
 } from './screens';
 import { GlobalStateProvider, InteractablesProvider } from './hooks';
-import * as vault from './vault';
+import { doesVaultExist, deleteVault } from './vault';
 import * as storage from './async-storage';
 import { configuration } from './constants';
 
@@ -61,7 +61,7 @@ const theme: Theme = {
 const Stack = createStackNavigator();
 
 const App: React.FC = () => {
-  const [doesVaultExist, setDoesVaultExist] = useState(false);
+  const [vaultExists, setVaultExists] = useState(false);
   const [initialSettings, setInitialSettings] = useState(null);
   const [isReady, setReady] = useState(false);
 
@@ -86,17 +86,9 @@ const App: React.FC = () => {
     ]);
   };
 
-  const deleteVault = async () => {
-    try {
-      await vault.clear();
-    } catch (error) {
-      console.log('Failed to delete vault');
-    }
-  };
-
   const checkVault = async () => {
-    const doesVaultExist = await vault.exists();
-    setDoesVaultExist(doesVaultExist);
+    const vaultExists = await doesVaultExist();
+    setVaultExists(vaultExists);
   };
 
   const loadSettings = async () => {
@@ -137,7 +129,7 @@ const App: React.FC = () => {
                 <NavigationContainer>
                   <Stack.Navigator
                     initialRouteName={
-                      doesVaultExist ? 'Authentication' : 'Welcome'
+                      vaultExists ? 'Authentication' : 'Welcome'
                     }
                     screenOptions={{
                       headerStyle: {

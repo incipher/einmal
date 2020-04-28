@@ -17,7 +17,7 @@ export type Vault = {
   entries: VaultEntry[];
 };
 
-export type PersistedVault = {
+export type EncryptedVault = {
   keyDerivation: VaultKeyDerivation;
   encryption: VaultEncryption;
   entries: string;

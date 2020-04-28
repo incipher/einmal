@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, createContext } from 'react';
 import { useGlobalReducer, State, DispatchAction } from './reducer';
-import * as vault from '../../vault';
+import { encryptVault, writeVault } from '../../vault';
 import * as storage from '../../async-storage';
 import { Vault, Settings } from '../../types';
 
@@ -34,22 +34,24 @@ export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
     settings: initialSettings,
   });
 
-  useEffect(() => {
-    if (state.vault && state.password) {
-      vault.set({
-        vault: state.vault,
-        password: state.password,
-      });
-    }
-  }, [state.vault, state.password]);
+  const { vault, password, settings } = state;
 
   useEffect(() => {
-    // TODO: Update secure store
-  }, [state.password]);
+    (async () => {
+      if (vault && password) {
+        const encryptedVault = await encryptVault({
+          vault,
+          password,
+        });
+
+        await writeVault(encryptedVault);
+      }
+    })();
+  }, [vault, password]);
 
   useEffect(() => {
-    storage.setConcealTokens(state.settings.concealTokens);
-  }, [state.settings.concealTokens]);
+    storage.setConcealTokens(settings.concealTokens);
+  }, [settings.concealTokens]);
 
   return (
     <GlobalStateContext.Provider value={[state, dispatch]}>

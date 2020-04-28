@@ -3,7 +3,7 @@ import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
 import { HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState, useInteractables } from '../hooks';
-import * as vault from '../vault';
+import { readVault, decryptVault } from '../vault';
 import { sleep } from '../utilities';
 
 const Authentication: React.FC = () => {
@@ -35,11 +35,15 @@ const Authentication: React.FC = () => {
     }
 
     setLoading(true);
-
     await sleep(1000);
 
     try {
-      const decryptedVault = await vault.get({ password });
+      const encryptedVault = await readVault();
+
+      const decryptedVault = await decryptVault({
+        encryptedVault,
+        password,
+      });
 
       globalDispatch({
         type: 'INITIALIZE_VAULT',

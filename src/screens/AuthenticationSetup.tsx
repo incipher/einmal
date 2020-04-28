@@ -47,7 +47,6 @@ const AuthenticationSetup: React.FC = () => {
     }
 
     setLoading(true);
-
     await sleep(1000);
 
     globalDispatch({

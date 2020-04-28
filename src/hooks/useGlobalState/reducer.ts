@@ -39,7 +39,18 @@ export const useGlobalReducer = (
 
     if (isAddVaultEntryAction(action)) {
       return produce(state, (draftState) => {
-        draftState.vault.entries.push(action.vaultEntry);
+        const existingEntryIndex = state.vault.entries.findIndex((entry) => {
+          return (
+            entry.issuer === action.vaultEntry.issuer &&
+            entry.account === action.vaultEntry.account
+          );
+        });
+
+        if (existingEntryIndex === -1) {
+          draftState.vault.entries.push(action.vaultEntry);
+        } else {
+          draftState.vault.entries[existingEntryIndex] = action.vaultEntry;
+        }
       });
     }
 

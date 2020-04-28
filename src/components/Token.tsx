@@ -17,6 +17,7 @@ import {
 } from 'react-native-reanimated';
 import { timing } from 'react-native-redash';
 import { useMemoOne } from 'use-memo-one';
+import AvatarText from './AvatarText';
 import ReText from './ReText';
 import { usePrevious } from '../hooks';
 
@@ -78,7 +79,7 @@ const Token: React.FC<Props> = (props) => {
             source={{ uri: null }}
           />
         ) : (
-          <Avatar.Text
+          <AvatarText
             style={styles.avatar}
             size={48}
             label={issuer.substring(0, 1)}

@@ -10,6 +10,9 @@ PODS:
   - EXConstants (9.0.0):
     - UMConstantsInterface
     - UMCore
+  - EXDocumentPicker (8.1.0):
+    - UMCore
+    - UMFileSystemInterface
   - EXErrorRecovery (1.1.0):
     - UMCore
   - EXFileSystem (8.1.0):
@@ -301,6 +304,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXBarCodeScanner (from `../node_modules/expo-barcode-scanner/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXDocumentPicker (from `../node_modules/expo-document-picker/ios`)
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
@@ -373,6 +377,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-barcode-scanner/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
+  EXDocumentPicker:
+    :path: "../node_modules/expo-document-picker/ios"
   EXErrorRecovery:
     :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
@@ -491,6 +497,7 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   EXBarCodeScanner: 69c482f1dc8492493ccae692093d6e9914081a09
   EXConstants: 5304709b1bea70a4828f48ba4c7fc3ec3b2d9b17
+  EXDocumentPicker: 3bacb53995a03147696a93e1727288b1a7d39cf7
   EXErrorRecovery: 8f4c21ab2f51bf75defe4536f841a37de59b0661
   EXFileSystem: cf4232ba7c62dc49b78c2d36005f97b6fddf0b01
   EXFont: b60f7a8900e3a12e7be3b2a40e19b22c7b5f89ba

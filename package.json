@@ -19,6 +19,7 @@
     "expo-asset": "~8.1.4",
     "expo-barcode-scanner": "~8.1.0",
     "expo-constants": "~9.0.0",
+    "expo-document-picker": "^8.1.0",
     "expo-file-system": "~8.1.0",
     "expo-font": "~8.1.0",
     "expo-haptics": "~8.1.0",

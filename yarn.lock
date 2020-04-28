@@ -3983,7 +3983,7 @@ expo-keep-awake@~8.1.0:
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-8.1.0.tgz#3a1d8aa5a8395d40c7d79e1c93020ae5f848e664"
   integrity sha512-RNPwWvpwsJwJS8ZI1yklKyVQ6l2NNZBCN2aSgQMRza2SABnpFFzDLHQwMo7DC+nbmrOueMvCIDr0VI3xrzGfEg==
 
-expo-linear-gradient@~8.1.0:
+expo-linear-gradient@^8.1.0, expo-linear-gradient@~8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-8.1.0.tgz#6933765cf1e76ef2928fd8495e779929699ac4c6"
   integrity sha512-AIy2pOXQRcgk2XE5IgAzd1S2jTFLutiDfveNm6m3fPAk00Rw4qFe98qzte1ayNrGYLJvQ2xq/Y7C0BmBP051mg==
@@ -7968,6 +7968,11 @@ randexp@0.4.6:
   dependencies:
     discontinuous-range "1.0.0"
     ret "~0.1.10"
+
+randomcolor@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/randomcolor/-/randomcolor-0.5.4.tgz#df615b13f25b89ea58c5f8f72647f0a6f07adcc3"
+  integrity sha512-nYd4nmTuuwMFzHL6W+UWR5fNERGZeVauho8mrJDUSXdNDbao4rbrUwhuLgKC/j8VCS5+34Ria8CsTDuBjrIrQA==
 
 range-parser@~1.2.1:
   version "1.2.1"

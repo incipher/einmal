@@ -2,21 +2,25 @@ import React, { useState, useContext, createContext } from 'react';
 import {
   Portal,
   Paragraph,
+  TextInput,
   Button,
   Snackbar,
   Dialog,
 } from 'react-native-paper';
+import produce from 'immer';
 
 type ShowSnackbarAction = (snackbarText: string) => void;
 
 type ShowDialogAction = ({
   title,
   paragraphs,
+  inputs,
   actions,
 }: {
   title: string;
-  paragraphs: string[];
-  actions: { text: string; onPress: () => void }[];
+  paragraphs?: string[];
+  inputs?: string[];
+  actions: { text: string; onPress: (data: any) => void }[];
 }) => void;
 
 type Actions = {
@@ -38,16 +42,22 @@ export const InteractablesProvider: React.FC = (props) => {
     visible: false,
     title: '',
     paragraphs: [],
+    inputsMap: {},
     actions: [],
   });
 
   const actions = {
     showSnackbar: setSnackbarText,
-    showDialog: ({ title, paragraphs, actions }) => {
+    showDialog: ({ title, paragraphs = [], inputs = [], actions }) => {
+      const inputsMap = inputs.reduce((accumulation, element) => {
+        return { ...accumulation, [element]: '' };
+      }, {});
+
       setDialogState({
         visible: true,
         title,
         paragraphs,
+        inputsMap,
         actions,
       });
     },
@@ -82,6 +92,30 @@ export const InteractablesProvider: React.FC = (props) => {
                 {paragraph}
               </Paragraph>
             ))}
+
+            {Object.entries(dialogState.inputsMap).map(
+              ([property, value], index) => {
+                return (
+                  <TextInput
+                    style={{
+                      backgroundColor: '#121212',
+                    }}
+                    key={index}
+                    label={property}
+                    selectionColor="grey"
+                    secureTextEntry={true}
+                    value={value as string}
+                    onChangeText={(text) => {
+                      setDialogState((state) => {
+                        return produce(state, (draftState) => {
+                          draftState.inputsMap[property] = text;
+                        });
+                      });
+                    }}
+                  />
+                );
+              },
+            )}
           </Dialog.Content>
 
           <Dialog.Actions>
@@ -89,8 +123,13 @@ export const InteractablesProvider: React.FC = (props) => {
               <Button
                 key={action.text}
                 onPress={() => {
-                  action.onPress();
-                  setDialogState((state) => ({ ...state, visible: false }));
+                  action.onPress(dialogState.inputsMap);
+
+                  setDialogState((state) => {
+                    return produce(state, (draftState) => {
+                      draftState.visible = false;
+                    });
+                  });
                 }}
               >
                 {action.text}

@@ -5,6 +5,7 @@ import {
   deleteAsync,
   documentDirectory,
 } from 'expo-file-system';
+import { writeFile, DownloadDirectoryPath } from 'react-native-fs';
 import { EncryptedVault } from '../types';
 
 const INTERNAL_VAULT_PATH = documentDirectory + 'vault.json';
@@ -26,4 +27,22 @@ export const writeVault = async (vault: EncryptedVault): Promise<void> => {
 
 export const deleteVault = async (): Promise<void> => {
   await deleteAsync(INTERNAL_VAULT_PATH);
+};
+
+export const importVault = async (
+  filePath: string,
+): Promise<EncryptedVault> => {
+  const vaultContents = await readAsStringAsync(filePath);
+  return JSON.parse(vaultContents);
+};
+
+export const exportVault = async (vault: EncryptedVault): Promise<void> => {
+  const timestamp = Date.now();
+  const vaultContents = JSON.stringify(vault, null, 2);
+
+  await writeFile(
+    `${DownloadDirectoryPath}/einmal-vault-${timestamp}.json`,
+    vaultContents,
+    'utf8',
+  );
 };

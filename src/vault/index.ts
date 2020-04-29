@@ -4,4 +4,6 @@ export {
   readVault,
   writeVault,
   deleteVault,
+  importVault,
+  exportVault,
 } from './persistence';

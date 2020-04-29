@@ -1,15 +1,19 @@
-import React from 'react';
-import { View, SectionList, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, SectionList, StyleSheet, ActivityIndicator } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
 import { List, Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useGlobalState, useInteractables } from '../hooks';
-import { configuration } from '../constants';
+import { importVault, exportVault, decryptVault, encryptVault } from '../vault';
+import { requestExternalStoragePermission, sleep } from '../utilities';
+import { configuration, colors } from '../constants';
 import { Sections } from '../types';
 
 type Setting = {
   title: string;
   description: string;
   value?: boolean;
+  loading?: boolean;
   onPress?: () => void;
   onToggle?: () => void;
 };
@@ -19,36 +23,96 @@ const Settings: React.FC = () => {
   const { showSnackbar, showDialog } = useInteractables();
   const navigation = useNavigation();
 
+  const [isImportingVault, setImportingVault] = useState(false);
+  const [isExportingVault, setExportingVault] = useState(false);
+
   const sections: Sections<Setting> = [
     {
       title: 'Vault',
       data: [
-        // {
-        //   title: 'Change password',
-        //   description: 'Set a new password to the vault',
-        //   onPress: () => {
-        //     showSnackbar('Coming soon');
-        //   },
-        // },
-        // {
-        //   title: 'Cloud backup',
-        //   description: 'Back up encrypted vault to the cloud',
-        //   onPress: () => {
-        //     showSnackbar('Coming soon');
-        //   },
-        // },
         {
           title: 'Import',
-          description: 'Import vault from a file',
-          onPress: () => {
-            showSnackbar('Coming soon');
+          description: 'Import encrypted vault from a file',
+          loading: isImportingVault,
+          onPress: async () => {
+            const response = await DocumentPicker.getDocumentAsync({
+              type: 'application/json',
+              copyToCacheDirectory: true,
+            });
+
+            if (response.type === 'cancel') {
+              return;
+            }
+
+            showDialog({
+              title: 'Enter password',
+              inputs: ['Password'],
+              actions: [
+                {
+                  text: 'Cancel',
+                  onPress: () => {},
+                },
+                {
+                  text: 'Import',
+                  onPress: async (inputs) => {
+                    const { Password: password } = inputs;
+
+                    setImportingVault(true);
+
+                    try {
+                      const encryptedVault = await importVault(response.uri);
+
+                      const decryptedVault = await decryptVault({
+                        encryptedVault,
+                        password,
+                      });
+
+                      globalDispatch({
+                        type: 'INITIALIZE_VAULT',
+                        password,
+                        vault: decryptedVault,
+                      });
+
+                      showSnackbar('Vault imported successfully');
+                    } catch (error) {
+                      showSnackbar('Failed to import vault');
+                    }
+
+                    setImportingVault(false);
+                  },
+                },
+              ],
+            });
           },
         },
         {
           title: 'Export',
-          description: 'Export vault to a file',
-          onPress: () => {
-            showSnackbar('Coming soon');
+          description: 'Export encrypted vault to a file',
+          loading: isExportingVault,
+          onPress: async () => {
+            try {
+              const { status } = await requestExternalStoragePermission();
+
+              if (status !== 'granted') {
+                return;
+              }
+
+              setExportingVault(true);
+              await sleep(500);
+
+              const encryptedVault = await encryptVault({
+                password: globalState.password,
+                vault: globalState.vault,
+              });
+
+              await exportVault(encryptedVault);
+
+              showSnackbar('Vault exported to Downloads directory');
+            } catch (error) {
+              showSnackbar('Unable to export vault');
+            }
+
+            setExportingVault(false);
           },
         },
         {
@@ -67,7 +131,7 @@ const Settings: React.FC = () => {
                   onPress: () => {},
                 },
                 {
-                  text: 'Clear vault',
+                  text: 'Clear',
                   onPress: () => {
                     globalDispatch({ type: 'CLEAR_VAULT_ENTRIES' });
                     showSnackbar('Vault cleared');
@@ -115,7 +179,14 @@ const Settings: React.FC = () => {
         stickySectionHeadersEnabled={false}
         sections={sections}
         renderItem={({ item }) => {
-          const { title, description, value, onPress, onToggle } = item;
+          const {
+            title,
+            description,
+            value,
+            loading,
+            onPress,
+            onToggle,
+          } = item;
 
           return (
             <List.Item
@@ -127,9 +198,19 @@ const Settings: React.FC = () => {
                 if (onToggle) {
                   return (
                     <Switch
-                      trackColor={{ false: 'grey', true: '#009999' }}
+                      trackColor={{ false: 'grey', true: colors.SECONDARY }}
                       value={value}
                       onValueChange={onToggle}
+                    />
+                  );
+                }
+
+                if (loading) {
+                  return (
+                    <ActivityIndicator
+                      style={styles.spinner}
+                      color={colors.SECONDARY}
+                      size={24}
                     />
                   );
                 }
@@ -166,11 +247,14 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   sectionHeaderText: {
-    color: '#60d6c4',
+    color: colors.SECONDARY,
   },
   sectionFooter: {
     paddingVertical: 4,
     backgroundColor: '#111',
+  },
+  spinner: {
+    marginRight: 14,
   },
 });
 

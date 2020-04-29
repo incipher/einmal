@@ -1,7 +1,12 @@
 import React, { memo } from 'react';
-import { StyleProp, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import {
+  View,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 import { Text } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
 import randomColor from 'randomcolor';
 
 type Props = {
@@ -15,20 +20,20 @@ const AvatarText: React.FC<Props> = (props) => {
   const { style, labelStyle, size, label } = props;
 
   return (
-    <LinearGradient
+    <View
       style={[
         styles.container,
         {
           width: size,
           height: size,
           borderRadius: size / 2,
+          backgroundColor: randomColor({ luminosity: 'dark' }),
         },
         style,
       ]}
-      colors={[randomColor(), 'transparent']}
     >
       <Text style={[styles.label, labelStyle]}>{label}</Text>
-    </LinearGradient>
+    </View>
   );
 };
 

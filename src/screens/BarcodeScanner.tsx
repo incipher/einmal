@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { EmptyState } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
 import { parseOtpauthUri } from '../crypto';
-import { actuateHapticFeedback } from '../utilities';
+import { requestCameraPermission, actuateHapticFeedback } from '../utilities';
 
 type Props = {};
 
@@ -19,7 +19,7 @@ const BarcodeScanner: React.FC<Props> = (props) => {
 
   useEffect(() => {
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      const { status } = await requestCameraPermission();
       setPermission(status);
     })();
   }, []);

@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, SectionList, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  SectionList,
+  StyleSheet,
+  ActivityIndicator,
+  Linking,
+} from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { List, Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -164,6 +170,27 @@ const Settings: React.FC = () => {
     {
       title: 'About',
       data: [
+        {
+          title: 'Legal',
+          description: 'Privacy Policy',
+          onPress: () => {
+            Linking.openURL('https://incipher.io/privacy');
+          },
+        },
+        {
+          title: 'Support',
+          description: 'Questions & feedback',
+          onPress: () => {
+            Linking.openURL('mailto:support@incipher.io');
+          },
+        },
+        {
+          title: 'GitHub',
+          description: 'Source code',
+          onPress: () => {
+            Linking.openURL('https://github.com/incipher/einmal');
+          },
+        },
         {
           title: 'Version',
           description: configuration.version,

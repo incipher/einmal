@@ -2,7 +2,6 @@ package io.incipher.einmal;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import javax.annotation.Nullable;
 
 import android.app.Application;
 import android.content.Context;
@@ -15,7 +14,6 @@ import com.facebook.soloader.SoLoader;
 
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
-import expo.modules.updates.UpdatesController;
 
 import io.incipher.einmal.generated.BasePackageList;
 import io.incipher.einmal.crypto.CryptoPackage;
@@ -46,24 +44,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected String getJSMainModuleName() {
       return "index";
     }
-
-    @Override
-    protected @Nullable String getJSBundleFile() {
-      if (BuildConfig.DEBUG) {
-        return super.getJSBundleFile();
-      } else {
-        return UpdatesController.getInstance().getLaunchAssetFile();
-      }
-    }
-
-    @Override
-    protected @Nullable String getBundleAssetName() {
-      if (BuildConfig.DEBUG) {
-        return super.getBundleAssetName();
-      } else {
-        return UpdatesController.getInstance().getBundleAssetName();
-      }
-    }
   };
 
   @Override
@@ -76,10 +56,6 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
-
-    if (!BuildConfig.DEBUG) {
-      UpdatesController.initialize(this);
-    }
   }
 
   /**

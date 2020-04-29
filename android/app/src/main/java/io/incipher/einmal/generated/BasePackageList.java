@@ -22,7 +22,6 @@ public class BasePackageList {
         new expo.modules.random.RandomPackage(),
         new expo.modules.splashscreen.SplashScreenPackage(),
         new expo.modules.sqlite.SQLitePackage(),
-        new expo.modules.updates.UpdatesPackage(),
         new expo.modules.webbrowser.WebBrowserPackage()
     );
   }

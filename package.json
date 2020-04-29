@@ -26,7 +26,6 @@
     "expo-linear-gradient": "^8.1.0",
     "expo-random": "~8.1.0",
     "expo-splash-screen": "^0.2.0",
-    "expo-updates": "~0.1.0",
     "immer": "^6.0.3",
     "ramda": "^0.27.0",
     "randomcolor": "^0.5.4",

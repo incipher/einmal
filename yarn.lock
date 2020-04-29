@@ -4063,13 +4063,6 @@ expo-sqlite@~8.1.0:
     "@types/websql" "^0.0.27"
     lodash "^4.17.15"
 
-expo-updates@~0.1.0:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/expo-updates/-/expo-updates-0.1.2.tgz#d3241a55cd2f282dc5941a59b47a595c3bb4003c"
-  integrity sha512-RasaaxMBSjw7Sy9VDP6EceBnUPGt86IysGj7Mc6LNKLsmUwd6DbA03SyTqJd8R2e+T2dDM82BMWIJq+8TD6e6Q==
-  dependencies:
-    fbemitter "^2.1.1"
-
 expo-web-browser@~8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-8.1.0.tgz#1b4ca25e4dd600fac9ad16e32d81be47778c2667"

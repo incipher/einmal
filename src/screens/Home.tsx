@@ -14,6 +14,7 @@ import { EmptyState, LinearIndicator, Token } from '../components';
 import { useGlobalState, useInteractables } from '../hooks';
 import { generateTotp } from '../crypto';
 import { isPhysicalDevice } from '../utilities';
+import { colors } from '../constants';
 
 const Home: React.FC = () => {
   const insets = useSafeArea();
@@ -233,6 +234,7 @@ const styles = StyleSheet.create({
   },
   fab: {
     marginBottom: 32,
+    backgroundColor: colors.SECONDARY,
   },
 });
 

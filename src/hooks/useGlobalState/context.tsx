@@ -2,6 +2,7 @@ import React, { useEffect, useContext, createContext } from 'react';
 import { useGlobalReducer, State, DispatchAction } from './reducer';
 import { encryptVault, writeVault } from '../../vault';
 import * as storage from '../../async-storage';
+import * as secureStorage from '../../secure-storage';
 import { Vault, Settings } from '../../types';
 
 type ProviderProps = {
@@ -15,7 +16,10 @@ const GlobalStateContext = createContext<[State, DispatchAction]>([
   {
     vault: null,
     password: null,
-    settings: { concealTokens: false },
+    settings: {
+      biometricUnlock: false,
+      concealTokens: false,
+    },
   },
   () => {},
 ]);
@@ -25,7 +29,10 @@ export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
     children,
     vault: initialVault = null,
     password: initialPassword = null,
-    settings: initialSettings = { concealTokens: false },
+    settings: initialSettings = {
+      biometricUnlock: false,
+      concealTokens: false,
+    },
   } = props;
 
   const [state, dispatch] = useGlobalReducer({
@@ -48,6 +55,16 @@ export const GlobalStateProvider: React.FC<ProviderProps> = (props) => {
       }
     })();
   }, [vault, password]);
+
+  useEffect(() => {
+    if (password) {
+      if (settings.biometricUnlock) {
+        secureStorage.setPassword(password);
+      } else {
+        secureStorage.removePassword();
+      }
+    }
+  }, [settings.biometricUnlock, password]);
 
   useEffect(() => {
     storage.setConcealTokens(settings.concealTokens);

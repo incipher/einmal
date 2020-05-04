@@ -46,5 +46,6 @@ export type VaultEntry = {
 // Settings
 
 export type Settings = {
+  biometricUnlock: boolean;
   concealTokens: boolean;
 };

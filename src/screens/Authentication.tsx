@@ -1,23 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, KeyboardAvoidingView, Image, StyleSheet } from 'react-native';
+import * as LocalAuthentication from 'expo-local-authentication';
 import { HelperText, TextInput, Button } from 'react-native-paper';
 import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState, useInteractables } from '../hooks';
 import { readVault, decryptVault } from '../vault';
+import * as secureStorage from '../secure-storage';
 import { sleep } from '../utilities';
+
+type State = {
+  password: string;
+  hasPasswordBeenBlurred: boolean;
+  isLoading: boolean;
+};
 
 const Authentication: React.FC = () => {
   const {
     window: { width: windowWidth },
   } = useDimensions();
-  const [, globalDispatch] = useGlobalState();
+  const [globalState, globalDispatch] = useGlobalState();
   const { showSnackbar } = useInteractables();
 
-  const [isLoading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [hasPasswordBeenBlurred, setPasswordBlurred] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
-  const validatePassword = (): string => {
+  const validatePassword = (state: Partial<State>): string => {
+    const { password } = state;
+
     if (!password) {
       return 'Required';
     }
@@ -26,10 +36,21 @@ const Authentication: React.FC = () => {
       return 'Password must be longer than 5 characters';
     }
 
+    if (password.length >= 128) {
+      return 'Password must be shorter than 128 characters';
+    }
+
     return null;
   };
 
-  const handleUnlockVaultPress = async () => {
+  const handleUnlockVaultPress = async (state: Partial<State>) => {
+    const { password, isLoading } = state;
+
+    const passwordError = validatePassword({ password });
+
+    const isInvalidPassword = Boolean(passwordError);
+    const isInvalidForm = [isInvalidPassword].some(Boolean);
+
     if (isInvalidForm || isLoading) {
       return;
     }
@@ -57,10 +78,27 @@ const Authentication: React.FC = () => {
     setLoading(false);
   };
 
-  const passwordError = validatePassword();
+  useEffect(() => {
+    (async () => {
+      if (globalState.settings.biometricUnlock) {
+        const result = await LocalAuthentication.authenticateAsync();
+
+        if (!result.success) {
+          return;
+        }
+
+        const password = await secureStorage.getPassword();
+
+        setPassword(password);
+        handleUnlockVaultPress({ password, isLoading });
+      }
+    })();
+  }, []);
+
+  const passwordError = validatePassword({ password });
 
   const isInvalidPassword = Boolean(passwordError);
-  const isInvalidForm = isInvalidPassword;
+  const isInvalidForm = [isInvalidPassword].some(Boolean);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -77,7 +115,9 @@ const Authentication: React.FC = () => {
           onBlur={() => {
             setPasswordBlurred(true);
           }}
-          onSubmitEditing={handleUnlockVaultPress}
+          onSubmitEditing={() => {
+            handleUnlockVaultPress({ password, isLoading });
+          }}
         />
 
         <HelperText>
@@ -90,7 +130,9 @@ const Authentication: React.FC = () => {
           color="white"
           loading={isLoading}
           disabled={isInvalidForm}
-          onPress={handleUnlockVaultPress}
+          onPress={() => {
+            handleUnlockVaultPress({ password, isLoading });
+          }}
         >
           Unlock Vault
         </Button>

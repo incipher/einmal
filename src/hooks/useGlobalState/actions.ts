@@ -5,6 +5,7 @@ export type Action =
   | SetVaultEntriesAction
   | AddVaultEntryAction
   | ClearVaultEntriesAction
+  | ToggleBiometricUnlockAction
   | ToggleConcealTokensAction;
 
 export type InitializeVaultAction = {
@@ -25,6 +26,10 @@ export type AddVaultEntryAction = {
 
 export type ClearVaultEntriesAction = {
   type: 'CLEAR_VAULT_ENTRIES';
+};
+
+export type ToggleBiometricUnlockAction = {
+  type: 'TOGGLE_BIOMETRIC_UNLOCK';
 };
 
 export type ToggleConcealTokensAction = {

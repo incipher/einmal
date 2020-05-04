@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Linking,
 } from 'react-native';
+import * as LocalAuthentication from 'expo-local-authentication';
 import * as DocumentPicker from 'expo-document-picker';
 import { List, Switch } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -32,6 +33,139 @@ const Settings: React.FC = () => {
   const [isImportingVault, setImportingVault] = useState(false);
   const [isExportingVault, setExportingVault] = useState(false);
 
+  const handleImportPress = async () => {
+    const response = await DocumentPicker.getDocumentAsync({
+      type: 'application/json',
+      copyToCacheDirectory: true,
+    });
+
+    if (response.type === 'cancel') {
+      return;
+    }
+
+    showDialog({
+      title: 'Enter password',
+      inputs: ['Password'],
+      actions: [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+        },
+        {
+          text: 'Import',
+          onPress: async (inputs) => {
+            const { Password: password } = inputs;
+
+            setImportingVault(true);
+
+            try {
+              const encryptedVault = await importVault(response.uri);
+
+              const decryptedVault = await decryptVault({
+                encryptedVault,
+                password,
+              });
+
+              globalDispatch({
+                type: 'INITIALIZE_VAULT',
+                password,
+                vault: decryptedVault,
+              });
+
+              showSnackbar('Vault imported successfully');
+            } catch (error) {
+              showSnackbar('Failed to import vault');
+            }
+
+            setImportingVault(false);
+          },
+        },
+      ],
+    });
+  };
+
+  const handleExportPress = async () => {
+    try {
+      const { status } = await requestExternalStoragePermission();
+
+      if (status !== 'granted') {
+        return;
+      }
+
+      setExportingVault(true);
+      await sleep(500);
+
+      const encryptedVault = await encryptVault({
+        password: globalState.password,
+        vault: globalState.vault,
+      });
+
+      await exportVault(encryptedVault);
+
+      showSnackbar('Vault exported to Downloads directory');
+    } catch (error) {
+      showSnackbar('Unable to export vault');
+    }
+
+    setExportingVault(false);
+  };
+
+  const handleClearPress = () => {
+    showDialog({
+      title: 'Clear vault?',
+      paragraphs: [
+        'Clearing your vault will lock you out of your accounts with two-factor authentication enabled.',
+        'You are advised to export your vault to a file first, or disable two-factor authentication for your accounts.',
+      ],
+      actions: [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+        },
+        {
+          text: 'Clear',
+          onPress: () => {
+            globalDispatch({ type: 'CLEAR_VAULT_ENTRIES' });
+            showSnackbar('Vault cleared');
+
+            navigation.navigate('Home');
+          },
+        },
+      ],
+    });
+  };
+
+  const handleBiometricUnlockPress = async () => {
+    const hasBiometricHardware = await LocalAuthentication.hasHardwareAsync();
+    const areBiometricsEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+    if (!hasBiometricHardware) {
+      return showSnackbar('Biometrics are unsupported on this device');
+    }
+
+    if (!areBiometricsEnrolled) {
+      return showSnackbar('Biometrics are not enrolled on this device');
+    }
+
+    globalDispatch({ type: 'TOGGLE_BIOMETRIC_UNLOCK' });
+  };
+
+  const handleConcealTokensPress = () => {
+    globalDispatch({ type: 'TOGGLE_CONCEAL_TOKENS' });
+  };
+
+  const handleAboutPress = () => {
+    Linking.openURL('https://incipher.io/privacy');
+  };
+
+  const handleSupportPress = () => {
+    Linking.openURL('mailto:support@incipher.io');
+  };
+
+  const handleGitHubPress = () => {
+    Linking.openURL('https://github.com/incipher/einmal');
+  };
+
   const sections: Sections<Setting> = [
     {
       title: 'Vault',
@@ -40,114 +174,18 @@ const Settings: React.FC = () => {
           title: 'Import',
           description: 'Import encrypted vault from a file',
           loading: isImportingVault,
-          onPress: async () => {
-            const response = await DocumentPicker.getDocumentAsync({
-              type: 'application/json',
-              copyToCacheDirectory: true,
-            });
-
-            if (response.type === 'cancel') {
-              return;
-            }
-
-            showDialog({
-              title: 'Enter password',
-              inputs: ['Password'],
-              actions: [
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                },
-                {
-                  text: 'Import',
-                  onPress: async (inputs) => {
-                    const { Password: password } = inputs;
-
-                    setImportingVault(true);
-
-                    try {
-                      const encryptedVault = await importVault(response.uri);
-
-                      const decryptedVault = await decryptVault({
-                        encryptedVault,
-                        password,
-                      });
-
-                      globalDispatch({
-                        type: 'INITIALIZE_VAULT',
-                        password,
-                        vault: decryptedVault,
-                      });
-
-                      showSnackbar('Vault imported successfully');
-                    } catch (error) {
-                      showSnackbar('Failed to import vault');
-                    }
-
-                    setImportingVault(false);
-                  },
-                },
-              ],
-            });
-          },
+          onPress: handleImportPress,
         },
         {
           title: 'Export',
           description: 'Export encrypted vault to a file',
           loading: isExportingVault,
-          onPress: async () => {
-            try {
-              const { status } = await requestExternalStoragePermission();
-
-              if (status !== 'granted') {
-                return;
-              }
-
-              setExportingVault(true);
-              await sleep(500);
-
-              const encryptedVault = await encryptVault({
-                password: globalState.password,
-                vault: globalState.vault,
-              });
-
-              await exportVault(encryptedVault);
-
-              showSnackbar('Vault exported to Downloads directory');
-            } catch (error) {
-              showSnackbar('Unable to export vault');
-            }
-
-            setExportingVault(false);
-          },
+          onPress: handleExportPress,
         },
         {
           title: 'Clear',
           description: 'Delete vault contents',
-          onPress: () => {
-            showDialog({
-              title: 'Clear vault?',
-              paragraphs: [
-                'Clearing your vault will lock you out of your accounts with two-factor authentication enabled.',
-                'You are advised to export your vault to a file first, or disable two-factor authentication for your accounts.',
-              ],
-              actions: [
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                },
-                {
-                  text: 'Clear',
-                  onPress: () => {
-                    globalDispatch({ type: 'CLEAR_VAULT_ENTRIES' });
-                    showSnackbar('Vault cleared');
-
-                    navigation.navigate('Home');
-                  },
-                },
-              ],
-            });
-          },
+          onPress: handleClearPress,
         },
       ],
     },
@@ -155,15 +193,18 @@ const Settings: React.FC = () => {
       title: 'Security',
       data: [
         {
+          title: 'Biometric unlock',
+          description: 'Decrypt vault using biometrics',
+          value: globalState.settings.biometricUnlock,
+          onPress: handleBiometricUnlockPress,
+          onToggle: handleBiometricUnlockPress,
+        },
+        {
           title: 'Discreet mode',
           description: 'Conceal tokens by default',
           value: globalState.settings.concealTokens,
-          onPress: () => {
-            globalDispatch({ type: 'TOGGLE_CONCEAL_TOKENS' });
-          },
-          onToggle: () => {
-            globalDispatch({ type: 'TOGGLE_CONCEAL_TOKENS' });
-          },
+          onPress: handleConcealTokensPress,
+          onToggle: handleConcealTokensPress,
         },
       ],
     },
@@ -173,23 +214,17 @@ const Settings: React.FC = () => {
         {
           title: 'Legal',
           description: 'Privacy Policy',
-          onPress: () => {
-            Linking.openURL('https://incipher.io/privacy');
-          },
+          onPress: handleAboutPress,
         },
         {
           title: 'Support',
           description: 'Questions & feedback',
-          onPress: () => {
-            Linking.openURL('mailto:support@incipher.io');
-          },
+          onPress: handleSupportPress,
         },
         {
           title: 'GitHub',
           description: 'Source code',
-          onPress: () => {
-            Linking.openURL('https://github.com/incipher/einmal');
-          },
+          onPress: handleGitHubPress,
         },
         {
           title: 'Version',

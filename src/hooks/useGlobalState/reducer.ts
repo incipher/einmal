@@ -6,6 +6,7 @@ import {
   isSetVaultEntriesAction,
   isAddVaultEntryAction,
   isClearVaultEntriesAction,
+  isToggleBiometricUnlockAction,
   isToggleConcealTokensAction,
 } from './typeGuards';
 import { Vault, Settings } from '../../types';
@@ -57,6 +58,12 @@ export const useGlobalReducer = (
     if (isClearVaultEntriesAction(action)) {
       return produce(state, (draftState) => {
         draftState.vault.entries = [];
+      });
+    }
+
+    if (isToggleBiometricUnlockAction(action)) {
+      return produce(state, (draftState) => {
+        draftState.settings.biometricUnlock = !state.settings.biometricUnlock;
       });
     }
 

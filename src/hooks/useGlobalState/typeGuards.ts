@@ -4,6 +4,7 @@ import {
   SetVaultEntriesAction,
   AddVaultEntryAction,
   ClearVaultEntriesAction,
+  ToggleBiometricUnlockAction,
   ToggleConcealTokensAction,
 } from './actions';
 
@@ -29,6 +30,12 @@ export const isClearVaultEntriesAction = (
   action: Action,
 ): action is ClearVaultEntriesAction => {
   return action.type === 'CLEAR_VAULT_ENTRIES';
+};
+
+export const isToggleBiometricUnlockAction = (
+  action: Action,
+): action is ToggleBiometricUnlockAction => {
+  return action.type === 'TOGGLE_BIOMETRIC_UNLOCK';
 };
 
 export const isToggleConcealTokensAction = (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import * as LocalAuthentication from 'expo-local-authentication';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import {
@@ -25,6 +26,7 @@ import {
 import { GlobalStateProvider, InteractablesProvider } from './hooks';
 import { doesVaultExist, deleteVault } from './vault';
 import * as storage from './async-storage';
+import * as secureStorage from './secure-storage';
 import { configuration } from './constants';
 
 immer.enableES5();
@@ -75,7 +77,11 @@ const App: React.FC = () => {
 
   const loadAssets = async () => {
     if (configuration.shouldReset) {
-      await Promise.all([deleteVault(), storage.clear()]);
+      await Promise.all([
+        deleteVault(),
+        secureStorage.removePassword(),
+        storage.clear(),
+      ]);
     }
 
     await Promise.all([
@@ -92,8 +98,19 @@ const App: React.FC = () => {
   };
 
   const loadSettings = async () => {
+    const areBiometricsEnrolled = await LocalAuthentication.isEnrolledAsync();
+
+    /* In case biometrics have been unenrolled */
+    if (!areBiometricsEnrolled) {
+      await secureStorage.removePassword();
+    }
+
+    const biometricUnlock = Boolean(await secureStorage.getPassword());
+    const concealTokens = Boolean(await storage.getConcealTokens());
+
     const loadedSettings = {
-      concealTokens: (await storage.getConcealTokens()) ?? false,
+      biometricUnlock,
+      concealTokens,
     };
 
     setInitialSettings(loadedSettings);

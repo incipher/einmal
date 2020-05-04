@@ -5,6 +5,14 @@ import { useDimensions } from '@react-native-community/hooks';
 import { useGlobalState } from '../hooks';
 import { sleep } from '../utilities';
 
+type State = {
+  password: string;
+  repeatedPassword: string;
+  hasPasswordBeenBlurred: boolean;
+  hasRepeatedPasswordBeenBlurred: boolean;
+  isLoading: boolean;
+};
+
 const AuthenticationSetup: React.FC = () => {
   const {
     window: { width: windowWidth },
@@ -21,7 +29,9 @@ const AuthenticationSetup: React.FC = () => {
 
   const repeatedPasswordRef = useRef(null);
 
-  const validatePassword = (): string => {
+  const validatePassword = (state: Partial<State>): string => {
+    const { password } = state;
+
     if (!password) {
       return 'Required';
     }
@@ -30,10 +40,16 @@ const AuthenticationSetup: React.FC = () => {
       return 'Password must be longer than 5 characters';
     }
 
+    if (password.length >= 128) {
+      return 'Password must be shorter than 128 characters';
+    }
+
     return null;
   };
 
-  const validateRepeatedPassword = (): string => {
+  const validateRepeatedPassword = (state: Partial<State>): string => {
+    const { password, repeatedPassword } = state;
+
     if (repeatedPassword !== password) {
       return 'Passwords do not match';
     }
@@ -41,7 +57,22 @@ const AuthenticationSetup: React.FC = () => {
     return null;
   };
 
-  const handleCreateVaultPress = async () => {
+  const handleCreateVaultPress = async (state: Partial<State>) => {
+    const { password, repeatedPassword, isLoading } = state;
+
+    const passwordError = validatePassword({ password });
+    const repeatedPasswordError = validateRepeatedPassword({
+      password,
+      repeatedPassword,
+    });
+
+    const isInvalidPassword = Boolean(passwordError);
+    const isInvalidRepeatedPassword = Boolean(repeatedPasswordError);
+
+    const isInvalidForm = [isInvalidPassword, isInvalidRepeatedPassword].some(
+      Boolean,
+    );
+
     if (isInvalidForm || isLoading) {
       return;
     }
@@ -60,13 +91,18 @@ const AuthenticationSetup: React.FC = () => {
     setLoading(false);
   };
 
-  const passwordError = validatePassword();
-  const repeatedPasswordError = validateRepeatedPassword();
+  const passwordError = validatePassword({ password });
+  const repeatedPasswordError = validateRepeatedPassword({
+    password,
+    repeatedPassword,
+  });
 
   const isInvalidPassword = Boolean(passwordError);
   const isInvalidRepeatedPassword = Boolean(repeatedPasswordError);
 
-  const isInvalidForm = isInvalidPassword || isInvalidRepeatedPassword;
+  const isInvalidForm = [isInvalidPassword, isInvalidRepeatedPassword].some(
+    Boolean,
+  );
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -110,7 +146,9 @@ const AuthenticationSetup: React.FC = () => {
           onBlur={() => {
             setRepeatedPasswordBlurred(true);
           }}
-          onSubmitEditing={handleCreateVaultPress}
+          onSubmitEditing={() => {
+            handleCreateVaultPress({ password, repeatedPassword, isLoading });
+          }}
         />
 
         <HelperText>
@@ -125,7 +163,9 @@ const AuthenticationSetup: React.FC = () => {
           color="white"
           loading={isLoading}
           disabled={isInvalidForm}
-          onPress={handleCreateVaultPress}
+          onPress={() => {
+            handleCreateVaultPress({ password, repeatedPassword, isLoading });
+          }}
         >
           Create Vault
         </Button>

@@ -4037,6 +4037,11 @@ expo-random@~8.1.0:
   dependencies:
     base64-js "^1.3.0"
 
+expo-secure-store@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-secure-store/-/expo-secure-store-8.1.0.tgz#1dcc4705c5264c828592a83842b8be8bbfb5f77f"
+  integrity sha512-EjCx9M2nH7iW3eNOjXl0I7oPypI0es6OStZakimR2iD8riLZp9LYHTj+39Iuz2o1m3OKi+bpwr3cHL52DxcDnA==
+
 expo-splash-screen-command@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/expo-splash-screen-command/-/expo-splash-screen-command-0.1.1.tgz#013859550a311f4b6c07ea3b637586bc8659c7c4"

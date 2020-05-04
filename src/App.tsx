@@ -100,7 +100,11 @@ const App: React.FC = () => {
   const loadSettings = async () => {
     const areBiometricsEnrolled = await LocalAuthentication.isEnrolledAsync();
 
-    /* In case biometrics have been unenrolled */
+    /**
+     * If biometrics are unenrolled after having enabled
+     * biometric unlock in the app, the stored password
+     * should be forgotten.
+     */
     if (!areBiometricsEnrolled) {
       await secureStorage.removePassword();
     }

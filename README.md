@@ -30,9 +30,9 @@
 
 ## Security
 
-- Entropy: [Java's SecureRandom](https://developer.android.com/reference/java/security/SecureRandom) | [Objective-C's SecRandomCopyBytes](https://developer.apple.com/documentation/security/1399291-secrandomcopybytes)
-- Key derivation: [scrypt (Go implementation)](https://godoc.org/golang.org/x/crypto/scrypt)
 - Encryption & message authentication: [NaCl's XSalsa20-Poly1305 (JavaScript port)](https://github.com/dchest/tweetnacl-js)
+- Key derivation: [scrypt (Go implementation)](https://godoc.org/golang.org/x/crypto/scrypt)
+- Entropy: [Java's SecureRandom](https://developer.android.com/reference/java/security/SecureRandom) | [Objective-C's SecRandomCopyBytes](https://developer.apple.com/documentation/security/1399291-secrandomcopybytes)
 
 ## Tech
 

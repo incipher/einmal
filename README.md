@@ -67,4 +67,4 @@ Your feedback is most welcome! Please get in touch by email: support@incipher.io
 
 ## License
 
-<a href="https://unlicense.org">The Unlicense</a>
+<a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero v1.0 Universal</a>

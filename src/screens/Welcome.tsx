@@ -12,7 +12,7 @@ const Welcome: React.FC = () => {
         <Image style={styles.logo} source={require('../../assets/logo.png')} />
 
         <Text style={styles.header}>
-          Safeguard yourself with two-factor authentication.
+          Protect your online accounts against hijacking attacks
         </Text>
 
         <Button
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     marginVertical: 24,
     textAlign: 'center',
     fontSize: 32,
+    fontWeight: 'bold',
   },
 });
 

@@ -11,7 +11,7 @@
     <b>German: once</b>
   </div>
 
-  <p>The minimalistic, secure and open-source two-factor authentication app.</p>
+  <p>The minimalistic, secure and open-source <a href="https://ssd.eff.org/en/module/how-enable-two-factor-authentication">two-factor authentication</a> app.</p>
 </div>
 
 ## Features

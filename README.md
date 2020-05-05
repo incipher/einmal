@@ -65,10 +65,6 @@
 
 Your feedback is most welcome! Please get in touch by email: support@incipher.io.
 
-## Thanks
-
-- [alexbakker](https://github.com/alexbakker) & [michaelschattgen](https://github.com/michaelschattgen): for building and open-sourcing my personal favorite two-factor authentication app [Aegis](https://github.com/beemdevelopment/Aegis). Einmal is inpired by its clean UI and well-thought-out security design.
-
 ## License
 
 <a href="https://unlicense.org">The Unlicense</a>

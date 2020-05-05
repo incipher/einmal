@@ -16,10 +16,12 @@
 
 ## Features
 
+- ♻️ Cross-platform — available on Android & iOS (coming soon)
 - 🔒 Encryption by default — your vault is never stored in plaintext
+- 👱‍♂️ Biometric unlock — decrypt your vault using biometrics
 - 🚀 Import & export vault — back up your vault securely anywhere you like
-- 🙈 Discreet mode — conceals your tokens in public
-- 📸 Screenshot protection — protects against screen-capturing malware
+- 🙈 Discreet mode — conceal your tokens in public
+- 📸 Screenshot protection — immune to screen-capturing malware
 - 🏴 AMOLED dark theme — because why would you have it any other way?
 
 ## Supported Algorithms
@@ -43,11 +45,11 @@
 
 ## Roadmap
 
-- [ ] Facilitate web/CLI vault decryption (escape hatch)
+- [x] Facilitate biometric unlock
 - [ ] Facilitate manual key entry
-- [ ] Facilitate biometric unlock
+- [ ] Facilitate web/CLI vault decryption (escape hatch)
 - [ ] Offload encryption to Go
-- [ ] Implement light theme
+- [ ] Design light theme
 - [ ] Produce iOS build
 - [ ] Write tests
 

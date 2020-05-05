@@ -56,7 +56,7 @@
 ## Screenshots
 
 <span>
-  <img src="https://user-images.githubusercontent.com/11808903/80574712-a3268600-8a02-11ea-823d-314aa2e699a3.png" width="300"/>
+  <img src="https://user-images.githubusercontent.com/11808903/81027399-ee66eb80-8e7d-11ea-84d0-60686d2d32f6.png" width="300"/>
 
   <img src="https://user-images.githubusercontent.com/11808903/80574717-a457b300-8a02-11ea-915e-db7cd98740f2.png" width="300"/>
 </span>

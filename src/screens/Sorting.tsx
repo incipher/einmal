@@ -28,7 +28,7 @@ const Sorting: React.FC = () => {
                 <Avatar.Text
                   style={styles.avatar}
                   size={40}
-                  label={item.issuer.substring(0, 1)}
+                  label={item.issuer.substring(0, 1).toUpperCase()}
                 />
 
                 <Text style={styles.issuer}>{item.issuer}</Text>

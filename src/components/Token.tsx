@@ -82,7 +82,7 @@ const Token: React.FC<Props> = (props) => {
           <AvatarText
             style={styles.avatar}
             size={48}
-            label={issuer.substring(0, 1)}
+            label={issuer.substring(0, 1).toUpperCase()}
           />
         )}
 

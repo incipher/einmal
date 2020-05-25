@@ -33,6 +33,7 @@ const Sorting: React.FC = () => {
 
                 <Text style={styles.issuer}>{item.issuer}</Text>
               </View>
+
               <MaterialCommunityIcons
                 name="reorder-horizontal"
                 color="white"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { Text, Avatar, TouchableRipple } from 'react-native-paper';
+import { Text, TouchableRipple } from 'react-native-paper';
 import {
   block,
   set,
@@ -72,19 +72,11 @@ const Token: React.FC<Props> = (props) => {
       }}
     >
       <>
-        {false /* TODO: If favicon exists */ ? (
-          <Avatar.Image
-            style={styles.avatar}
-            size={48}
-            source={{ uri: null }}
-          />
-        ) : (
-          <AvatarText
-            style={styles.avatar}
-            size={48}
-            label={issuer.substring(0, 1).toUpperCase()}
-          />
-        )}
+        <AvatarText
+          style={styles.avatar}
+          size={48}
+          label={issuer.substring(0, 1).toUpperCase()}
+        />
 
         <View>
           <View style={styles.tokenContainer}>

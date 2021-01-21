@@ -28,7 +28,7 @@
     "expo-random": "~8.1.0",
     "expo-secure-store": "^8.1.0",
     "expo-splash-screen": "^0.2.0",
-    "immer": "^6.0.3",
+    "immer": "^8.0.1",
     "ramda": "^0.27.0",
     "randomcolor": "^0.5.4",
     "react": "~16.9.0",

@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useLayoutEffect,
-  useCallback,
-} from 'react';
+import React, { useState, useMemo, useLayoutEffect } from 'react';
 import { View, Image, FlatList, StyleSheet, Clipboard } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Portal, IconButton, Searchbar, FAB } from 'react-native-paper';
@@ -24,7 +19,7 @@ const Home: React.FC = () => {
   const [globalState] = useGlobalState();
   const { showSnackbar } = useInteractables();
 
-  const [tokens, setTokens] = useState([]);
+  const [toggleSwitch, setToggleSwitch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchbarVisible, setSearchbarVisible] = useState(false);
   const [isFABGroupOpen, setFABGroupOpen] = useState(false);
@@ -88,10 +83,6 @@ const Home: React.FC = () => {
     });
   }, [navigation, isSearchbarVisible, searchQuery]);
 
-  useEffect(() => {
-    generateTokens();
-  }, [globalState.vault]);
-
   useBackHandler(() => {
     if (isSearchbarVisible) {
       clearAndCloseSearchbar();
@@ -101,27 +92,25 @@ const Home: React.FC = () => {
     return false;
   });
 
-  const generateTokens = useCallback(() => {
-    setTokens(
-      globalState.vault.entries.map((vaultEntry) => {
-        return generateTotp(vaultEntry.secret);
-      }),
-    );
-  }, [globalState.vault]);
-
   const clearAndCloseSearchbar = () => {
     setSearchbarVisible(false);
     setSearchQuery('');
   };
 
   const isVaultEmpty = globalState.vault.entries.length === 0;
-  const viewableVaultEntries = globalState.vault.entries.filter(
-    (vaultEntry) => {
-      return vaultEntry.issuer
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-    },
-  );
+
+  const viewableVaultEntries = useMemo(() => {
+    return globalState.vault.entries
+      .filter((vaultEntry) => {
+        return vaultEntry.issuer
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+      })
+      .map((vaultEntry) => ({
+        ...vaultEntry,
+        token: generateTotp(vaultEntry.secret),
+      }));
+  }, [globalState.vault.entries, searchQuery, toggleSwitch]);
 
   const SECONDS_CAP = 30;
   const cappedSeconds = new Date().getSeconds() % SECONDS_CAP;
@@ -134,7 +123,7 @@ const Home: React.FC = () => {
           style={styles.linearIndicator}
           initialProgress={progress}
           duration={SECONDS_CAP * 1000}
-          onFinish={generateTokens}
+          onFinish={() => setToggleSwitch((toggleSwitch) => !toggleSwitch)}
         />
       )}
 
@@ -148,10 +137,10 @@ const Home: React.FC = () => {
         <FlatList
           style={styles.list}
           data={viewableVaultEntries}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <Token
               issuer={item.issuer}
-              token={tokens[index]}
+              token={item.token}
               shouldConceal={globalState.settings.concealTokens}
               onPress={({ token }) => {
                 Clipboard.setString(token);

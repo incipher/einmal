@@ -1,6 +1,0 @@
-	<!-- 
-    This file was created by 'expo-splash-screen' and some of it's content shouldn't be modified by hand
- -->
-<resources>
-  <color name="splashscreen_background">#000000</color> <!-- This line is handled by 'expo-splash-screen' command and it's discouraged to modify it manually -->
-</resources>

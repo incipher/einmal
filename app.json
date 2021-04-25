@@ -1,32 +1,32 @@
 {
   "expo": {
-    "name": "Einmal",
+    "name": "einmal",
     "slug": "einmal",
-    "privacy": "unlisted",
-    "platforms": ["ios", "android"],
-    "version": "1.1.0",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "backgroundColor": "#000000",
-    "assetBundlePatterns": ["**/*"],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "io.incipher.einmal"
-    },
-    "androidStatusBar": {
-      "barStyle": "light-content"
+      "supportsTablet": true
     },
     "android": {
-      "package": "io.incipher.einmal"
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
-    "entryPoint": "node_modules/expo/AppEntry.js"
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
   }
 }
